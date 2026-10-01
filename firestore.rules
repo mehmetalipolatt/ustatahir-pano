@@ -1,0 +1,59 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function signedIn() { return request.auth != null; }
+    function isAdmin() {
+      return signedIn() && request.auth.token.email == 'mehmetalipolat20.05@gmail.com';
+    }
+    function memberPath() { return /databases/$(database)/documents/members/$(request.auth.uid); }
+    function myUnit() {
+      return signedIn() && exists(memberPath()) && get(memberPath()).data.active != false
+        ? get(memberPath()).data.unit : '__yok__';
+    }
+
+    // Genel ayarlar (site adı, IBAN, duyurular, aidat tutarı): giriş yapan herkes okur, yalnızca yönetici yazar
+    match /settings/{id} {
+      allow read: if signedIn();
+      allow write: if isAdmin();
+    }
+
+    // Sakinlere gösterilen isimsiz site özeti
+    match /summary/{id} {
+      allow read: if signedIn();
+      allow write: if isAdmin();
+    }
+
+    // Daire bilgileri: sakin yalnızca kendi dairesini okur
+    match /units/{kod} {
+      allow read: if isAdmin() || kod == myUnit();
+      allow write: if isAdmin();
+    }
+
+    // Ödeme ve borç hareketleri: sakin yalnızca kendi dairesininkileri okur
+    match /ledger/{id} {
+      allow read: if isAdmin() || (signedIn() && resource.data.unit == myUnit());
+      allow write: if isAdmin();
+    }
+
+    // Gider kayıtlarının ayrıntısı yalnızca yönetici içindir (sakinler özeti görür)
+    match /exp/{id} {
+      allow read, write: if isAdmin();
+    }
+
+    // Sakin hesapları: sakin yalnızca kendi kaydını okur; şifresini değiştirince ilk şifreyi silebilir
+    match /members/{uid} {
+      allow read: if isAdmin() || (signedIn() && request.auth.uid == uid);
+      allow create, delete: if isAdmin();
+      allow update: if isAdmin()
+        || (signedIn() && request.auth.uid == uid
+            && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['pwChanged', 'initialPassword'])
+            && request.resource.data.initialPassword == null);
+    }
+
+    // Diğer her şey kapalı
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
