@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex">
+<meta name="description" content="Ustatahir Konutları site panosu: aidat tahsilatı, giderler ve duyurular.">
+<title>Ustatahir Site Panosu</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+/* Layout: one calm column — site banner, the resident's own flat (when the link carries a key), then the public notice board */
+:root{
+  --bg:#eef2f1; --surface:#ffffff; --surface-2:#f6f8f8; --ink:#16232b; --muted:#5d6d74; --line:#d9e1e0;
+  --accent:#1f6f78; --accent-ink:#ffffff; --accent-soft:#dcecee; --banner:#1f3a45; --banner-ink:#ffffff; --banner-sub:#b9cdd3;
+  --good:#2b7a4b; --good-bg:#dff1e6; --warn:#9a6212; --warn-bg:#fbeed4; --bad:#b8352a; --bad-bg:#fbe3e0;
+  --plate:#24343c; --plate-ink:#f2f5f4;
+  --f-display:"Bricolage Grotesque","Segoe UI",system-ui,sans-serif;
+  --f-body:"IBM Plex Sans","Segoe UI",system-ui,-apple-system,sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0e1618; --surface:#162125; --surface-2:#1b282c; --ink:#e4ecec; --muted:#95a6aa; --line:#27383c;
+  --accent:#57b8c2; --accent-ink:#062629; --accent-soft:#1d3a3e; --banner:#14272e; --banner-ink:#eef3f2; --banner-sub:#8fb0b8;
+  --good:#6cc794; --good-bg:#17332a; --warn:#e2ab52; --warn-bg:#3a2e17; --bad:#f08276; --bad-bg:#3d1f1c;
+  --plate:#2c3f46; --plate-ink:#eef3f2; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0e1618; --surface:#162125; --surface-2:#1b282c; --ink:#e4ecec; --muted:#95a6aa; --line:#27383c;
+  --accent:#57b8c2; --accent-ink:#062629; --accent-soft:#1d3a3e; --banner:#14272e; --banner-ink:#eef3f2; --banner-sub:#8fb0b8;
+  --good:#6cc794; --good-bg:#17332a; --warn:#e2ab52; --warn-bg:#3a2e17; --bad:#f08276; --bad-bg:#3d1f1c;
+  --plate:#2c3f46; --plate-ink:#eef3f2; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased}
+h1,h2,h3{font-family:var(--f-display);font-weight:700;margin:0;text-wrap:balance;letter-spacing:-.01em}
+.num{font-variant-numeric:tabular-nums}
+.wrap{max-width:860px;margin:0 auto;padding-inline:16px;padding-block:16px 48px;display:flex;flex-direction:column;gap:16px}
+.banner{background:var(--banner);color:var(--banner-ink);border-radius:14px;padding:22px 22px 20px;display:flex;flex-direction:column;gap:4px}
+.banner h1{font-size:clamp(24px,6vw,34px)}
+.banner p{margin:0;color:var(--banner-sub);font-size:14px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px;min-width:0}
+.sec-h{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-bottom:12px;flex-wrap:wrap}
+.sec-h h2{font-size:19px}
+.sub{color:var(--muted);font-size:13px}
+.kpis{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+@media (min-width:700px){.kpis{grid-template-columns:repeat(4,minmax(0,1fr))}}
+.kpi{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px;display:flex;flex-direction:column;gap:2px;min-width:0}
+.kpi .l{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.kpi .v{font-family:var(--f-display);font-size:clamp(20px,5.2vw,26px);font-weight:700;line-height:1.15}
+.kpi .f{font-size:12px;color:var(--muted)}
+.plate{display:inline-flex;align-items:center;gap:6px;background:var(--plate);color:var(--plate-ink);border-radius:8px;padding:8px 12px;font-family:var(--f-display);font-weight:700;font-size:20px;white-space:nowrap}
+.plate i{font-style:normal;opacity:.55;font-weight:500}
+.mine-top{display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+.big{font-family:var(--f-display);font-size:clamp(30px,8vw,40px);font-weight:700;line-height:1.1}
+.pill{display:inline-block;border-radius:999px;padding:3px 12px;font-size:13px;font-weight:600}
+.pill.good{background:var(--good-bg);color:var(--good)} .pill.warn{background:var(--warn-bg);color:var(--warn)} .pill.bad{background:var(--bad-bg);color:var(--bad)}
+.stat3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:14px}
+.stat3 div{background:var(--surface-2);border-radius:10px;padding:10px;min-width:0}
+.stat3 small{display:block;color:var(--muted);font-size:12px}
+.months{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:6px;margin-top:14px}
+@media (min-width:640px){.months{grid-template-columns:repeat(12,minmax(0,1fr))}}
+.mcell{border-radius:8px;padding:7px 2px;text-align:center;font-size:11.5px;border:1px solid var(--line);background:var(--surface-2);color:var(--muted)}
+.mcell b{display:block;font-size:12px;color:inherit}
+.mcell.p{background:var(--good-bg);border-color:transparent;color:var(--good)}
+.mcell.k{background:var(--warn-bg);border-color:transparent;color:var(--warn)}
+.mcell.l{background:var(--bad-bg);border-color:transparent;color:var(--bad)}
+.list{display:flex;flex-direction:column}
+.row{display:flex;gap:12px;align-items:center;padding:9px 0;border-bottom:1px solid var(--line);min-width:0}
+.row:last-child{border-bottom:0}
+.row .grow{flex:1;min-width:0}
+.row .t{font-weight:600}
+.row .s{font-size:12px;color:var(--muted)}
+.amt{font-weight:600;white-space:nowrap}
+.amt.bad{color:var(--bad)} .amt.good{color:var(--good)}
+.cat{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 12px;align-items:center;padding:7px 0}
+.cat .bar{grid-column:1/-1;height:8px;background:var(--surface-2);border:1px solid var(--line);border-radius:99px;overflow:hidden}
+.cat .bar span{display:block;height:100%;background:var(--accent)}
+.bars{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:6px;align-items:end;height:140px;padding-top:18px}
+.bar2{position:relative;background:var(--accent);border-radius:4px 4px 0 0;min-height:2px}
+.bar2.future{background:var(--line)}
+.bar2 b{position:absolute;top:-17px;left:50%;transform:translateX(-50%);font-size:10.5px;font-weight:600;white-space:nowrap}
+.barlbl{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:6px;font-size:11px;color:var(--muted);text-align:center;margin-top:4px}
+.grid2{display:grid;grid-template-columns:minmax(0,1fr);gap:16px}
+@media (min-width:760px){.grid2{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}}
+.iban{display:flex;gap:8px;align-items:center;flex-wrap:wrap;background:var(--surface-2);border:1px dashed var(--line);border-radius:10px;padding:12px}
+.iban code{font-family:ui-monospace,"SF Mono",Menlo,monospace;font-size:15px;letter-spacing:.03em;word-break:break-all;flex:1;min-width:0}
+.btn{border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:10px;padding:8px 12px;font-weight:600;cursor:pointer;font:inherit;font-weight:600}
+.btn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.notice{border-radius:12px;padding:14px 16px;background:var(--accent-soft);color:var(--ink)}
+.notice.err{background:var(--bad-bg);color:var(--bad);font-weight:600}
+.ann{padding:10px 0;border-bottom:1px solid var(--line)}
+.ann:last-child{border-bottom:0}
+.ann .d{font-size:12px;color:var(--muted)}
+.ann p{margin:4px 0 0;white-space:pre-line}
+footer{color:var(--muted);font-size:12.5px;text-align:center;padding:8px 0}
+.empty{color:var(--muted);text-align:center;padding:18px}
+</style>
+<style>body{margin:0}[hidden]{display:none!important}</style>
+</head>
+<body>
+
+
+<div class="wrap" id="app">
+  <header class="banner"><h1 id="site">Ustatahir Konutları</h1><p id="meta">Site panosu yükleniyor…</p></header>
+  <div id="mine"></div>
+  <div id="pub"><div class="card empty">Pano yükleniyor…</div></div>
+  <footer id="foot">Bu sayfa site yönetimi tarafından ayda bir güncellenir.</footer>
+</div>
+
+<script>
+(function(){
+'use strict';
+const AY=['Ocak','Şubat','Mart','Nisan','Mayıs','Haziran','Temmuz','Ağustos','Eylül','Ekim','Kasım','Aralık'];
+const AYK=['Oca','Şub','Mar','Nis','May','Haz','Tem','Ağu','Eyl','Eki','Kas','Ara'];
+const nf=new Intl.NumberFormat('tr-TR',{maximumFractionDigits:2});
+const TL=n=>nf.format(Math.round((n||0)*100)/100)+' TL';
+const TL0=n=>new Intl.NumberFormat('tr-TR',{maximumFractionDigits:0}).format(Math.round(n||0))+' TL';
+const esc=v=>String(v==null?'':v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const fd=iso=>iso?iso.slice(8,10)+'.'+iso.slice(5,7)+'.'+iso.slice(0,4):'tarihsiz';
+const $=s=>document.querySelector(s);
+const STATUS={good:['Güncel','good'],warn:['Gecikmede','warn'],bad:['Ciddi gecikme','bad']};
+
+async function sha(str){ return new Uint8Array(await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str))); }
+const hex=b=>Array.from(b).map(x=>x.toString(16).padStart(2,'0')).join('');
+async function decryptFor(token, units){
+  const id = hex(await sha('id:'+token)).slice(0,24);
+  const blob = units[id]; if(!blob) return null;
+  const raw = Uint8Array.from(atob(blob), c=>c.charCodeAt(0));
+  const key = await crypto.subtle.importKey('raw', await sha('ustatahir-v1:'+token), 'AES-GCM', false, ['decrypt']);
+  const pt = await crypto.subtle.decrypt({name:'AES-GCM', iv: raw.slice(0,12)}, key, raw.slice(12));
+  return JSON.parse(new TextDecoder().decode(pt));
+}
+
+function copyBtn(text, label){ return `<button class="btn" data-copy="${esc(text)}">${label||'Kopyala'}</button>`; }
+document.addEventListener('click', async e=>{
+  const b=e.target.closest('[data-copy]'); if(!b) return;
+  const old=b.textContent;
+  try{ await navigator.clipboard.writeText(b.dataset.copy); b.textContent='Kopyalandı'; }
+  catch(_){ const r=document.createRange(); const c=b.parentElement.querySelector('code'); if(c){ r.selectNodeContents(c); const s=getSelection(); s.removeAllRanges(); s.addRange(r);} b.textContent='Seçildi, kopyalayın'; }
+  setTimeout(()=>{b.textContent=old},1800);
+});
+
+function mineHtml(u, pub){
+  const st = u.overdue<=0 ? 'good' : (u.behind>=3?'bad':'warn');
+  const items = u.items.slice().reverse();
+  return `<section class="card">
+    <div class="sec-h"><h2>Daireniz</h2><span class="sub">${pub.year} · ${fd(pub.updated)} itibarıyla</span></div>
+    <div class="mine-top"><span class="plate">${esc(u.blok)} <i>·</i> ${esc(u.no)}</span>
+      <div><div class="sub">Gecikmiş aidat borcu</div><div class="big num" style="color:var(--${u.overdue>0?'bad':'good'})">${u.overdue>0?TL(u.overdue):'Borcunuz yok'}</div></div>
+      <span class="pill ${STATUS[st][1]}" style="margin-left:auto">${STATUS[st][0]}${u.behind>0?' · '+u.behind+' ay':''}</span></div>
+    <div class="stat3">
+      <div><small>Aylık aidat</small><b class="num">${TL(u.aidat)}</b></div>
+      <div><small>Bu yıl ödenen</small><b class="num">${TL(u.paid)}</b></div>
+      <div><small>Yıllık toplam${u.extra?' (ek dahil)':''}</small><b class="num">${TL(u.annual)}</b></div>
+    </div>
+    ${u.fee>0?`<p class="sub" style="margin:12px 0 0">Kat Mülkiyeti Kanunu 20. madde gereği geciken ödemelere aylık %${esc(pub.feeRate)} gecikme tazminatı uygulanır. Bugüne kadar işleyen tutar: <b class="num">${TL(u.fee)}</b>.</p>`:''}
+    <div class="months">${u.ms.map((s,i)=>`<div class="mcell ${s==='f'?'':s}"><b>${AYK[i]}</b>${s==='p'?'Ödendi':s==='k'?'Kısmi':s==='l'?'Gecikti':'—'}</div>`).join('')}</div>
+    <h3 style="font-size:16px;margin:18px 0 4px">Hareketler</h3>
+    <div class="list">${items.map(it=>`<div class="row"><div class="grow"><div class="t">${esc(it.desc)||({odeme:'Ödeme',borc:'Ek borç',indirim:'İndirim'})[it.type]}</div><div class="s">${fd(it.date)}${it.type==='odeme'&&it.method?' · '+esc(it.method):''}${it.type==='borc'?' · eklenen borç':it.type==='indirim'?' · indirim':''}</div></div>
+      <span class="amt num ${it.type==='borc'?'bad':it.type==='indirim'?'good':''}">${it.type==='borc'?'+ ':it.type==='indirim'?'− ':''}${TL(it.amount)}</span></div>`).join('') || '<div class="empty">Bu yıl kayıt yok.</div>'}</div>
+    ${pub.iban?`<p class="sub" style="margin:14px 0 6px">Havale yaparken açıklamaya <b>DAİRE ${esc(u.kod)} AİDAT</b> yazın.</p><div class="iban"><code>${esc(pub.iban)}</code>${copyBtn(pub.iban.replace(/\s/g,''),'IBAN kopyala')}</div>`:''}
+  </section>`;
+}
+
+function pubHtml(p){
+  const rate = p.due>0 ? Math.round(p.paid/p.due*100) : 100;
+  const cats = Object.entries(p.expByCat||{}).sort((a,b)=>b[1]-a[1]);
+  const maxC = Math.max(1, ...cats.map(c=>c[1]));
+  const maxM = Math.max(1, ...p.expByMonth);
+  return `
+  <section class="kpis">
+    <div class="kpi"><span class="l">Toplanan aidat</span><span class="v num">${TL0(p.paid)}</span><span class="f">${p.year} yılında</span></div>
+    <div class="kpi"><span class="l">Harcanan</span><span class="v num">${TL0(p.expTotal)}</span><span class="f">site giderleri</span></div>
+    <div class="kpi"><span class="l">Tahsilat oranı</span><span class="v num">%${rate}</span><span class="f">vadesi gelen ${p.md} aya göre</span></div>
+    <div class="kpi"><span class="l">Borcu olan daire</span><span class="v num">${p.debtors}</span><span class="f">toplam ${p.n} daireden</span></div>
+  </section>
+  ${p.announcements && p.announcements.length ? `<section class="card"><div class="sec-h"><h2>Duyurular</h2></div>${p.announcements.slice().reverse().map(a=>`<div class="ann"><div class="d">${fd(a.date)}</div><b>${esc(a.title)}</b>${a.text?`<p>${esc(a.text)}</p>`:''}</div>`).join('')}</section>` : ''}
+  <div class="grid2">
+    <section class="card"><div class="sec-h"><h2>Paralar nereye harcandı?</h2><span class="sub">${p.year}</span></div>
+      ${cats.map(([k,v])=>`<div class="cat"><span>${esc(k)}</span><span class="num sub" style="color:var(--ink)">${TL0(v)} · ${v/p.expTotal<0.01?'%1’den az':'%'+Math.round(v/p.expTotal*100)}</span><div class="bar"><span style="width:${(v/maxC*100).toFixed(0)}%"></span></div></div>`).join('') || '<div class="empty">Gider kaydı yok.</div>'}
+    </section>
+    <section class="card"><div class="sec-h"><h2>Aylık giderler</h2><span class="sub">bin TL</span></div>
+      <div class="bars">${p.expByMonth.map((v,i)=>`<div class="bar2${v?'':' future'}" style="height:${Math.max(2,v/maxM*100)}%" title="${AY[i]}: ${TL(v)}"><b class="num">${v?Math.round(v/1000):''}</b></div>`).join('')}</div>
+      <div class="barlbl">${AYK.map(a=>`<span>${a}</span>`).join('')}</div>
+      <div class="sec-h" style="margin-top:20px"><h2 style="font-size:16px">Aidatını ödeyen daire</h2><span class="sub">${p.n} daire</span></div>
+      <div class="bars" style="height:110px">${p.monthPaid.map((v,i)=>`<div class="bar2${i>=p.md?' future':''}" style="height:${Math.max(2,v/p.n*100)}%"><b class="num">${v}</b></div>`).join('')}</div>
+      <div class="barlbl">${AYK.map(a=>`<span>${a}</span>`).join('')}</div>
+    </section>
+  </div>
+  <section class="card"><div class="sec-h"><h2>Aidat ödeme bilgileri</h2></div>
+    <p style="margin:0 0 10px">Aylık aidat <b class="num">${TL(p.aidat)}</b>. Son ödeme günü her ayın <b>${esc(p.dueDay)}</b>'u.</p>
+    ${p.iban?`<div class="iban"><code>${esc(p.iban)}</code>${copyBtn(p.iban.replace(/\s/g,''),'IBAN kopyala')}</div>${p.ibanName?`<p class="sub" style="margin:8px 0 0">Alıcı: ${esc(p.ibanName)}</p>`:''}<p class="sub" style="margin:8px 0 0">Havale açıklamasına blok ve daire numaranızı yazın (ör. DAİRE A1-05 AİDAT). Nakit ödemeler için yönetimle görüşebilirsiniz.</p>`:'<p class="sub" style="margin:0">Ödeme bilgileri için site yönetimiyle görüşebilirsiniz.</p>'}
+  </section>`;
+}
+
+async function boot(){
+  let d;
+  try{ const r = await fetch('data.json', {cache:'no-store'}); if(!r.ok) throw 0; d = await r.json(); }
+  catch(e){ $('#pub').innerHTML='<div class="card notice err">Pano verisi okunamadı. Biraz sonra tekrar deneyin.</div>'; $('#meta').textContent='Site panosu'; return; }
+  const p = d.pub;
+  $('#site').textContent = p.site; $('#meta').textContent = p.year+' site panosu · son güncelleme '+fd(p.updated);
+  $('#pub').innerHTML = pubHtml(p); $('#pub').style.display='contents';
+  const tok = (location.hash||'').replace(/^#/,'').trim();
+  if (tok){
+    try { const u = await decryptFor(tok, d.units);
+      $('#mine').innerHTML = u ? mineHtml(u,p) : '<div class="notice err">Bu kişisel link geçerli değil. Site yönetiminden güncel linkinizi isteyin.</div>'; }
+    catch(e){ $('#mine').innerHTML = '<div class="notice err">Kişisel bilgileriniz açılamadı. Linkin tamamını kopyaladığınızdan emin olun.</div>'; }
+  } else {
+    $('#mine').innerHTML = '<div class="notice">Kendi dairenizin borç ve ödemelerini görmek için site yönetiminden aldığınız <b>kişisel linki</b> açın. Bu sayfada isim ve kişisel borç bilgisi yer almaz.</div>';
+  }
+  $('#foot').textContent = 'Bu sayfa site yönetimi tarafından ayda bir güncellenir. Kişisel bilgiler yalnızca size özel linkle, şifreli olarak açılır.';
+}
+window.addEventListener('hashchange', ()=>location.reload());
+boot();
+})();
+</script>
+
+</body>
+</html>
