@@ -13,6 +13,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Ustatahir">
 <link rel="preload" as="image" href="img/site-giris.jpg" media="(max-aspect-ratio: 5/4)">
+<link rel="preload" as="image" href="img/giris-manzara.jpg" media="(min-aspect-ratio: 5/4)">
 <title>Ustatahir Konutları</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -424,13 +425,17 @@ body:not(.loginbg) .themetog{display:none}
 :root[data-theme="light"] body.loginbg .credit img{filter:invert(1) brightness(.25)}
 :root[data-theme="light"] body.loginbg .credit span{color:#1d2b30}
 :root[data-theme="light"] body.loginbg .credit{background:rgba(255,255,255,.72);border-radius:12px;padding:8px 14px;width:max-content;opacity:.9}
-/* giriş: geniş ekranlarda canlı sahne (sahne.js) */
-#sahne{position:fixed;inset:0;width:100vw;height:100vh;z-index:-1;display:none;pointer-events:none}
+/* giriş: geniş ekranlarda manzara fotoğrafı; giriş kutusu solda, denizin üstünde */
 @media (min-aspect-ratio: 5/4){
-  body.loginbg #sahne{display:block}
-  body.loginbg .credit{position:fixed;left:50%;bottom:14px;transform:translateX(-50%);margin:0;background:rgba(10,20,26,.35);border-radius:12px;padding:8px 14px}
-  :root[data-theme="light"] body.loginbg .credit{background:rgba(255,255,255,.72)}
-  body.loginbg::before,body.loginbg::after,:root[data-theme="light"] body.loginbg::before,:root[data-theme="light"] body.loginbg::after{display:none!important}
+  body.loginbg::before{display:block!important;background:linear-gradient(90deg,rgba(8,18,28,.55) 0%,rgba(8,18,28,.25) 38%,rgba(8,18,28,0) 60%),linear-gradient(180deg,rgba(8,18,28,.15) 0%,rgba(8,18,28,0) 40%,rgba(8,18,28,.35) 100%),url(img/giris-manzara.jpg) center 60%/cover no-repeat!important}
+  :root[data-theme="light"] body.loginbg::before{background:linear-gradient(90deg,rgba(235,242,246,.35) 0%,rgba(235,242,246,.1) 38%,rgba(235,242,246,0) 60%),url(img/giris-manzara.jpg) center 60%/cover no-repeat!important;filter:brightness(1.12) saturate(1.05)}
+  body.loginbg::after{display:none!important}
+  body.loginbg .login{margin:9vh auto 0 max(6vw,32px)}
+  body.loginbg .pwaslot{margin:14px auto 0 max(6vw,32px)}
+  body.loginbg .credit{position:fixed;left:auto;right:28px;bottom:22px;transform:none;margin:0}
+  body.loginbg main{max-width:none}
+  :root[data-theme="light"] body.loginbg .credit img.ld{display:none!important}
+  :root[data-theme="light"] body.loginbg .credit img.lw{display:block!important}
 }
 /* MAP logosu: şeffaf PNG, kutusuz */
 body.loginbg .credit,:root[data-theme="light"] body.loginbg .credit{background:none!important;padding:0!important;border-radius:0;opacity:.92;width:auto}
@@ -443,7 +448,6 @@ body.loginbg .credit img.ld{display:none}
 <style>body{margin:0}[hidden]{display:none!important}:root{padding-top:env(safe-area-inset-top,0px)}</style>
 </head>
 <body>
-<canvas id="sahne" aria-hidden="true"></canvas>
 
 
 <div class="shell">
@@ -2434,6 +2438,5 @@ boot();
 })();
 </script>
 
-<script src="sahne.js" defer></script>
 </body>
 </html>
