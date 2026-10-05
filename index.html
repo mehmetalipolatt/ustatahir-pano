@@ -12,7 +12,8 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Ustatahir">
-<link rel="preload" as="image" href="img/site-giris.jpg">
+<link rel="preload" as="image" href="img/site-giris.jpg" media="(max-aspect-ratio: 5/4)">
+<link rel="preload" as="image" href="img/site-giris-genis.jpg" media="(min-aspect-ratio: 5/4)">
 <title>Ustatahir Konutları</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -343,6 +344,14 @@ body:not(.loginbg) .credit{display:none}
   .gst{flex-direction:row;align-items:baseline;flex-wrap:wrap;column-gap:8px}
   .gst .l{flex:1 1 auto} .gst b{order:3;margin-left:auto} .gst .s{order:2;flex-basis:100%;order:4}
 }
+/* giriş: geniş ekranlarda sitenin göründüğü yatay kırpım */
+@media (min-aspect-ratio: 5/4){
+  body.loginbg::before{background:linear-gradient(180deg,rgba(12,28,34,.55) 0%,rgba(12,28,34,.3) 40%,rgba(12,28,34,.15) 70%,rgba(12,28,34,.55) 100%),url(img/site-giris-genis.jpg) center 85%/cover no-repeat}
+}
+body.loginbg .pwaslot{max-width:440px;margin:14px auto 0}
+body.loginbg .pwaslot .pwacard{background:rgba(255,255,255,.9);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);box-shadow:0 12px 30px rgba(0,0,0,.3)}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) body.loginbg .pwaslot .pwacard{background:rgba(22,33,37,.88)}}
+:root[data-theme="dark"] body.loginbg .pwaslot .pwacard{background:rgba(22,33,37,.88)}
 </style>
 <style>body{margin:0}[hidden]{display:none!important}:root{padding-top:env(safe-area-inset-top,0px)}</style>
 </head>
