@@ -13,8 +13,6 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Ustatahir">
 <link rel="preload" as="image" href="img/site-giris.jpg" media="(max-aspect-ratio: 5/4)">
-<link rel="preload" as="image" href="img/site-giris-genis.jpg" media="(min-aspect-ratio: 5/4)">
-<link rel="preload" as="image" href="img/site-giris-bulanik.jpg" media="(min-aspect-ratio: 5/4)">
 <title>Ustatahir Konutları</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -426,10 +424,19 @@ body:not(.loginbg) .themetog{display:none}
 :root[data-theme="light"] body.loginbg .credit img{filter:invert(1) brightness(.25)}
 :root[data-theme="light"] body.loginbg .credit span{color:#1d2b30}
 :root[data-theme="light"] body.loginbg .credit{background:rgba(255,255,255,.72);border-radius:12px;padding:8px 14px;width:max-content;opacity:.9}
+/* giriş: geniş ekranlarda canlı sahne (sahne.js) */
+#sahne{position:fixed;inset:0;width:100vw;height:100vh;z-index:-1;display:none;pointer-events:none}
+@media (min-aspect-ratio: 5/4){
+  body.loginbg #sahne{display:block}
+  body.loginbg .credit{position:fixed;left:50%;bottom:14px;transform:translateX(-50%);margin:0;background:rgba(10,20,26,.35);border-radius:12px;padding:8px 14px}
+  :root[data-theme="light"] body.loginbg .credit{background:rgba(255,255,255,.72)}
+  body.loginbg::before,body.loginbg::after,:root[data-theme="light"] body.loginbg::before,:root[data-theme="light"] body.loginbg::after{display:none!important}
+}
 </style>
 <style>body{margin:0}[hidden]{display:none!important}:root{padding-top:env(safe-area-inset-top,0px)}</style>
 </head>
 <body>
+<canvas id="sahne" aria-hidden="true"></canvas>
 
 
 <div class="shell">
@@ -2420,5 +2427,6 @@ boot();
 })();
 </script>
 
+<script src="sahne.js" defer></script>
 </body>
 </html>
