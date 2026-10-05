@@ -1,7 +1,7 @@
 // Ustatahir Konutları: çevrimdışı açılış için basit önbellek.
 // Önce ağdan alır (her zaman en güncel sürüm), ağ yoksa son kaydedilen sürümü gösterir.
 // Yalnızca bu sitenin kendi dosyaları önbelleğe alınır; Firebase verileri hiç önbelleğe girmez.
-const CACHE = 'ustatahir-v6';
+const CACHE = 'ustatahir-v7';
 const CORE = ['./', './index.html', './sahne.js', './manifest.webmanifest', './img/icon-192.png', './img/site-giris.jpg', './img/site-giris-genis.jpg', './img/site-giris-bulanik.jpg', './img/site-baslik.jpg'];
 
 self.addEventListener('install', e => {

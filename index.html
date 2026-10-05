@@ -432,6 +432,13 @@ body:not(.loginbg) .themetog{display:none}
   :root[data-theme="light"] body.loginbg .credit{background:rgba(255,255,255,.72)}
   body.loginbg::before,body.loginbg::after,:root[data-theme="light"] body.loginbg::before,:root[data-theme="light"] body.loginbg::after{display:none!important}
 }
+/* MAP logosu: şeffaf PNG, kutusuz */
+body.loginbg .credit,:root[data-theme="light"] body.loginbg .credit{background:none!important;padding:0!important;border-radius:0;opacity:.92;width:auto}
+body.loginbg .credit img{width:120px;height:auto;filter:drop-shadow(0 1px 6px rgba(0,0,0,.45))}
+body.loginbg .credit img.ld{display:none}
+:root[data-theme="light"] body.loginbg .credit img.lw{display:none}
+:root[data-theme="light"] body.loginbg .credit img.ld{display:block;filter:drop-shadow(0 1px 6px rgba(255,255,255,.7))}
+@media (min-aspect-ratio: 5/4){body.loginbg .credit{bottom:18px}}
 </style>
 <style>body{margin:0}[hidden]{display:none!important}:root{padding-top:env(safe-area-inset-top,0px)}</style>
 </head>
@@ -2001,7 +2008,7 @@ function showLogin(msg){
     </form>
   </section>
   <div class="pwaslot">${pwaCardHtml()}</div>
-  <div class="credit" aria-hidden="true"><img src="img/logo-beyaz.png" alt=""><span>Software &amp; Design</span></div>`;
+  <div class="credit" aria-hidden="true"><img class="lw" src="img/logo-site-beyaz.png" alt=""><img class="ld" src="img/logo-site-siyah.png" alt=""></div>`;
 }
 async function doLogin(){
   const u = $('#lgUser').value.trim(), p = $('#lgPass').value;
