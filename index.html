@@ -14,6 +14,7 @@
 <meta name="apple-mobile-web-app-title" content="Ustatahir">
 <link rel="preload" as="image" href="img/site-giris.jpg" media="(max-aspect-ratio: 5/4)">
 <link rel="preload" as="image" href="img/site-giris-genis.jpg" media="(min-aspect-ratio: 5/4)">
+<link rel="preload" as="image" href="img/site-giris-bulanik.jpg" media="(min-aspect-ratio: 5/4)">
 <title>Ustatahir Konutları</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -344,9 +345,13 @@ body:not(.loginbg) .credit{display:none}
   .gst{flex-direction:row;align-items:baseline;flex-wrap:wrap;column-gap:8px}
   .gst .l{flex:1 1 auto} .gst b{order:3;margin-left:auto} .gst .s{order:2;flex-basis:100%;order:4}
 }
-/* giriş: geniş ekranlarda sitenin göründüğü yatay kırpım */
+/* giriş: geniş ekranlarda fotoğraf büyütülmeden, tam yükseklikte ve net gösterilir; kenarlar bulanık zeminle tamamlanır */
 @media (min-aspect-ratio: 5/4){
-  body.loginbg::before{background:linear-gradient(180deg,rgba(12,28,34,.55) 0%,rgba(12,28,34,.3) 40%,rgba(12,28,34,.15) 70%,rgba(12,28,34,.55) 100%),url(img/site-giris-genis.jpg) center 85%/cover no-repeat}
+  body.loginbg::before{background:linear-gradient(180deg,rgba(12,28,34,.35),rgba(12,28,34,.55)),url(img/site-giris-bulanik.jpg) center/cover no-repeat}
+  body.loginbg::after{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
+    background:linear-gradient(180deg,rgba(12,28,34,.5) 0%,rgba(12,28,34,.2) 35%,rgba(12,28,34,.1) 70%,rgba(12,28,34,.45) 100%),url(img/site-giris-genis.jpg) center bottom/auto 100% no-repeat;
+    -webkit-mask-image:linear-gradient(90deg,transparent calc(50% - 75vh),#000 calc(50% - 60vh),#000 calc(50% + 60vh),transparent calc(50% + 75vh));
+            mask-image:linear-gradient(90deg,transparent calc(50% - 75vh),#000 calc(50% - 60vh),#000 calc(50% + 60vh),transparent calc(50% + 75vh))}
 }
 body.loginbg .pwaslot{max-width:440px;margin:14px auto 0}
 body.loginbg .pwaslot .pwacard{background:rgba(255,255,255,.9);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);box-shadow:0 12px 30px rgba(0,0,0,.3)}
