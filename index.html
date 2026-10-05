@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="robots" content="noindex">
 <meta name="theme-color" content="#1f3a45">
+<link rel="preload" as="image" href="img/site-giris.jpg">
 <title>Ustatahir Konutları</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -215,6 +216,20 @@ body.loginbg{background:radial-gradient(1200px 600px at 50% -10%,var(--accent-so
 .ractions .btn{flex-direction:column;gap:4px;padding:12px 8px;font-size:13px}
 .ractions .btn svg{width:22px;height:22px;color:var(--accent)}
 @media (prefers-reduced-motion:no-preference){.card,.kpi{transition:transform .15s} .tile:hover{transform:translateY(-1px)}}
+
+
+/* ---- site fotoğrafı ---- */
+body.loginbg{background:#10242b}
+body.loginbg::before{content:"";position:fixed;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(12,28,34,.35) 0%,rgba(12,28,34,.55) 45%,rgba(12,28,34,.9) 100%),url(img/site-giris.jpg) center 30%/cover no-repeat}
+body.loginbg .login{background:rgba(255,255,255,.9);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border-color:rgba(255,255,255,.4);box-shadow:0 20px 50px rgba(0,0,0,.35)}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) body.loginbg .login{background:rgba(22,33,37,.88);border-color:rgba(255,255,255,.08)}}
+:root[data-theme="dark"] body.loginbg .login{background:rgba(22,33,37,.88);border-color:rgba(255,255,255,.08)}
+body.loginbg .login .rbanner{background:transparent!important;box-shadow:none;padding:6px 2px 0;color:var(--ink)}
+body.loginbg .login .rbanner h1{color:var(--ink);font-size:clamp(26px,7vw,32px)}
+body.loginbg .login .rbanner p{color:var(--muted)}
+.hero,.rbanner{background:linear-gradient(100deg,rgba(16,36,43,.94) 0%,rgba(16,36,43,.78) 45%,rgba(16,36,43,.45) 100%),url(img/site-baslik.jpg) center 55%/cover no-repeat!important}
+.hero .skyline,.rbanner .skyline{opacity:.95;filter:drop-shadow(0 2px 6px rgba(0,0,0,.35))}
+.photo-credit{font-size:11px;color:rgba(255,255,255,.6);margin-top:4px}
 
 /* ---- sakin görünümü ---- */
 @media (min-width:700px){.kpis.kpis3{grid-template-columns:repeat(3,minmax(0,1fr))}}
@@ -1712,7 +1727,7 @@ function showLogin(msg){
   MODE = 'login'; document.body.classList.add('resident', 'loginbg');
   $('#view').innerHTML = `
   <section class="card login">
-    <div class="rbanner" style="border-radius:12px"><h1>Ustatahir Konutları</h1><p>Aidat ve site giderleri</p>${skylineSvg({tone: 'light'})}</div>
+    <div class="rbanner" style="border-radius:12px"><span class="brandmark" style="margin-bottom:10px" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8"><rect x="3" y="8" width="7" height="13" rx="1"/><rect x="14" y="4" width="7" height="17" rx="1"/><path d="M6 12h1M6 16h1M17 8h1M17 12h1M17 16h1"/></svg></span><h1>Ustatahir Konutları</h1><p>Aidat, ödeme ve site giderleri</p></div>
     <form id="loginForm" style="display:flex;flex-direction:column;gap:12px" novalidate>
       <div class="field"><label for="lgUser">Kullanıcı adı</label><input id="lgUser" autocomplete="username" autocapitalize="characters" placeholder="ör. A1-05" required></div>
       <div class="field"><label for="lgPass">Şifre</label><input id="lgPass" type="password" autocomplete="current-password" required></div>
