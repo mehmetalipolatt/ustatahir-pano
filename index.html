@@ -5,6 +5,13 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="robots" content="noindex">
 <meta name="theme-color" content="#1f3a45">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" href="img/favicon.png">
+<link rel="apple-touch-icon" href="img/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Ustatahir">
 <link rel="preload" as="image" href="img/site-giris.jpg">
 <title>Ustatahir Konutları</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -257,6 +264,24 @@ body.resident main{grid-column:1;max-width:860px;padding-bottom:48px}
 .rnote.err{background:var(--bad-bg);color:var(--bad);font-weight:600}
 #ekstre-render{position:fixed;left:-10000px;top:0;width:794px;background:#fff;color:#16232b;font-family:"IBM Plex Sans",Arial,sans-serif}
 @media (prefers-reduced-motion:no-preference){.tile,.btn,.chip{transition:box-shadow .15s,background .15s}}
+.pwacard{display:flex;gap:14px;align-items:flex-start}
+.pwacard b{font-size:15px}
+.credit{display:flex;flex-direction:column;align-items:center;gap:4px;margin:22px auto 8px;opacity:.75}
+.credit img{width:74px;height:auto}
+.credit span{font-size:9px;letter-spacing:.32em;color:#fff;text-transform:uppercase}
+body:not(.loginbg) .credit{display:none}
+.cmptbl{width:100%;border-collapse:collapse;font-size:14px}
+@media (max-width:480px){.cmptbl{font-size:12.5px}}
+.cmptbl th,.cmptbl td{padding:8px 4px;border-bottom:1px solid var(--line);text-align:left}
+.cmptbl .num{text-align:right;white-space:nowrap}
+.cmptbl th{font-size:12px;color:var(--muted);font-weight:600}
+.cmpleg{display:flex;gap:16px;font-size:12px;color:var(--muted)}
+.cmpleg i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:6px;vertical-align:-1px}
+.cmpbars{display:flex;flex-direction:column;gap:12px}
+.cmprow{display:flex;flex-direction:column;gap:4px}
+.cmplbl{display:flex;justify-content:space-between;gap:8px;font-size:13px}
+.cmpbar{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;align-items:center;font-size:12px;color:var(--muted)}
+.cmpbar b{display:block;height:8px;border-radius:4px;min-width:2px}
 </style>
 <style>body{margin:0}[hidden]{display:none!important}:root{padding-top:env(safe-area-inset-top,0px)}</style>
 </head>
@@ -654,6 +679,7 @@ function vAyarlar(){
     <p style="margin:0">${S.year} yılının tahsilat, gelir-gider, kasa ve gecikmiş alacak dökümü. Genel kurulda dağıtmak için uygundur; daireler isimsiz listelenir.</p>
     <div class="actions"><button class="btn primary" data-act="report">Genel kurul raporu (PDF)</button><button class="btn" data-act="xlsx">${S.year} Excel olarak indir</button></div>
   </section>
+  ${cmpCard()}
   ${residentCard()}
   ${remindersCard()}
   ${budgetCard()}
@@ -1642,6 +1668,9 @@ document.addEventListener('click', async ev => {
     case 'doSplit': doSplit(); break;
     case 'bulkPdf': bulkPdf(t.dataset.scope); break;
     case 'report': reportPdf(); break;
+    case 'cmpLoad': cmpLoad(); break;
+    case 'pwaInstall': pwaInstall(); break;
+    case 'pwaHide': pwaHide(); break;
     case 'addAnn': addAnnouncement(); break;
     case 'rcpt': receiptPdf(t.dataset.kod, t.dataset.id); break;
     case 'addRem': addReminder(); break;
@@ -1735,7 +1764,9 @@ function showLogin(msg){
       <button class="btn primary" type="submit" id="lgBtn">Giriş yap</button>
       <p class="hint" style="margin:0">Kullanıcı adınız blok ve daire numaranızdır (ör. A1-05). Şifrenizi site yönetiminden alabilirsiniz. Şifrenizi unuttuysanız yönetime başvurun.</p>
     </form>
-  </section>`;
+  </section>
+  <div class="pwaslot">${pwaCardHtml()}</div>
+  <div class="credit" aria-hidden="true"><img src="img/logo-beyaz.png" alt=""><span>Software &amp; Design</span></div>`;
 }
 async function doLogin(){
   const u = $('#lgUser').value.trim(), p = $('#lgPass').value;
@@ -1937,6 +1968,7 @@ function residentPage(kod, preview){
       <button class="btn" data-act="rReq">${ic('<path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.5 2.5-2.4-.6-.6-2.4z"/>')}Arıza / talep</button>
       <button class="btn" data-act="rPdf">${ic('<path d="M6 3h9l4 4v14H6z"/><path d="M14 3v5h5"/><path d="M9 13h6M9 17h6"/>')}Ekstre (PDF)</button>
       <button class="btn" data-act="chpw">${ic('<rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/>')}Şifre değiştir</button></section>`}
+    ${preview ? '' : '<div class="pwaslot">' + pwaCardHtml() + '</div>'}
     ${residentMineHtml(kod)}${preview ? '' : residentExtrasHtml(kod)}${residentPubHtml(preview ? null : R.summary)}
     <p class="sub" style="text-align:center">Yalnızca ${multi ? 'size bağlı dairelerin' : 'kendi dairenizin'} bilgilerini görebilirsiniz. Sorularınız için site yönetimiyle iletişime geçin.</p>`;
 }
@@ -1999,6 +2031,113 @@ async function saveChpw(){
 }
 document.addEventListener('click', async e => { const b = e.target.closest('[data-rcopy]'); if (!b) return; const o = b.textContent; try { await navigator.clipboard.writeText(b.dataset.rcopy); b.textContent='Kopyalandı'; } catch(_){ const c = b.parentElement.querySelector('code'); const r = document.createRange(); r.selectNodeContents(c); const sel = getSelection(); sel.removeAllRanges(); sel.addRange(r); b.textContent='Seçildi, kopyalayın'; } setTimeout(()=>{b.textContent=o},1800); });
 document.addEventListener('submit', e => { if (e.target.id === 'loginForm'){ e.preventDefault(); doLogin(); } });
+
+/* ---------- telefona kurulum (ana ekrana ekle) ---------- */
+let pwaPrompt = null;
+const PWA_KEY = 'ustatahir-pwa-gizle';
+function pwaStandalone(){ try { return matchMedia('(display-mode: standalone)').matches || navigator.standalone === true; } catch(e){ return false; } }
+function pwaIOS(){ const ua = navigator.userAgent || ''; return /iphone|ipad|ipod/i.test(ua) || (/Macintosh/.test(ua) && navigator.maxTouchPoints > 1); }
+function pwaHidden(){ try { return localStorage.getItem(PWA_KEY) === '1'; } catch(e){ return false; } }
+function pwaCardHtml(){
+  if (pwaStandalone() || pwaHidden()) return '';
+  const ios = pwaIOS();
+  if (!pwaPrompt && !ios) return '';
+  const icon = '<img src="img/icon-192.png" alt="" width="44" height="44" style="border-radius:11px;flex:none">';
+  return `<section class="card pwacard">${icon}<div style="flex:1;min-width:0"><b>Telefonunuza uygulama olarak ekleyin</b>
+    <p class="sub" style="margin:4px 0 0">${pwaPrompt ? 'Ana ekranınızda simgesiyle açılır, adres yazmanız gerekmez.'
+      : 'Safari\'de alttaki <b>Paylaş</b> düğmesine (kare ve yukarı ok), sonra <b>Ana Ekrana Ekle</b>\'ye dokunun.'}</p>
+    <div class="actions" style="margin-top:10px">${pwaPrompt ? '<button class="btn small primary" data-act="pwaInstall">Ana ekrana ekle</button>' : ''}<button class="btn small" data-act="pwaHide">Gösterme</button></div></div></section>`;
+}
+function pwaRefresh(){ document.querySelectorAll('.pwaslot').forEach(el => { el.innerHTML = pwaCardHtml(); }); }
+window.addEventListener('beforeinstallprompt', e => { e.preventDefault(); pwaPrompt = e; pwaRefresh(); });
+window.addEventListener('appinstalled', () => { pwaPrompt = null; pwaRefresh(); });
+async function pwaInstall(){
+  if (!pwaPrompt) return;
+  const p = pwaPrompt; pwaPrompt = null;
+  try { p.prompt(); const r = await p.userChoice; if (r && r.outcome === 'accepted') toast('Uygulama ana ekranınıza eklendi'); } catch(e){}
+  pwaRefresh();
+}
+function pwaHide(){ try { localStorage.setItem(PWA_KEY, '1'); } catch(e){} pwaRefresh(); }
+if ('serviceWorker' in navigator && location.protocol === 'https:') {
+  window.addEventListener('load', () => { navigator.serviceWorker.register('sw.js').catch(() => {}); });
+}
+
+/* ---------- geçen yılla karşılaştırma ---------- */
+const CMP = {year: null, state: 'idle', data: null};
+function cmpCutoff(y){
+  // Bu yıl için bugüne kadar, geçmiş bir yıl görüntüleniyorsa yılın tamamı
+  const now = new Date();
+  if (S.year < now.getFullYear()) return {md: '12-31', full: true};
+  const p = n => String(n).padStart(2, '0');
+  return {md: p(now.getMonth() + 1) + '-' + p(now.getDate()), full: false};
+}
+function cmpFigures(year, ledgers, exps, md){
+  const lim = year + '-' + md; const inRange = d => !d || d <= lim;
+  let tahsil = 0, tahsilAll = 0, units = 0, payers = 0;
+  for (const l of ledgers){
+    if (S.units[l.unit] && S.units[l.unit].active === false) continue;
+    units++; let any = false;
+    for (const it of (l.items || [])) if (it.type === 'odeme'){ tahsilAll += it.amount; if (inRange(it.date)){ tahsil += it.amount; any = true; } }
+    if (any) payers++;
+  }
+  const cat = {}; let gider = 0, giderAll = 0;
+  for (const d of exps) for (const it of (d.items || [])){
+    if (it.category === 'Borç Geri Ödemesi') continue;
+    giderAll += it.amount;
+    if (inRange(it.date)){ gider += it.amount; cat[it.category || 'Diğer'] = (cat[it.category || 'Diğer'] || 0) + it.amount; }
+  }
+  return {tahsil, tahsilAll, gider, giderAll, cat, units, payers, aidat: Number(yc(year).aidat || 0)};
+}
+async function cmpLoad(){
+  const py = S.year - 1; CMP.year = S.year; CMP.state = 'loading'; render();
+  try {
+    const [lq, eq] = await Promise.all([db.collection('ledger').where('year', '==', py).get(), db.collection('exp').where('year', '==', py).get()]);
+    CMP.data = {ledgers: lq.docs.map(d => d.data()), exps: eq.docs.map(d => d.data())};
+    CMP.state = 'ok';
+  } catch(e){ CMP.state = 'err'; }
+  if (CMP.year === S.year) render();
+}
+function cmpCard(){
+  const py = S.year - 1;
+  if (CMP.year !== S.year) { CMP.year = S.year; CMP.state = 'idle'; CMP.data = null; }
+  const head = `<h2>${py} ile ${S.year} karşılaştırması</h2>`;
+  if (CMP.state === 'idle') return `<section class="card" style="display:flex;flex-direction:column;gap:12px">${head}
+    <p style="margin:0">Tahsilatı, giderleri ve aidatı geçen yılın aynı dönemiyle yan yana koyar.</p>
+    <div class="actions"><button class="btn" data-act="cmpLoad">Karşılaştır</button></div></section>`;
+  if (CMP.state === 'loading') return `<section class="card">${head}<p class="sub" style="margin:8px 0 0">${py} kayıtları getiriliyor…</p></section>`;
+  if (CMP.state === 'err') return `<section class="card" style="display:flex;flex-direction:column;gap:12px">${head}<div class="err">${py} kayıtları okunamadı. İnternet bağlantısını kontrol edip tekrar dene.</div><div class="actions"><button class="btn" data-act="cmpLoad">Tekrar dene</button></div></section>`;
+  const D = CMP.data;
+  if (!D.ledgers.length && !D.exps.length) return `<section class="card" style="display:flex;flex-direction:column;gap:12px">${head}
+    <div class="notice">Sistemde ${py} yılına ait kayıt yok. Bu yılın kayıtları biriktikçe ${S.year + 1} yılından itibaren karşılaştırma burada otomatik çıkar.</div>
+    <div class="actions"><button class="btn small" data-act="cmpLoad">Yenile</button></div></section>`;
+  const cut = cmpCutoff();
+  const A = cmpFigures(py, D.ledgers, D.exps, cut.md);
+  const B = cmpFigures(S.year, Object.values(S.ledgers), Object.values(S.exps), cut.md);
+  const pct = (a, b) => { if (!a) return b ? '<span class="sub">yeni</span>' : '<span class="sub">–</span>';
+    const v = (b - a) / a * 100; const r = Math.round(v); return `<span class="num" style="color:var(--${r === 0 ? 'muted' : 'ink'})">${r > 0 ? '+' : ''}${r}%</span>`; };
+  const row = (lbl, a, b, o = {}) => { const f = o.fmt || (v => v ? TL(Math.round(v)) : (o.zero || TL(0)));
+    return `<tr><td>${lbl}</td><td class="num">${f(a, 0)}</td><td class="num">${f(b, 1)}</td><td class="num">${o.noPct ? '' : pct(o.pa != null ? o.pa : a, o.pb != null ? o.pb : b)}</td></tr>`; };
+  const cats = Array.from(new Set(Object.keys(A.cat).concat(Object.keys(B.cat)))).sort((x, y) => (B.cat[y] || 0) + (A.cat[y] || 0) - (B.cat[x] || 0) - (A.cat[x] || 0));
+  const max = Math.max(1, ...cats.map(c => Math.max(A.cat[c] || 0, B.cat[c] || 0)));
+  const dayTxt = cut.full ? 'yılın tamamı' : `1 Ocak – ${Number(cut.md.slice(3))} ${AY[Number(cut.md.slice(0, 2)) - 1]} arası`;
+  return `<section class="card" style="display:flex;flex-direction:column;gap:12px">${head}
+    <p class="sub" style="margin:0">Her iki yıl için ${dayTxt}. Borç geri ödemeleri gidere katılmaz.</p>
+    <div style="overflow-x:auto"><table class="cmptbl"><thead><tr><th></th><th class="num">${py}</th><th class="num">${S.year}</th><th class="num">Fark</th></tr></thead><tbody>
+      ${row('Aylık aidat', A.aidat, B.aidat, {zero: '–'})}
+      ${row('Toplanan aidat', A.tahsil, B.tahsil)}
+      ${row('Yapılan gider', A.gider, B.gider)}
+      ${row('Gelir − gider', A.tahsil - A.gider, B.tahsil - B.gider, {noPct: true, fmt: v => `<span style="color:var(--${v < 0 ? 'bad' : 'good'})">${TL(Math.round(v))}</span>`})}
+      ${row('Ödeme yapan daire', A.payers, B.payers, {fmt: (v, i) => esc(v + ' / ' + (i ? B.units : A.units))})}
+    </tbody></table></div>
+    ${!cut.full ? `<p class="sub" style="margin:0">${py} yılının tamamında ${TL(A.tahsilAll)} toplandı, ${TL(A.giderAll)} harcandı.</p>` : ''}
+    ${cats.length ? `<h3 style="margin:6px 0 0;font-size:15px">Gider kalemleri</h3>
+    <div class="cmpleg"><span><i style="background:var(--muted)"></i>${py}</span><span><i style="background:var(--accent)"></i>${S.year}</span></div>
+    <div class="cmpbars">${cats.map(c => `<div class="cmprow"><div class="cmplbl"><span>${esc(c)}</span>${pct(A.cat[c] || 0, B.cat[c] || 0)}</div>
+      <div class="cmpbar"><b style="width:${(A.cat[c] || 0) / max * 100}%;background:var(--muted)"></b><span class="num">${TL(A.cat[c] || 0)}</span></div>
+      <div class="cmpbar"><b style="width:${(B.cat[c] || 0) / max * 100}%;background:var(--accent)"></b><span class="num">${TL(B.cat[c] || 0)}</span></div></div>`).join('')}</div>` : ''}
+    <div class="actions"><button class="btn small" data-act="cmpLoad">Yenile</button></div>
+  </section>`;
+}
 
 /* ---------- data ---------- */
 function setYear(y){
