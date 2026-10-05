@@ -282,6 +282,67 @@ body:not(.loginbg) .credit{display:none}
 .cmplbl{display:flex;justify-content:space-between;gap:8px;font-size:13px}
 .cmpbar{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;align-items:center;font-size:12px;color:var(--muted)}
 .cmpbar b{display:block;height:8px;border-radius:4px;min-width:2px}
+/* --- yeni özet ekranı --- */
+.ozgrid{display:grid;grid-template-columns:minmax(0,1fr);gap:14px}
+@media (min-width:900px){.ozgrid{grid-template-columns:minmax(0,1.15fr) minmax(0,1fr)}}
+.hero.slim{padding:16px 18px 10px}
+.gauge{display:grid;grid-template-columns:auto minmax(0,1fr);gap:14px 18px;align-items:center;padding:18px}
+.ring{position:relative;width:118px;height:118px}
+.ring svg{width:100%;height:100%}
+.ring .trk{fill:none;stroke:var(--surface-2);stroke-width:12}
+.ring .val{fill:none;stroke-width:12;stroke-linecap:round;transition:stroke-dashoffset .6s ease}
+.ring .val.good{stroke:var(--good)} .ring .val.warn{stroke:var(--warn)} .ring .val.bad{stroke:var(--bad)}
+.ringtxt{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.ringtxt b{font-family:var(--f-display);font-size:28px;line-height:1}
+.ringtxt span{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-top:2px}
+.glbl{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.gbig{font-family:var(--f-display);font-weight:700;font-size:clamp(26px,6.5vw,36px);line-height:1.1;margin:2px 0 4px}
+.gmain .sub{font-size:12.5px}
+.gstats{grid-column:1/-1;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;border-top:1px solid var(--line);padding-top:14px}
+.gst{all:unset;cursor:pointer;display:flex;flex-direction:column;gap:2px;min-width:0;padding:8px 10px;border-radius:10px;background:var(--surface-2)}
+.gst:hover{background:var(--accent-soft)} .gst:focus-visible{outline:2px solid var(--accent)}
+.gst .l{font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.gst b{font-family:var(--f-display);font-size:clamp(15px,4vw,19px);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.gst b small{font-size:12px;color:var(--muted);font-weight:500}
+.gst .s{font-size:11px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.gst .bad{color:var(--bad)} .gst .good{color:var(--good)}
+.todo .list{gap:6px}
+.todo-row{all:unset;box-sizing:border-box;cursor:pointer;display:flex;align-items:center;gap:12px;padding:10px;border-radius:12px;background:var(--surface-2);width:100%}
+.todo-row:hover{background:var(--accent-soft)} .todo-row:focus-visible{outline:2px solid var(--accent)}
+.todo-row .grow{flex:1;min-width:0;display:flex;flex-direction:column}
+.todo-row .t{font-weight:600;font-size:14px}
+.todo-row .s{font-size:12px;color:var(--muted)}
+.todo-row .chev{width:18px;height:18px;color:var(--muted);flex:none}
+.ib{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex:none}
+.ib svg{width:19px;height:19px}
+.ib.accent{background:var(--accent-soft);color:var(--accent)} .ib.warn{background:var(--warn-bg);color:var(--warn)}
+.ib.bad{background:var(--bad-bg);color:var(--bad)} .ib.good{background:var(--good-bg);color:var(--good)}
+.allok{display:flex;gap:12px;align-items:center;padding:6px 0}
+.row.debt{border-left:4px solid var(--warn);padding-left:10px;margin-left:-2px}
+.row.debt.bad{border-left-color:var(--bad)}
+.row.debt .s{font-size:12px}
+.seg{display:flex;gap:4px;background:var(--surface-2);border-radius:10px;padding:4px;margin-bottom:12px}
+.seg button{all:unset;cursor:pointer;flex:1;text-align:center;padding:7px 0;border-radius:8px;font-weight:600;font-size:13px;color:var(--muted)}
+.seg button[aria-selected="true"]{background:var(--surface);color:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.1)}
+.seg button:focus-visible{outline:2px solid var(--accent)}
+.meter.good span{background:var(--good)} .meter.warn span{background:var(--warn)} .meter.bad span{background:var(--bad)}
+.fab svg{transition:transform .2s} .fab.open svg{transform:rotate(45deg)}
+.fabmenu{position:fixed;right:16px;bottom:calc(136px + env(safe-area-inset-bottom,0px));z-index:31;display:flex;flex-direction:column;align-items:flex-end;gap:10px}
+@media (min-width:900px){.fabmenu{bottom:84px;right:24px}}
+.fabmenu button{all:unset;cursor:pointer;display:flex;align-items:center;gap:10px}
+.fabmenu span{background:var(--surface);color:var(--ink);font-weight:600;font-size:14px;padding:7px 12px;border-radius:8px;box-shadow:var(--shadow)}
+.fabmenu i{width:46px;height:46px;border-radius:50%;background:var(--surface);color:var(--accent);display:flex;align-items:center;justify-content:center;box-shadow:var(--shadow)}
+.fabmenu i svg{width:21px;height:21px}
+.fabmenu button:hover i{background:var(--accent);color:var(--accent-ink)}
+.fabmenu button:focus-visible span{outline:2px solid var(--accent)}
+@media (min-width:900px){.ozgrid .gauge{order:-1}}
+@media (max-width:520px){
+  .gauge{grid-template-columns:auto minmax(0,1fr);gap:12px 14px;padding:16px}
+  .ring{width:96px;height:96px} .ringtxt b{font-size:23px}
+  .gstats{grid-template-columns:minmax(0,1fr);gap:6px}
+  .gst{flex-direction:row;align-items:baseline;flex-wrap:wrap;column-gap:8px}
+  .gst .l{flex:1 1 auto} .gst b{order:3;margin-left:auto} .gst .s{order:2;flex-basis:100%;order:4}
+}
 </style>
 <style>body{margin:0}[hidden]{display:none!important}:root{padding-top:env(safe-area-inset-top,0px)}</style>
 </head>
@@ -308,7 +369,12 @@ body:not(.loginbg) .credit{display:none}
     <div class="card empty" id="bootMsg">Veriler yükleniyor…</div>
   </main>
 </div>
-<button class="fab" id="fab" hidden><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 5v14M5 12h14"/></svg>Ödeme al</button>
+<button class="fab" id="fab" hidden><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 5v14M5 12h14"/></svg><span class="fabl">Ekle</span></button>
+<div class="fabmenu" id="fabMenu" hidden>
+  <button data-fab="odeme"><span>Ödeme al</span><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="6" width="20" height="13" rx="2"/><circle cx="12" cy="12.5" r="2.5"/></svg></i></button>
+  <button data-fab="gider"><span>Gider ekle</span><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M4 12h10M4 17h7"/><path d="M18 14v6M15 17h6"/></svg></i></button>
+  <button data-fab="duyuru"><span>Duyuru yaz</span><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11v2l13 5V6z"/><path d="M16 9a3 3 0 0 1 0 6"/></svg></i></button>
+</div>
 <div id="overlay" class="overlay" hidden></div>
 <div id="toast" class="toast" hidden></div>
 <div id="ekstre-render" aria-hidden="true"></div>
@@ -450,7 +516,7 @@ function expItems(){ const out = []; for (const d of Object.values(S.exps)) for 
 function setTabs(){
   const cur = S.view === 'daire' ? 'daireler' : S.view;
   document.querySelectorAll('.tab').forEach(b => b.setAttribute('aria-current', b.dataset.go === cur ? 'true':'false'));
-  $('#fab').hidden = !(S.got.u && S.got.s) || S.view === 'ayarlar' || S.view === 'giderler' || S.view === 'daire' || S.view === 'gelen';
+  $('#fab').hidden = !(S.got.u && S.got.s) || S.view === 'ayarlar' || S.view === 'daire' || S.view === 'gelen'; if ($('#fab').hidden) fabOpen(false);
   const bc = inboxCount(), bg = $('#gelenBadge'); if (bg){ bg.hidden = !bc; bg.textContent = bc; }
 }
 function header(){
@@ -480,60 +546,93 @@ function render(){
 
 function vOzet(){
   const t = totals(), md = monthsDue(S.year);
-  const rate = t.due > 0 ? Math.round(t.paid / t.due * 100) : 100;
+  const rate = t.due > 0 ? Math.min(100, Math.round(t.paid / t.due * 100)) : 100;
   const debtors = unitList().map(u=>({u, c:calc(u.kod)})).filter(x=>x.c.overdue>0).sort((a,b)=>b.c.overdue-a.c.overdue);
-  const maxBar = Math.max(1, t.n);
-  const bars = t.monthPaid.map((n,i)=>'<div class="bar'+(i>=md?' future':'')+'" style="height:'+Math.max(2, n/maxBar*100)+'%" title="'+AY[i]+': '+n+' daire"><b class="num">'+n+'</b></div>').join('');
-  const bloks = Object.keys(t.byBlok).sort();
-  const actionable = unitList().filter(u=>lateInfo(u.kod).step!=null).length;
-  const dr = dueReminders(), ib = inboxCount(), d0 = new Date();
-  return `
-  <section class="hero"><div><h1>${esc((S.settings && S.settings.siteName) || 'Ustatahir Konutları')}</h1><p>${d0.getDate()} ${AY[d0.getMonth()]} ${d0.getFullYear()} · ${S.year} yılı · vadesi gelen ${md} ay</p>
-    <div class="legend"><span><i style="background:var(--good)"></i>tahsilat %95+</span><span><i style="background:var(--warn)"></i>%75–95</span><span><i style="background:var(--bad)"></i>%75 altı</span></div></div>
-    ${skylineSvg({colors: blokColors(), tone: 'light'})}</section>
-  ${ib ? `<div class="banner" style="background:var(--accent-soft);color:var(--ink)"><span>${ib} yeni bildirim veya talep var</span><button class="btn small" data-go="gelen">Gelenlere git</button></div>` : ''}
-  ${dr.map(x => { const dd = daysTo(x.d); return `<div class="banner"><span>${esc(x.r.title)}: ${dd < 0 ? Math.abs(dd) + ' gün geçti' : dd === 0 ? 'bugün' : dd + ' gün kaldı'}</span><button class="btn small" data-go="ayarlar">Hatırlatmalar</button></div>`; }).join('')}
-  ${actionable ? `<div class="banner"><span>${actionable} daire için takip adımı zamanı geldi</span><button class="btn small" data-go="takip">Takibe git</button></div>` : ''}
-  <section class="kpis">
-    <div class="kpi"><span class="l">Toplam tahsilat</span><span class="v num">${TL(t.paid)}</span><span class="f">Yıllık hedef ${TL(t.annual)}</span></div>
-    <div class="kpi bad"><span class="l">Gecikmiş borç</span><span class="v num">${TL(t.overdue)}</span><span class="f">${t.warn+t.bad} dairede</span></div>
-    <div class="kpi"><span class="l">Tahsilat oranı</span><span class="v num">%${rate}</span><span class="f">Vadesi gelen ${md} aya göre</span></div>
-    <div class="kpi good"><span class="l">Güncel daire</span><span class="v num">${t.good}</span><span class="f">toplam ${t.n} daireden</span></div>
-  </section>
-  <div class="grid2">
-    <section class="card">
-      <div class="sec-h"><h2>Borcu olanlar</h2><button class="back" data-act="goDebtors">Tümü (${debtors.length})</button></div>
-      <div class="list">${debtors.slice(0,8).map(x=>`
-        <div class="row click" data-unit="${esc(x.u.kod)}"><span class="plate">${plateTxt(x.u)}</span>
-          <div class="grow"><div class="t">${esc(unitName(x.u)) || '<span class="sub">İsim girilmemiş</span>'}</div><div class="s">${x.c.behind} ay geride · <span class="pill ${x.c.status}" style="padding:0 6px">${STATUS_TXT[x.c.status]}</span></div></div>
-          <span class="amt bad num">${TL(x.c.overdue)}</span></div>`).join('') || '<div class="empty">Borcu olan daire yok.</div>'}</div>
-    </section>
-    <section class="card">
-      <div class="sec-h"><h2>Aylara göre ödeyen daire</h2><span class="sub">${t.n} daire</span></div>
-      <div class="bars">${bars}</div><div class="barlbl">${AYK.map(a=>'<span>'+a+'</span>').join('')}</div>
-      <p class="hint" style="margin:10px 0 0">Gri sütunlar henüz vadesi gelmemiş aylar. Bir ayda sayı düşükse o ayın ödemeleri girilmemiş olabilir.</p>
-    </section>
-  </div>
-  <div class="grid2">
-    <section class="card">
-      <div class="sec-h"><h2>Bloklar</h2><span class="sub">tahsil / vadesi gelen</span></div>
-      <div class="list">${bloks.map(b=>{ const x=t.byBlok[b]; const r = x.due>0? Math.min(100, x.paid/x.due*100):100; return `
+  const d0 = new Date();
+  const svgI = p => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${p}</svg>`;
+  const I = {
+    bank: svgI('<path d="M3 10h18L12 4z"/><path d="M5 10v8M9.5 10v8M14.5 10v8M19 10v8M3 20h18"/>'),
+    tool: svgI('<path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.5 2.5-2.4-.6-.6-2.4z"/>'),
+    bell: svgI('<path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.9 1.9 0 0 0 3.4 0"/>'),
+    clock: svgI('<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>'),
+    check: svgI('<path d="M20 6 9 17l-5-5"/>'),
+    chev: svgI('<path d="m9 6 6 6-6 6"/>')
+  };
+  // --- bugün yapılacaklar ---
+  const todo = [];
+  const nPend = (S.notices || []).filter(n => n.status === 'bekliyor').length;
+  const nReq = (S.requests || []).filter(r => r.status !== 'cozuldu').length;
+  if (nPend) todo.push({ic: I.bank, tone: 'accent', t: `${nPend} havale bildirimi onay bekliyor`, s: 'Onaylayınca ödeme olarak işlenir', go: 'gelen'});
+  if (nReq) todo.push({ic: I.tool, tone: 'warn', t: `${nReq} açık arıza / talep`, s: 'Sakinlerden gelen bildirimler', go: 'gelen'});
+  for (const x of dueReminders()){ const dd = daysTo(x.d); todo.push({ic: I.bell, tone: dd < 0 ? 'bad' : 'warn', t: esc(x.r.title), s: dd < 0 ? Math.abs(dd) + ' gün geçti' : dd === 0 ? 'Bugün' : dd + ' gün kaldı', go: 'ayarlar'}); }
+  const steps = [0,0,0,0]; unitList().forEach(u => { const st = lateInfo(u.kod).step; if (st != null) steps[st]++; });
+  const nAct = steps.reduce((a,b)=>a+b,0);
+  if (nAct) todo.push({ic: I.clock, tone: steps[2] + steps[3] ? 'bad' : 'warn', t: `${nAct} daire için gecikme takibi`, s: [steps[0] && steps[0] + ' ilk hatırlatma', steps[1] && steps[1] + ' ikinci hatırlatma', steps[2] && steps[2] + ' ihtar', steps[3] && steps[3] + ' avukat'].filter(Boolean).join(' · '), go: 'takip'});
+  const todoHtml = `<section class="card todo">
+      <div class="sec-h"><h2>Yapılacaklar</h2><span class="sub">${d0.getDate()} ${AY[d0.getMonth()]}</span></div>
+      ${todo.length ? `<div class="list">${todo.map(x => `<button class="todo-row" data-go="${x.go}"><span class="ib ${x.tone}">${x.ic}</span><span class="grow"><span class="t">${x.t}</span><span class="s">${x.s}</span></span><span class="chev">${I.chev}</span></button>`).join('')}</div>`
+        : `<div class="allok"><span class="ib good">${I.check}</span><div><b>Her şey yolunda</b><div class="sub">Bekleyen bildirim, talep veya hatırlatma yok.</div></div></div>`}
+    </section>`;
+  // --- ana gösterge ---
+  const R = 52, C = 2 * Math.PI * R, off = C * (1 - rate / 100);
+  const rc = rate >= 95 ? 'good' : rate >= 75 ? 'warn' : 'bad';
+  const cash = t.kasa + t.banka;
+  const gauge = `<section class="card gauge">
+      <div class="ring"><svg viewBox="0 0 120 120" aria-hidden="true"><circle cx="60" cy="60" r="${R}" class="trk"/><circle cx="60" cy="60" r="${R}" class="val ${rc}" stroke-dasharray="${C.toFixed(1)}" stroke-dashoffset="${off.toFixed(1)}" transform="rotate(-90 60 60)"/></svg>
+        <div class="ringtxt"><b class="num">%${rate}</b><span>tahsil</span></div></div>
+      <div class="gmain"><div class="glbl">${S.year} tahsilatı</div><div class="gbig num">${TL(t.paid)}</div>
+        <div class="sub">Vadesi gelen ${md} ayın beklenen tutarı ${TL(t.due)} · yıllık hedef ${TL(t.annual)}</div></div>
+      <div class="gstats">
+        <button class="gst" data-act="goDebtors"><span class="l">Gecikmiş borç</span><b class="num bad">${TL(t.overdue)}</b><span class="s">${debtors.length} daire</span></button>
+        <button class="gst" data-act="ozTab" data-v="aylar"><span class="l">Güncel daire</span><b class="num good">${t.good}<small> / ${t.n}</small></b><span class="s">borcu yok</span></button>
+        <button class="gst" data-act="ozTab" data-v="kasa"><span class="l">Kasa + banka</span><b class="num ${cash < 0 ? 'bad' : ''}">${TL(cash)}</b><span class="s">${t.belirsiz > 0 ? 'şekli girilmemiş ' + TL(t.belirsiz) + ' hariç' : 'güncel bakiye'}</span></button>
+      </div>
+    </section>`;
+  // --- borcu olanlar ---
+  const debtHtml = `<section class="card">
+      <div class="sec-h"><h2>En çok gecikenler</h2><button class="back" data-act="goDebtors">Tümü (${debtors.length})</button></div>
+      <div class="list">${debtors.slice(0,5).map(x=>{ const nm = unitName(x.u); return `
+        <div class="row click debt ${x.c.status}" data-unit="${esc(x.u.kod)}"><span class="plate">${plateTxt(x.u)}</span>
+          <div class="grow">${nm ? `<div class="t">${esc(nm)}</div>` : ''}<div class="s">${x.c.behind} ay geride</div></div>
+          <span class="amt bad num">${TL(x.c.overdue)}</span></div>`; }).join('') || '<div class="empty">Borcu olan daire yok.</div>'}</div>
+    </section>`;
+  // --- ayrıntılar (sekmeli) ---
+  const tab = S.ozTab || 'bloklar';
+  let det = '';
+  if (tab === 'bloklar'){
+    const bloks = Object.keys(t.byBlok).sort();
+    det = `<div class="list">${bloks.map(b=>{ const x=t.byBlok[b]; const r = x.due>0? Math.min(100, x.paid/x.due*100):100; const cl = r >= 95 ? 'good' : r >= 75 ? 'warn' : 'bad'; return `
         <div class="row click" data-act="goBlok" data-blok="${esc(b)}"><span class="plate">${esc(b)}</span>
-          <div class="grow"><div class="meter"><span style="width:${r.toFixed(0)}%"></span></div><div class="s num" style="margin-top:4px">${x.n} daire · ${TL(x.paid)} ödendi · ${x.late} dairede gecikme</div></div>
-          <span class="amt ${x.overdue>0?'bad':'good'} num">${x.overdue>0?TL(x.overdue):'Güncel'}</span></div>`;}).join('')}</div>
-    </section>
-    <section class="card">
-      <div class="sec-h"><h2>Kasa ve banka</h2><span class="sub">${S.year}</span></div>
-      <div class="kv"><span>Nakit tahsilat</span><span class="num">${TL(t.nakit)}</span></div>
+          <div class="grow"><div class="meter ${cl}"><span style="width:${r.toFixed(0)}%"></span></div><div class="s num" style="margin-top:4px">%${r.toFixed(0)} tahsil · ${x.late}/${x.n} dairede gecikme</div></div>
+          <span class="amt ${x.overdue>0?'bad':'good'} num">${x.overdue>0?TL(x.overdue):'Güncel'}</span></div>`;}).join('')}</div>`;
+  } else if (tab === 'kasa'){
+    det = `<div class="kv"><span>Nakit tahsilat</span><span class="num">${TL(t.nakit)}</span></div>
       <div class="kv"><span>Havale tahsilat</span><span class="num">${TL(t.havale)}</span></div>
       <div class="kv"><span>Mahsup (masraftan düşülen)</span><span class="num">${TL(t.mahsup)}</span></div>
-      <div class="kv"><span>Ödeme şekli girilmemiş</span><span class="num" style="color:var(--warn)">${TL(t.belirsiz)}</span></div>
+      ${t.belirsiz>0?`<div class="kv"><span>Ödeme şekli girilmemiş</span><span class="num" style="color:var(--warn)">${TL(t.belirsiz)}</span></div>`:''}
       <div class="kv strong"><span>Giderler</span><span class="num">${TL(t.gider)}</span></div>
-      <div class="kv strong"><span>Kasa (nakit) bakiyesi</span><span class="num">${TL(t.kasa)}</span></div>
-      <div class="kv strong"><span>Banka bakiyesi</span><span class="num">${TL(t.banka)}</span></div>
+      <div class="kv strong"><span>Kasa (nakit) bakiyesi</span><span class="num" style="${t.kasa<0?'color:var(--bad)':''}">${TL(t.kasa)}</span></div>
+      <div class="kv strong"><span>Banka bakiyesi</span><span class="num" style="${t.banka<0?'color:var(--bad)':''}">${TL(t.banka)}</span></div>
       ${Math.abs(t.sakinBorc)>0.01?`<div class="kv"><span>Sitenin masraf yapan sakinlere borcu</span><span class="num">${TL(t.sakinBorc)}</span></div>`:''}
-      ${t.belirsiz>0?'<p class="hint" style="margin:8px 0 0">Ödeme şekli girilmemiş tahsilatlar kasa ve banka bakiyesine yansımaz.</p>':''}
-    </section>
+      ${t.belirsiz>0?'<p class="hint" style="margin:8px 0 0">Ödeme şekli girilmemiş tahsilatlar kasa ve banka bakiyesine yansımaz. Daire ekranından ödemeyi açıp "Nakit" ya da "Havale" seçebilirsin.</p>':''}`;
+  } else {
+    const maxBar = Math.max(1, t.n);
+    det = `<div class="bars">${t.monthPaid.map((n,i)=>'<div class="bar'+(i>=md?' future':'')+'" style="height:'+Math.max(2, n/maxBar*100)+'%" title="'+AY[i]+': '+n+' daire"><b class="num">'+n+'</b></div>').join('')}</div><div class="barlbl">${AYK.map(a=>'<span>'+a+'</span>').join('')}</div>
+      <p class="hint" style="margin:10px 0 0">Her ay aidatını tam ödemiş daire sayısı (${t.n} daire üzerinden). Gri sütunlar henüz vadesi gelmemiş aylar.</p>`;
+  }
+  const detHtml = `<section class="card">
+      <div class="seg" role="tablist">${[['bloklar','Bloklar'],['kasa','Kasa'],['aylar','Aylar']].map(([k,l])=>`<button role="tab" data-act="ozTab" data-v="${k}" aria-selected="${tab===k}">${l}</button>`).join('')}</div>
+      ${det}
+    </section>`;
+  return `
+  <section class="hero slim"><div><h1>${esc((S.settings && S.settings.siteName) || 'Ustatahir Konutları')}</h1><p>${d0.getDate()} ${AY[d0.getMonth()]} ${d0.getFullYear()} · vadesi gelen ${md} ay</p>
+    <div class="legend"><span><i style="background:var(--good)"></i>%95+</span><span><i style="background:var(--warn)"></i>%75–95</span><span><i style="background:var(--bad)"></i>%75 altı</span></div></div>
+    ${skylineSvg({colors: blokColors(), tone: 'light'})}</section>
+  <div class="ozgrid">
+    ${todoHtml}
+    ${gauge}
+    ${debtHtml}
+    ${detHtml}
   </div>`;
 }
 function plateTxt(u){ return esc(u.blok)+' <i>·</i> '+esc(u.no); }
@@ -1627,6 +1726,7 @@ document.addEventListener('click', async ev => {
   const a = t.dataset.act;
   if (a !== 'delTx' && a !== 'delExp' && S.pendingDelete){ S.pendingDelete = null; }
   switch(a){
+    case 'ozTab': S.ozTab = t.dataset.v; render(); break;
     case 'goDebtors': S.status='borclu'; S.blok='Tümü'; go('daireler'); break;
     case 'goBlok': S.blok=t.dataset.blok; S.status='Tümü'; go('daireler'); break;
     case 'blok': S.blok=t.dataset.v; render(); break;
@@ -1739,7 +1839,14 @@ document.addEventListener('change', ev => {
 });
 document.addEventListener('keydown', ev => { if (ev.key === 'Escape' && !$('#overlay').hidden) closeSheet(); });
 $('#overlay').addEventListener('click', ev => { if (ev.target.id === 'overlay') closeSheet(); });
-$('#fab').addEventListener('click', ev => { ev.stopPropagation(); txForm({type:'odeme', unit: S.view==='daire'?S.unit:''}); });
+function fabOpen(on){ const m = $('#fabMenu'), f = $('#fab'); m.hidden = !on; f.classList.toggle('open', on); f.setAttribute('aria-expanded', on); }
+$('#fab').addEventListener('click', ev => { ev.stopPropagation(); fabOpen($('#fabMenu').hidden); });
+$('#fabMenu').addEventListener('click', ev => { ev.stopPropagation(); const b = ev.target.closest('[data-fab]'); if (!b) return; fabOpen(false);
+  const k = b.dataset.fab;
+  if (k === 'odeme') txForm({type:'odeme', unit: S.view==='daire'?S.unit:''});
+  else if (k === 'gider') expForm(null);
+  else { go('ayarlar'); setTimeout(() => { const el = $('#annTitle'); if (el){ el.scrollIntoView({block:'center'}); el.focus(); } }, 50); } });
+document.addEventListener('click', () => { const m = $('#fabMenu'); if (m && !m.hidden) fabOpen(false); });
 
 
 /* ---------- giriş, hesaplar, sakin ekranı (Firebase) ---------- */
