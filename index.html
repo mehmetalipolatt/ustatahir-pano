@@ -172,6 +172,9 @@ a.btn{text-decoration:none;color:var(--ink)}
 .banner{display:flex;align-items:center;gap:12px;justify-content:space-between;flex-wrap:wrap;background:var(--warn-bg);color:var(--warn);border-radius:var(--r);padding:12px 16px;font-weight:600}
 
 /* ---- sakin görünümü ---- */
+@media (min-width:700px){.kpis.kpis3{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.kpis.kpis3 .kpi:last-child:nth-child(odd){grid-column:1/-1}
+@media (min-width:700px){.kpis.kpis3 .kpi:last-child:nth-child(odd){grid-column:auto}}
 .login{max-width:440px;width:100%;margin:6vh auto 0;display:flex;flex-direction:column;gap:16px}
 .topbar .btn.small{flex:none}
 body.resident .tabs, body.resident .topbar, body.resident .fab{display:none!important}
@@ -1297,7 +1300,7 @@ function scheduleSummary(){
 async function publishSummary(){
   const t = totals(), ex = expItems(), byCat = {}, byMonth = Array(12).fill(0);
   ex.forEach(e => { if (e.category === 'Borç Geri Ödemesi') return; byCat[e.category||'Diğer'] = Math.round(((byCat[e.category||'Diğer']||0) + e.amount)*100)/100; if (e.date) byMonth[Number(e.date.slice(5,7))-1] += e.amount; });
-  const sum = {year: S.year, n: t.n, paid: t.paid, due: t.due, overdue: t.overdue, debtors: t.warn + t.bad, good: t.good, monthPaid: t.monthPaid,
+  const sum = {year: S.year, n: t.n, paid: t.paid, due: t.due,
     md: monthsDue(S.year), expByCat: byCat, expByMonth: byMonth.map(v=>Math.round(v*100)/100), expTotal: Math.round(Object.values(byCat).reduce((a,b)=>a+b,0)*100)/100};
   const key = JSON.stringify(sum); if (key === lastSummary) return;
   try { await db.doc('summary/current').set(Object.assign({updated: todayISO()}, sum)); lastSummary = key; } catch(e){}
@@ -1419,20 +1422,18 @@ function residentPubHtml(p){
   if (!p) return annHtml;
   const rate = p.due>0 ? Math.round(p.paid/p.due*100) : 100;
   const cats = Object.entries(p.expByCat||{}).sort((a,b)=>b[1]-a[1]); const maxC = Math.max(1, ...cats.map(c=>c[1])); const maxM = Math.max(1, ...p.expByMonth);
-  return `${annHtml}<section class="kpis">
+  return `${annHtml}<section class="kpis kpis3">
     <div class="kpi"><span class="l">Toplanan aidat</span><span class="v num">${TL0(p.paid)}</span><span class="f">${p.year} yılında</span></div>
     <div class="kpi"><span class="l">Harcanan</span><span class="v num">${TL0(p.expTotal)}</span><span class="f">site giderleri</span></div>
     <div class="kpi"><span class="l">Tahsilat oranı</span><span class="v num">%${rate}</span><span class="f">vadesi gelen ${p.md} aya göre</span></div>
-    <div class="kpi"><span class="l">Borcu olan daire</span><span class="v num">${p.debtors}</span><span class="f">toplam ${p.n} daireden</span></div></section>
+</section>
   <div class="grid2">
     <section class="card"><div class="sec-h"><h2>Paralar nereye harcandı?</h2><span class="sub">${p.year}</span></div>
       ${cats.map(([k,v])=>`<div class="cat"><span>${esc(k)}</span><span class="num sub" style="color:var(--ink)">${TL0(v)} · ${v/p.expTotal<0.01?'%1’den az':'%'+Math.round(v/p.expTotal*100)}</span><div class="cbar"><span style="width:${(v/maxC*100).toFixed(0)}%"></span></div></div>`).join('') || '<div class="empty">Gider kaydı yok.</div>'}</section>
     <section class="card"><div class="sec-h"><h2>Aylık giderler</h2><span class="sub">bin TL</span></div>
       <div class="bars">${p.expByMonth.map((v,i)=>`<div class="bar${v?'':' future'}" style="height:${Math.max(2,v/maxM*100)}%" title="${AY[i]}: ${TL(v)}"><b class="num">${v?Math.round(v/1000):''}</b></div>`).join('')}</div>
       <div class="barlbl">${AYK.map(a=>`<span>${a}</span>`).join('')}</div>
-      <div class="sec-h" style="margin-top:20px"><h2 style="font-size:16px">Aidatını ödeyen daire</h2><span class="sub">${p.n} daire</span></div>
-      <div class="bars" style="height:110px">${p.monthPaid.map((v,i)=>`<div class="bar${i>=p.md?' future':''}" style="height:${Math.max(2,v/p.n*100)}%"><b class="num">${v}</b></div>`).join('')}</div>
-      <div class="barlbl">${AYK.map(a=>`<span>${a}</span>`).join('')}</div></section></div>
+</section></div>
   <section class="card"><div class="sec-h"><h2>Aidat ödeme bilgileri</h2></div>
     <p style="margin:0 0 10px">Aylık aidat <b class="num">${TL(yc(S.year).aidat)}</b>. Son ödeme günü her ayın <b>${esc(dueDay())}</b>'u.</p>
     ${s.iban?`<div class="iban"><code>${esc(s.iban)}</code><button class="btn small" data-rcopy="${esc(s.iban.replace(/\s/g,''))}">IBAN kopyala</button></div>${s.ibanName?`<p class="sub" style="margin:8px 0 0">Alıcı: ${esc(s.ibanName)}</p>`:''}`:'<p class="sub" style="margin:0">Ödeme bilgileri için site yönetimiyle görüşebilirsiniz.</p>'}</section>`;
