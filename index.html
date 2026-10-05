@@ -386,6 +386,46 @@ body.loginbg .pwaslot .pwacard{background:rgba(255,255,255,.9);-webkit-backdrop-
 .dfilter .ozseg button{white-space:nowrap;font-size:13px}
 .dfilter .ozseg small{font-weight:500;opacity:.7;margin-left:2px}
 .unithead a{color:var(--accent);text-decoration:none}
+/* ---- menü renkleri ---- */
+body{--nav-bg:#16323b;--nav-bg2:#1d4450;--nav-ink:#ffffff;--nav-muted:rgba(255,255,255,.66);--nav-act:rgba(255,255,255,.14);--nav-acc:#7fd3db;--nav-line:rgba(255,255,255,.08)}
+body[data-menu="lacivert"]{--nav-bg:#1b2540;--nav-bg2:#26355c;--nav-acc:#9db8ff}
+body[data-menu="zeytin"]{--nav-bg:#2f3a2a;--nav-bg2:#45553c;--nav-acc:#c9dc9c}
+body[data-menu="bordo"]{--nav-bg:#3b1d24;--nav-bg2:#5a2b35;--nav-acc:#f3b3bf}
+body[data-menu="acik"]{--nav-bg:var(--surface);--nav-bg2:var(--surface);--nav-ink:var(--ink);--nav-muted:var(--muted);--nav-act:var(--accent-soft);--nav-acc:var(--accent);--nav-line:var(--line)}
+.tabs{background:linear-gradient(180deg,var(--nav-bg),var(--nav-bg2))!important;border-color:var(--nav-line)!important}
+.tab{color:var(--nav-muted)}
+.tab:hover{color:var(--nav-ink)}
+.tab[aria-current="true"]{color:var(--nav-acc);background:var(--nav-act)}
+.navhead{display:none}
+@media (min-width:900px){
+  .tabs{padding-top:18px!important}
+  .tab[aria-current="true"]{color:var(--nav-ink);background:var(--nav-act);box-shadow:inset 3px 0 0 var(--nav-acc)}
+  .navhead{display:flex;align-items:center;gap:10px;padding:4px 8px 22px;margin-bottom:6px;border-bottom:1px solid var(--nav-line);color:var(--nav-ink)}
+  .navhead b{display:block;font-family:var(--f-display);font-size:17px;line-height:1.1}
+  .navhead small{display:block;font-size:11.5px;color:var(--nav-muted)}
+  .navmark{width:36px;height:36px;border-radius:10px;display:grid;place-items:center;background:var(--nav-act);color:var(--nav-acc)}
+  .navmark svg{width:20px;height:20px}
+  .topbar .brandmark{display:none}
+}
+.topbar{background:rgba(238,242,241,.92);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+.menupick{display:flex;flex-wrap:wrap;gap:8px}
+.menupick button{display:flex;align-items:center;gap:8px;border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:6px 14px 6px 6px;font-weight:600;cursor:pointer;font-size:14px}
+.menupick button i{width:24px;height:24px;border-radius:50%;border:1px solid var(--line)}
+.menupick button[aria-pressed="true"]{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent-soft)}
+/* giriş ekranı tema düğmesi */
+.themetog{position:fixed;top:calc(14px + env(safe-area-inset-top,0px));right:14px;z-index:40;display:flex;align-items:center;gap:6px;border:1px solid rgba(255,255,255,.35);background:rgba(255,255,255,.18);color:#fff;border-radius:999px;padding:7px 12px;font-weight:600;font-size:13px;cursor:pointer;-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+.themetog svg{width:16px;height:16px}
+:root[data-theme="light"] .themetog{background:rgba(255,255,255,.75);color:var(--ink);border-color:rgba(0,0,0,.08)}
+body:not(.loginbg) .themetog{display:none}
+/* açık giriş ekranı: fotoğraf daha aydınlık */
+:root[data-theme="light"] body.loginbg::before{background:linear-gradient(180deg,rgba(235,242,243,.15) 0%,rgba(235,242,243,.25) 50%,rgba(235,242,243,.7) 100%),url(img/site-giris.jpg) center 30%/cover no-repeat}
+@media (min-aspect-ratio: 5/4){
+  :root[data-theme="light"] body.loginbg::before{background:linear-gradient(180deg,rgba(235,242,243,.25),rgba(235,242,243,.45)),url(img/site-giris-bulanik.jpg) center/cover no-repeat}
+  :root[data-theme="light"] body.loginbg::after{background:linear-gradient(180deg,rgba(235,242,243,.35) 0%,rgba(235,242,243,0) 35%,rgba(235,242,243,0) 70%,rgba(235,242,243,.35) 100%),url(img/site-giris-genis.jpg) center bottom/auto 100% no-repeat}
+}
+:root[data-theme="light"] body.loginbg .credit img{filter:invert(1) brightness(.25)}
+:root[data-theme="light"] body.loginbg .credit span{color:#1d2b30}
+:root[data-theme="light"] body.loginbg .credit{background:rgba(255,255,255,.72);border-radius:12px;padding:8px 14px;width:max-content;opacity:.9}
 </style>
 <style>body{margin:0}[hidden]{display:none!important}:root{padding-top:env(safe-area-inset-top,0px)}</style>
 </head>
@@ -394,6 +434,7 @@ body.loginbg .pwaslot .pwacard{background:rgba(255,255,255,.9);-webkit-backdrop-
 
 <div class="shell">
   <nav class="tabs" id="tabs" aria-label="Bölümler">
+    <div class="navhead" aria-hidden="true"><span class="navmark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="8" width="7" height="13" rx="1"/><rect x="14" y="4" width="7" height="17" rx="1"/><path d="M6 12h1M6 16h1M17 8h1M17 12h1M17 16h1"/></svg></span><span><b>Ustatahir</b><small>Yönetim paneli</small></span></div>
     <button class="tab" data-go="ozet" aria-current="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>Özet</button>
     <button class="tab" data-go="daireler"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="4" y="3" width="16" height="18" rx="1.5"/><path d="M8 7h2M14 7h2M8 11h2M14 11h2M8 15h2M14 15h2"/></svg>Daireler</button>
     <button class="tab" data-go="takip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 8v4l3 2"/><circle cx="12" cy="12" r="9"/></svg>Takip</button>
@@ -422,7 +463,7 @@ body.loginbg .pwaslot .pwacard{background:rgba(255,255,255,.9);-webkit-backdrop-
 <div id="toast" class="toast" hidden></div>
 <div id="ekstre-render" aria-hidden="true"></div>
 
-<script>window.__fbReady = new Promise(r => { window.__fbResolve = r; });</script>
+<script>document.documentElement.dataset.theme = 'light'; window.__fbReady = new Promise(r => { window.__fbResolve = r; });</script>
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut, createUserWithEmailAndPassword, updatePassword } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
@@ -836,6 +877,7 @@ function vAyarlar(){
     <div class="actions"><button class="btn primary" data-act="report">Genel kurul raporu (PDF)</button><button class="btn" data-act="xlsx">${S.year} Excel olarak indir</button></div>
   </section>
   ${cmpCard()}
+  ${themeCard()}
   ${residentCard()}
   ${remindersCard()}
   ${budgetCard()}
@@ -1842,6 +1884,8 @@ document.addEventListener('click', async ev => {
     case 'bulkPdf': bulkPdf(t.dataset.scope); break;
     case 'report': reportPdf(); break;
     case 'cmpLoad': cmpLoad(); break;
+    case 'menuTheme': lsSet('ustatahir-menu', t.dataset.v); applyTheme(); render(); break;
+    case 'loginTheme': lsSet('ustatahir-giris-tema', loginTheme() === 'dark' ? 'light' : 'dark'); applyTheme(); { const b = document.querySelector('[data-act="loginTheme"]'); if (b) b.innerHTML = loginThemeIcon(); } break;
     case 'pwaInstall': pwaInstall(); break;
     case 'pwaHide': pwaHide(); break;
     case 'addAnn': addAnnouncement(); break;
@@ -1932,9 +1976,13 @@ function genPass(){ const a = 'abcdefghjkmnpqrstuvwxyz23456789'; const r = new U
 function emailFor(username){ return username.trim().toLowerCase().replace(/\s+/g,'') + '@' + USER_DOMAIN; }
 
 /* ---- giriş ekranı ---- */
+function loginThemeIcon(){ return loginTheme() === 'dark'
+  ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg><span>Açık</span>'
+  : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg><span>Koyu</span>'; }
 function showLogin(msg){
-  MODE = 'login'; document.body.classList.add('resident', 'loginbg');
+  MODE = 'login'; document.body.classList.add('resident', 'loginbg'); applyTheme();
   $('#view').innerHTML = `
+  <button class="themetog" data-act="loginTheme" aria-label="Koyu / açık tema">${loginThemeIcon()}</button>
   <section class="card login">
     <div class="rbanner" style="border-radius:12px"><span class="brandmark" style="margin-bottom:10px" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8"><rect x="3" y="8" width="7" height="13" rx="1"/><rect x="14" y="4" width="7" height="17" rx="1"/><path d="M6 12h1M6 16h1M17 8h1M17 12h1M17 16h1"/></svg></span><h1>Ustatahir Konutları</h1><p>Aidat, ödeme ve site giderleri</p></div>
     <form id="loginForm" style="display:flex;flex-direction:column;gap:12px" novalidate>
@@ -1964,7 +2012,7 @@ async function doLogin(){
 
 /* ---- yönetici ---- */
 function startAdmin(){
-  MODE = 'admin'; document.body.classList.remove('resident', 'loginbg'); receiptsChecked = false;
+  MODE = 'admin'; document.body.classList.remove('resident', 'loginbg'); receiptsChecked = false; applyTheme();
   S.settings = null; S.units = {}; S.ledgers = {}; S.exps = {}; S.members = {}; S.year = null; S.view = 'ozet';
   S.got = {s:false, u:false, l:false, e:false};
   $('#view').innerHTML = '<div class="card empty">Veriler yükleniyor…</div>';
@@ -2153,7 +2201,7 @@ function residentPage(kod, preview){
     <p class="sub" style="text-align:center">Yalnızca ${multi ? 'size bağlı dairelerin' : 'kendi dairenizin'} bilgilerini görebilirsiniz. Sorularınız için site yönetimiyle iletişime geçin.</p>`;
 }
 async function startResident(user){
-  MODE = 'resident'; document.body.classList.add('resident'); document.body.classList.remove('loginbg');
+  MODE = 'resident'; document.body.classList.add('resident'); document.body.classList.remove('loginbg'); applyTheme();
   $('#view').innerHTML = '<div class="card empty">Bilgileriniz yükleniyor…</div>';
   let mem;
   try { mem = await db.doc('members/' + user.uid).get(); } catch(e){ mem = null; }
@@ -2319,6 +2367,28 @@ function cmpCard(){
   </section>`;
 }
 
+
+/* ---------- tema: uygulama hep açık, giriş ekranı koyu/açık seçilebilir ---------- */
+const MENU_THEMES = [['petrol','Petrol','#16323b'],['lacivert','Lacivert','#1b2540'],['zeytin','Zeytin','#2f3a2a'],['bordo','Bordo','#3b1d24'],['acik','Açık','#ffffff']];
+function lsGet(k, d){ try { const v = localStorage.getItem(k); return v == null ? d : v; } catch(e){ return d; } }
+function lsSet(k, v){ try { localStorage.setItem(k, v); } catch(e){} }
+function loginTheme(){ const v = lsGet('ustatahir-giris-tema', ''); return v === 'dark' || v === 'light' ? v : (matchMedia && matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'); }
+function applyTheme(){
+  const html = document.documentElement;
+  const t = MODE === 'login' ? loginTheme() : 'light';
+  html.dataset.theme = t;
+  document.body.dataset.menu = lsGet('ustatahir-menu', 'petrol');
+  const m = document.querySelector('meta[name="theme-color"]');
+  if (m) m.setAttribute('content', MODE === 'login' ? (t === 'dark' ? '#10242b' : '#dfe8ea') : '#f4f7f6');
+}
+function themeCard(){
+  const cur = lsGet('ustatahir-menu', 'petrol');
+  return `<section class="card" style="display:flex;flex-direction:column;gap:12px">
+    <h2>Görünüm</h2>
+    <p style="margin:0">Menünün rengini seç. Seçim bu cihazda saklanır. Giriş ekranının koyu ya da açık olmasını giriş ekranının sağ üstündeki düğmeyle değiştirebilirsin.</p>
+    <div class="menupick">${MENU_THEMES.map(([k,l,c])=>`<button data-act="menuTheme" data-v="${k}" aria-pressed="${cur===k}"><i style="background:${c}"></i>${l}</button>`).join('')}</div>
+  </section>`;
+}
 /* ---------- data ---------- */
 function setYear(y){
   if (S.year === y && unsubL) return;
