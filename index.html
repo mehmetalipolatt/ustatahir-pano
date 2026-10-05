@@ -2301,7 +2301,7 @@ async function pwaInstall(){
 }
 function pwaHide(){ try { localStorage.setItem(PWA_KEY, '1'); } catch(e){} pwaRefresh(); }
 if ('serviceWorker' in navigator && location.protocol === 'https:') {
-  window.addEventListener('load', () => { navigator.serviceWorker.register('sw.js').catch(() => {}); });
+  window.addEventListener('load', () => { navigator.serviceWorker.register('sw.js', { updateViaCache: 'none' }).then(r => r.update()).catch(() => {}); });
 }
 
 /* ---------- geçen yılla karşılaştırma ---------- */
