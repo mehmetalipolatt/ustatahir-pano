@@ -169,7 +169,52 @@ a.btn{text-decoration:none;color:var(--ink)}
 .step{background:var(--surface-2);border:1px solid var(--line);border-radius:10px;padding:10px;display:flex;flex-direction:column;gap:2px;min-width:0}
 .step .cnt{font-weight:600;font-size:13px} .step .cnt.warn{color:var(--warn)} .step .cnt.bad{color:var(--bad)}
 .wrapinfo .s{white-space:normal}
+.wrapinfo .t{white-space:normal}
+.wrapinfo .grow{flex:1 1 200px}
 .banner{display:flex;align-items:center;gap:12px;justify-content:space-between;flex-wrap:wrap;background:var(--warn-bg);color:var(--warn);border-radius:var(--r);padding:12px 16px;font-weight:600}
+
+
+/* ---- süsleme ---- */
+:root{ --sky-block:#c6d5d6; --sky-win:#eef4f4; --hero1:#1b3540; --hero2:#1f6f78; }
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){ --sky-block:#2a3e44; --sky-win:#3c565d; --hero1:#12262d; --hero2:#1c5a61; }}
+:root[data-theme="dark"]{ --sky-block:#2a3e44; --sky-win:#3c565d; --hero1:#12262d; --hero2:#1c5a61; }
+.skyline{display:block;width:100%;height:auto}
+.hero{position:relative;background:linear-gradient(135deg,var(--hero1),var(--hero2));color:#fff;border-radius:18px;padding:20px 20px 12px;display:grid;grid-template-columns:minmax(0,1fr);gap:6px;overflow:hidden;box-shadow:0 8px 24px rgba(20,50,60,.18)}
+.hero h1{color:#fff;font-size:clamp(22px,5.5vw,30px)}
+.hero p{margin:0;color:rgba(255,255,255,.78);font-size:14px}
+.hero .legend{display:flex;gap:12px;flex-wrap:wrap;font-size:12px;color:rgba(255,255,255,.8);margin-top:2px}
+.hero .legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:5px;vertical-align:-1px}
+@media (min-width:760px){.hero{grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);align-items:end}.hero .skyline{max-width:520px;justify-self:end}}
+.kpi{border-top:3px solid var(--accent);box-shadow:0 1px 2px rgba(22,35,43,.05),0 6px 18px rgba(22,35,43,.05)}
+.kpi.bad{border-top-color:var(--bad)} .kpi.good{border-top-color:var(--good)}
+.card{box-shadow:0 1px 2px rgba(22,35,43,.04),0 4px 14px rgba(22,35,43,.04)}
+.sec-h h2::before{content:"";display:inline-block;width:6px;height:16px;border-radius:3px;background:var(--accent);margin-right:8px;vertical-align:-2px}
+.tab{position:relative}
+.badge{position:absolute;top:2px;left:calc(50% + 6px);background:var(--bad);color:#fff;border-radius:99px;font-size:10px;font-weight:700;padding:1px 6px;line-height:1.4}
+@media (min-width:900px){.badge{left:auto;right:12px;top:50%;transform:translateY(-50%)}}
+.tabs{grid-template-columns:repeat(6,1fr)!important}
+@media (min-width:900px){.tabs{grid-template-columns:1fr!important}}
+.tab{font-size:11px}
+@media (min-width:900px){.tab{font-size:15px}}
+.brandmark{width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,var(--hero1),var(--hero2));display:grid;place-items:center;flex:none}
+.brandmark svg{width:20px;height:20px}
+.btable{width:100%;border-collapse:collapse;font-size:13px;min-width:560px}
+.btable th,.btable td{padding:7px 8px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+.btable th{font-size:12px;color:var(--muted);font-weight:600}
+.btable tr.dup{opacity:.6}
+.btable select{border:1px solid var(--line);background:var(--surface-2);border-radius:8px;padding:4px 6px}
+.poll{padding:12px 0;border-bottom:1px solid var(--line)} .poll:last-child{border-bottom:0}
+.rbanner{background:linear-gradient(135deg,var(--hero1),var(--hero2))!important;box-shadow:0 8px 24px rgba(20,50,60,.18);overflow:hidden}
+.rbanner .skyline{margin-top:10px;max-width:520px}
+.unitswitch{display:flex;gap:8px;flex-wrap:wrap}
+.unitswitch button{border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:6px 10px;cursor:pointer;font-weight:600;display:flex;gap:8px;align-items:center}
+.unitswitch button[aria-pressed="true"]{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent-soft)}
+body.loginbg{background:radial-gradient(1200px 600px at 50% -10%,var(--accent-soft),var(--bg))}
+.ractions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+@media (min-width:640px){.ractions{grid-template-columns:repeat(4,minmax(0,1fr))}}
+.ractions .btn{flex-direction:column;gap:4px;padding:12px 8px;font-size:13px}
+.ractions .btn svg{width:22px;height:22px;color:var(--accent)}
+@media (prefers-reduced-motion:no-preference){.card,.kpi{transition:transform .15s} .tile:hover{transform:translateY(-1px)}}
 
 /* ---- sakin görünümü ---- */
 @media (min-width:700px){.kpis.kpis3{grid-template-columns:repeat(3,minmax(0,1fr))}}
@@ -208,10 +253,12 @@ body.resident main{grid-column:1;max-width:860px;padding-bottom:48px}
     <button class="tab" data-go="ozet" aria-current="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>Özet</button>
     <button class="tab" data-go="daireler"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="4" y="3" width="16" height="18" rx="1.5"/><path d="M8 7h2M14 7h2M8 11h2M14 11h2M8 15h2M14 15h2"/></svg>Daireler</button>
     <button class="tab" data-go="takip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 8v4l3 2"/><circle cx="12" cy="12" r="9"/></svg>Takip</button>
+    <button class="tab" data-go="gelen"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 13h4l2 3h4l2-3h4"/><path d="M5 5h14l1 8v6H4v-6z"/></svg>Gelenler<span class="badge" id="gelenBadge" hidden></span></button>
     <button class="tab" data-go="giderler"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 6h16M4 12h10M4 18h7"/><path d="M18 14v6M15 17h6"/></svg>Giderler</button>
     <button class="tab" data-go="ayarlar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>Ayarlar</button>
   </nav>
   <header class="topbar">
+    <span class="brandmark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8"><rect x="3" y="8" width="7" height="13" rx="1"/><rect x="14" y="4" width="7" height="17" rx="1"/><path d="M6 12h1M6 16h1M17 8h1M17 12h1M17 16h1"/></svg></span>
     <div class="brand"><b id="siteName">Ustatahir Konutları</b><span id="todayLine">Aidat takip</span></div>
     <label class="sub" for="yearSel" style="position:absolute;left:-9999px">Yıl</label>
     <select id="yearSel" class="yearsel" aria-label="Yıl"></select>
@@ -268,7 +315,7 @@ const AYK = ['Oca','Şub','Mar','Nis','May','Haz','Tem','Ağu','Eyl','Eki','Kas'
 const DEFAULT_CATS = ['Maaş','SGK / Vergi','Elektrik','Su','Doğalgaz','Asansör','Havuz','Temizlik','Bahçe / Peyzaj','Bakım / Onarım','Sigorta','Kırtasiye / Banka Masrafı','Borç Geri Ödemesi','Diğer'];
 const TYPE_LABEL = {odeme:'Ödeme', borc:'Borç ekle', indirim:'İndirim'};
 
-const S = {settings:null, units:{}, ledgers:{}, exps:{}, members:{}, year:null, view:'ozet', unit:null,
+const S = {settings:null, units:{}, ledgers:{}, exps:{}, members:{}, notices:[], requests:[], polls:[], year:null, view:'ozet', unit:null,
   blok:'Tümü', status:'Tümü', q:'', got:{s:false,u:false,l:false,e:false}, pendingDelete:null};
 let db = null, dl = null, unsubL = null, unsubE = null;
 
@@ -363,7 +410,8 @@ function expItems(){ const out = []; for (const d of Object.values(S.exps)) for 
 function setTabs(){
   const cur = S.view === 'daire' ? 'daireler' : S.view;
   document.querySelectorAll('.tab').forEach(b => b.setAttribute('aria-current', b.dataset.go === cur ? 'true':'false'));
-  $('#fab').hidden = !(S.got.u && S.got.s) || S.view === 'ayarlar' || S.view === 'giderler' || S.view === 'daire';
+  $('#fab').hidden = !(S.got.u && S.got.s) || S.view === 'ayarlar' || S.view === 'giderler' || S.view === 'daire' || S.view === 'gelen';
+  const bc = inboxCount(), bg = $('#gelenBadge'); if (bg){ bg.hidden = !bc; bg.textContent = bc; }
 }
 function header(){
   const s = S.settings || {};
@@ -385,8 +433,9 @@ function render(){
   else if (S.view === 'daire') v.innerHTML = vDaire(S.unit);
   else if (S.view === 'giderler') v.innerHTML = vGiderler();
   else if (S.view === 'takip') v.innerHTML = vTakip();
+  else if (S.view === 'gelen') { v.innerHTML = vGelen(); if (bankRows.length) drawBank(); }
   else if (S.view === 'ayarlar') v.innerHTML = vAyarlar();
-  scheduleSummary();
+  scheduleSummary(); ensureReceipts();
 }
 
 function vOzet(){
@@ -397,7 +446,13 @@ function vOzet(){
   const bars = t.monthPaid.map((n,i)=>'<div class="bar'+(i>=md?' future':'')+'" style="height:'+Math.max(2, n/maxBar*100)+'%" title="'+AY[i]+': '+n+' daire"><b class="num">'+n+'</b></div>').join('');
   const bloks = Object.keys(t.byBlok).sort();
   const actionable = unitList().filter(u=>lateInfo(u.kod).step!=null).length;
+  const dr = dueReminders(), ib = inboxCount(), d0 = new Date();
   return `
+  <section class="hero"><div><h1>${esc((S.settings && S.settings.siteName) || 'Ustatahir Konutları')}</h1><p>${d0.getDate()} ${AY[d0.getMonth()]} ${d0.getFullYear()} · ${S.year} yılı · vadesi gelen ${md} ay</p>
+    <div class="legend"><span><i style="background:var(--good)"></i>tahsilat %95+</span><span><i style="background:var(--warn)"></i>%75–95</span><span><i style="background:var(--bad)"></i>%75 altı</span></div></div>
+    ${skylineSvg({colors: blokColors(), tone: 'light'})}</section>
+  ${ib ? `<div class="banner" style="background:var(--accent-soft);color:var(--ink)"><span>${ib} yeni bildirim veya talep var</span><button class="btn small" data-go="gelen">Gelenlere git</button></div>` : ''}
+  ${dr.map(x => { const dd = daysTo(x.d); return `<div class="banner"><span>${esc(x.r.title)}: ${dd < 0 ? Math.abs(dd) + ' gün geçti' : dd === 0 ? 'bugün' : dd + ' gün kaldı'}</span><button class="btn small" data-go="ayarlar">Hatırlatmalar</button></div>`; }).join('')}
   ${actionable ? `<div class="banner"><span>${actionable} daire için takip adımı zamanı geldi</span><button class="btn small" data-go="takip">Takibe git</button></div>` : ''}
   <section class="kpis">
     <div class="kpi"><span class="l">Toplam tahsilat</span><span class="v num">${TL(t.paid)}</span><span class="f">Yıllık hedef ${TL(t.annual)}</span></div>
@@ -540,6 +595,7 @@ function vDaire(kod){
           <div class="t">${esc(it.desc) || TYPE_LABEL[it.type]}</div>
           <div class="s">${fmtDate(it.date)} · ${it.type==='odeme' ? (esc(it.method) || 'şekil girilmemiş') : TYPE_LABEL[it.type]}${it.note?' · '+esc(it.note):''}</div></div>
         <span class="amt ${cls} num">${sign}${TL(it.amount)}</span>
+        ${it.type==='odeme' ? `<button class="iconbtn" data-act="rcpt" data-kod="${esc(kod)}" data-id="${esc(it.id)}" title="Makbuz no ${esc(it.receiptNo||'')}">Makbuz</button>` : ''}
         <button class="iconbtn rm" data-act="editTx" data-id="${esc(it.id)}" aria-label="Düzenle">Düzenle</button>
         <button class="iconbtn rm ${pend?'confirm':''}" data-act="delTx" data-id="${esc(it.id)}">${pend?'Emin misin? Sil':'Sil'}</button>
       </div>`; }).join('') || '<div class="empty">Bu yıl için kayıt yok. "Ödeme al" ile ilk ödemeyi gir.</div>'}</div>
@@ -584,6 +640,7 @@ function vAyarlar(){
     <div class="actions"><button class="btn primary" data-act="report">Genel kurul raporu (PDF)</button><button class="btn" data-act="xlsx">${S.year} Excel olarak indir</button></div>
   </section>
   ${residentCard()}
+  ${remindersCard()}
   ${budgetCard()}
   <section class="card" style="display:flex;flex-direction:column;gap:12px">
     <h2>${S.year} yılı</h2>
@@ -669,7 +726,7 @@ function drawTx(errMsg){
       ${f.type==='odeme'?`<div class="field"><label>Ödeme şekli</label><div class="chips">${['Nakit','Havale','Mahsup'].map(m=>`<button type="button" class="chip" data-f="method" data-v="${m}" aria-pressed="${f.method===m}">${m}</button>`).join('')}</div></div>`:'<div></div>'}
     </div>
     <div class="field"><label for="fDesc">Açıklama${f.type!=='odeme'?' (zorunlu)':''}</label><input id="fDesc" value="${esc(f.desc)}" placeholder="${esc(sug || (f.type==='borc'?'ör. ASANSÖR MASRAF PAYI':f.type==='indirim'?'ör. HATALI KAYIT DÜZELTMESİ':''))}">
-      ${sug && !f.desc ? '<span class="hint">Boş bırakırsan "'+esc(sug)+'" yazılır.</span>':''}</div>
+      <span class="hint" id="sugHint">${sug && !f.desc ? 'Boş bırakırsan "'+esc(sug)+'" yazılır.' : ''}</span></div>
     <div class="field"><label for="fNote">Not (isteğe bağlı)</label><input id="fNote" value="${esc(f.note)}" placeholder="ör. babama teslim edildi"></div>
     <p class="hint" style="margin:0">Kayıt ${S.year} hesabına işlenir.</p>
     ${errMsg?'<div class="err">'+esc(errMsg)+'</div>':''}
@@ -689,11 +746,14 @@ async function saveTx(){
   if (f.type !== 'odeme' && !f.desc.trim()) return drawTx('Borç ekleme ve indirimde açıklama yazmak gerekiyor; ileride neden eklendiği anlaşılsın.');
   const desc = f.desc.trim() ? up(f.desc.trim()) : suggestDesc(f.unit, amt, f.type);
   const rec = {id: id || uid(), type: f.type, amount: amt, date: f.date || '', desc, method: f.type==='odeme' ? f.method : '', note: f.note.trim(), at: Date.now()};
+  if (!id && f.type === 'odeme') rec.receiptNo = fmtReceipt(maxReceipt() + 1);
   try {
   if (id){
     for (const k of Object.keys(S.ledgers)) if (k !== f.unit && items(k).some(x=>x.id===id)) await writeLedger(k, cur => cur.filter(x=>x.id!==id));
   }
-  await writeLedger(f.unit, cur => { const i = cur.findIndex(x=>x.id===rec.id); if (i>=0){ rec.at = cur[i].at || rec.at; cur[i] = rec; } else cur.push(rec); return cur; }); closeSheet(); toast(f.type==='odeme' ? 'Ödeme kaydedildi' : 'Kayıt eklendi'); }
+  await writeLedger(f.unit, cur => { const i = cur.findIndex(x=>x.id===rec.id); if (i>=0){ rec.at = cur[i].at || rec.at; if (cur[i].receiptNo && rec.type === 'odeme') rec.receiptNo = cur[i].receiptNo; cur[i] = rec; } else cur.push(rec); return cur; }); closeSheet();
+  if (!id && f.type === 'odeme'){ const k = f.unit, rid = rec.id; openSheet(`<h2>Ödeme kaydedildi</h2><p style="margin:0">${esc(k)} · ${TL(amt)} · ${esc(rec.method || '')}<br>Makbuz no: <b>${esc(rec.receiptNo)}</b></p><p class="hint" style="margin:0">Sakin bu makbuzu kendi ekranından da indirebilir.</p><div class="actions" style="justify-content:flex-end"><button class="btn" data-act="close">Kapat</button><button class="btn primary" data-act="rcpt" data-kod="${esc(k)}" data-id="${esc(rid)}">Makbuz (PDF)</button></div>`); }
+  else toast(f.type==='odeme' ? 'Ödeme kaydedildi' : 'Kayıt eklendi'); }
   catch(e){ drawTx(saveErr(e)); }
 }
 function saveErr(e){ const c = e && e.code; if (c==='permission-denied') return 'Bu işlem için yetkin yok. Yönetici hesabıyla girdiğinden ve güvenlik kurallarının yüklendiğinden emin ol.'; if (c==='quota_exceeded') return 'Veritabanı doldu. Eski yıllardan bir yedek alıp bana haber ver.'; if (c==='invalid_argument') return 'Bu kayıt yazılamadı. Programı sahibi olarak açtığından emin ol.'; return 'Kaydedilemedi, bağlantını kontrol edip tekrar dene.'; }
@@ -824,7 +884,7 @@ async function doBackup(){
   try {
     const out = {app:'ustatahir-aidat', version:1, created:new Date().toISOString(), docs:[]};
     const s = await db.doc('settings/main').get(); if (s.exists) out.docs.push({path:'settings/main', data:s.data()});
-    for (const col of ['units','ledger','exp','members','summary']){ const q = await db.collection(col).get(); q.docs.forEach(d=>out.docs.push({path:col+'/'+d.id, data:d.data()})); }
+    for (const col of ['units','ledger','exp','members','summary','notices','requests','polls']){ const q = await db.collection(col).get(); q.docs.forEach(d=>out.docs.push({path:col+'/'+d.id, data:d.data()})); }
     await dl.save({filename:'Ustatahir_Yedek_'+todayISO()+'.json', data: JSON.stringify(out)});
     toast('Yedek kaydedildi');
   } catch(e){ if (!(e && e.code==='declined')) toast('Yedek alınamadı.'); }
@@ -1141,6 +1201,378 @@ function budgetCard(){
 }
 
 
+/* =====================================================================
+   EK ÖZELLİKLER: makbuz, gelenler (banka, bildirim, talep, anket),
+   grup hesabı, hatırlatmalar, sakin ekranı eklentileri, bina silueti
+   ===================================================================== */
+
+/* ---------- sayıyı yazıya çevir ---------- */
+function yaziyla(n){
+  const B = ['', 'Bir', 'İki', 'Üç', 'Dört', 'Beş', 'Altı', 'Yedi', 'Sekiz', 'Dokuz'];
+  const O = ['', 'On', 'Yirmi', 'Otuz', 'Kırk', 'Elli', 'Altmış', 'Yetmiş', 'Seksen', 'Doksan'];
+  const uc = x => { const y = Math.floor(x/100), o = Math.floor(x%100/10), b = x%10; const p = [];
+    if (y) p.push((y > 1 ? B[y] + ' ' : '') + 'Yüz'); if (o) p.push(O[o]); if (b) p.push(B[b]); return p.join(' '); };
+  const lira = Math.floor(n), kurus = Math.round((n - lira) * 100);
+  const parts = []; let rest = lira;
+  [[1e9,'Milyar'],[1e6,'Milyon'],[1e3,'Bin']].forEach(([v, w]) => { const g = Math.floor(rest / v); rest %= v; if (g) parts.push(g === 1 && w === 'Bin' ? 'Bin' : uc(g) + ' ' + w); });
+  if (rest) parts.push(uc(rest));
+  let s = (parts.join(' ') || 'Sıfır') + ' Türk Lirası';
+  if (kurus) s += ' ' + uc(kurus) + ' Kuruş';
+  return s;
+}
+
+/* ---------- makbuz ---------- */
+function maxReceipt(){
+  let m = 0; const pre = S.year + '-';
+  for (const l of Object.values(S.ledgers)) for (const it of (l.items || [])) if (it.receiptNo && String(it.receiptNo).startsWith(pre)) m = Math.max(m, Number(String(it.receiptNo).slice(pre.length)) || 0);
+  return m;
+}
+const fmtReceipt = n => S.year + '-' + String(n).padStart(4, '0');
+let receiptsChecked = false, rcTimer = null, rcBusy = false;
+function ensureReceipts(){ if (rcTimer) return; rcTimer = setTimeout(() => { rcTimer = null; runReceipts(); }, 3000); }
+async function runReceipts(){
+  if (rcBusy || MODE !== 'admin' || !S.settings || S.year !== (S.settings.currentYear || S.year)) return;
+  const miss = [];
+  for (const [kod, l] of Object.entries(S.ledgers)) for (const it of (l.items || [])) if (it.type === 'odeme' && !it.receiptNo) miss.push({kod, id: it.id, date: it.date || '9999', at: it.at || 0});
+  if (!miss.length) return;
+  rcBusy = true;
+  try {
+    miss.sort((a, b) => a.date.localeCompare(b.date) || a.at - b.at);
+    let n = maxReceipt(); const byUnit = {};
+    miss.forEach(m => { (byUnit[m.kod] = byUnit[m.kod] || {})[m.id] = fmtReceipt(++n); });
+    for (const [kod, map] of Object.entries(byUnit)){
+      try { await writeLedger(kod, cur => cur.map(it => map[it.id] && !it.receiptNo ? Object.assign({}, it, {receiptNo: map[it.id]}) : it)); } catch(e){}
+    }
+  } finally { rcBusy = false; }
+}
+function receiptHtml(kod, it){
+  const u = S.units[kod] || {}, s = S.settings || {}, site = s.siteName || 'Ustatahir Konutları';
+  const row = (k, v) => `<tr><td style="padding:9px 0;color:#5d6d74;width:38%;border-bottom:1px solid #e3e8e8">${k}</td><td style="padding:9px 0;border-bottom:1px solid #e3e8e8;font-weight:600">${v}</td></tr>`;
+  return `<div style="padding:46px 52px;font-size:13.5px;line-height:1.45">
+    <div style="border:2px solid #1f3a45;border-radius:12px;overflow:hidden">
+      <div style="background:#1f3a45;color:#fff;padding:18px 24px;display:flex;justify-content:space-between;align-items:center">
+        <div><div style="font-family:'Bricolage Grotesque',Arial,sans-serif;font-size:22px;font-weight:700">${esc(site)}</div><div style="opacity:.8;font-size:12px">Site Yönetimi</div></div>
+        <div style="text-align:right"><div style="font-size:18px;font-weight:700;letter-spacing:.06em">TAHSİLAT MAKBUZU</div><div style="opacity:.85">No: ${esc(it.receiptNo || '—')}</div></div>
+      </div>
+      <div style="padding:22px 24px">
+        <table style="width:100%;border-collapse:collapse">
+          ${row('Tarih', fmtDate(it.date) === 'tarihsiz' ? '—' : fmtDate(it.date))}
+          ${row('Bağımsız bölüm', esc(u.blok) + ' Blok, Daire ' + esc(u.no))}
+          ${row('Ödeyen', esc(unitName(u) || '—'))}
+          ${row('Açıklama', esc(it.desc || 'Aidat ödemesi'))}
+          ${row('Ödeme şekli', esc(it.method || 'Belirtilmemiş'))}
+        </table>
+        <div style="margin-top:18px;background:#eef6f6;border-radius:10px;padding:16px 18px;display:flex;justify-content:space-between;align-items:center;gap:16px">
+          <div><div style="font-size:11px;color:#5d6d74;letter-spacing:.08em">TUTAR</div><div style="font-size:26px;font-weight:700;color:#1f3a45">${TL(it.amount)}</div></div>
+          <div style="text-align:right;color:#1f3a45;font-weight:600;max-width:60%">#${esc(yaziyla(it.amount))}#</div>
+        </div>
+        <table style="width:100%;margin-top:40px"><tr>
+          <td style="width:50%;color:#5d6d74;font-size:12px;vertical-align:bottom">Yukarıda yazılı tutar tahsil edilmiştir.<br>Bu makbuz elektronik ortamda düzenlenmiştir.</td>
+          <td style="text-align:center;color:#5d6d74;font-size:12px">Tahsil eden<br><br><br>____________________<br>Site Yönetimi</td></tr></table>
+      </div>
+    </div></div>`;
+}
+async function receiptPdf(kod, id){
+  if (!pdfReady()) return;
+  const it = items(kod).find(x => x.id === id); if (!it) return;
+  toast('Makbuz hazırlanıyor…');
+  try { const blob = await htmlToPdfBlob(receiptHtml(kod, it)); await dl.save({filename: 'Makbuz_' + (it.receiptNo || kod) + '.pdf', data: blob}); toast('Makbuz indirildi'); }
+  catch(e){ toast('Makbuz oluşturulamadı.'); }
+}
+
+/* ---------- bina silueti ---------- */
+function skylineSvg(opts){
+  opts = opts || {}; const colors = opts.colors || {}, hl = opts.highlight;
+  const blocks = [['A1',5],['A2',5],['B1',4],['B2',4],['C1',5],['C2',5]];
+  const W = 84, G = 16, base = 128, floorH = 19;
+  let x = 10, out = '';
+  blocks.forEach(([b, floors]) => {
+    const h = floors * floorH + 14, y = base - h;
+    const light = opts.tone === 'light';
+    const fill = colors[b] || (hl === b ? (light ? '#6cc6cf' : 'var(--accent)') : (light ? 'rgba(255,255,255,.14)' : 'var(--sky-block)'));
+    const win = (hl === b || colors[b]) ? 'rgba(255,255,255,.8)' : (light ? 'rgba(255,255,255,.45)' : 'var(--sky-win)');
+    out += `<g><rect x="${x}" y="${y}" width="${W}" height="${h}" rx="4" fill="${fill}"/><rect x="${x+W/2-9}" y="${base-16}" width="18" height="16" rx="2" fill="${win}" opacity=".55"/>`;
+    for (let f = 0; f < floors; f++) for (let c = 0; c < 2; c++) out += `<rect x="${x + 14 + c*36}" y="${y + 10 + f*floorH}" width="20" height="10" rx="2" fill="${win}"/>`;
+    out += `<text x="${x+W/2}" y="${base+16}" text-anchor="middle" font-size="12" font-weight="700" fill="${opts.label || (opts.tone === 'light' ? 'rgba(255,255,255,.75)' : 'var(--muted)')}" font-family="inherit">${b}</text></g>`;
+    x += W + G;
+  });
+  return `<svg class="skyline" viewBox="0 0 ${x} ${base+22}" role="img" aria-label="Site blokları"><rect x="0" y="${base}" width="${x}" height="2" fill="${opts.ground || (opts.tone === 'light' ? 'rgba(255,255,255,.3)' : 'var(--line)')}"/>${out}</svg>`;
+}
+function blokColors(){
+  const t = totals(), c = {};
+  for (const [b, x] of Object.entries(t.byBlok)){ const r = x.due > 0 ? x.paid / x.due : 1; c[b] = r >= .95 ? 'var(--good)' : r >= .75 ? 'var(--warn)' : 'var(--bad)'; }
+  return c;
+}
+
+/* ---------- hatırlatmalar ---------- */
+function reminders(){ return (S.settings && S.settings.reminders) || []; }
+function nextDate(r){
+  if (!r.date) return null; let d = new Date(r.date + 'T00:00:00');
+  if (r.yearly){ const now = new Date(); now.setHours(0,0,0,0); while (d < now) d = new Date(d.getFullYear() + 1, d.getMonth(), d.getDate()); }
+  return d;
+}
+function daysTo(d){ const now = new Date(); now.setHours(0,0,0,0); return Math.round((d - now) / 86400000); }
+function dueReminders(){ return reminders().map(r => ({r, d: nextDate(r)})).filter(x => x.d && daysTo(x.d) <= (x.r.warn || 30)).sort((a,b) => a.d - b.d); }
+function remindersCard(){
+  const list = reminders().map(r => ({r, d: nextDate(r)})).sort((a,b) => (a.d||0) - (b.d||0));
+  return `<section class="card" style="display:flex;flex-direction:column;gap:12px">
+    <h2>Hatırlatmalar</h2>
+    <p style="margin:0">Sözleşme bitişi, sigorta yenileme, asansör periyodik kontrolü gibi tarihli işler. Yaklaşınca Özet ekranında uyarı çıkar.</p>
+    <div class="row2"><div class="field"><label for="remTitle">Ne?</label><input id="remTitle" placeholder="ör. Asansör bakım sözleşmesi bitiyor"></div>
+      <div class="field"><label for="remDate">Tarih</label><input id="remDate" type="date"></div></div>
+    <div class="row2"><label style="display:flex;gap:8px;align-items:center"><input id="remYearly" type="checkbox" checked> Her yıl tekrarla</label>
+      <div class="field"><label for="remWarn">Kaç gün önce uyarsın?</label><input id="remWarn" inputmode="numeric" value="30"></div></div>
+    <div class="actions"><button class="btn" data-act="addRem">Hatırlatma ekle</button></div>
+    <div class="list">${list.map(({r, d}) => { const dd = d ? daysTo(d) : null; return `<div class="row"><div class="grow"><div class="t">${esc(r.title)}</div><div class="s">${d ? fmtDate(d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate())) : '—'}${r.yearly ? ' · her yıl' : ''}</div></div>
+      ${dd != null ? `<span class="pill ${dd < 0 ? 'bad' : dd <= (r.warn||30) ? 'warn' : 'good'}">${dd < 0 ? Math.abs(dd) + ' gün geçti' : dd === 0 ? 'bugün' : dd + ' gün kaldı'}</span>` : ''}
+      <button class="iconbtn" data-act="delRem" data-id="${esc(r.id)}">Sil</button></div>`; }).join('') || '<div class="sub">Henüz hatırlatma yok.</div>'}</div>
+  </section>`;
+}
+async function addReminder(){
+  const title = $('#remTitle').value.trim(), date = $('#remDate').value, warn = parseInt($('#remWarn').value, 10) || 30;
+  if (!title || !date){ toast('Başlık ve tarih gir.'); return; }
+  const list = reminders().concat([{id: uid(), title, date, yearly: $('#remYearly').checked, warn}]);
+  try { await db.doc('settings/main').update({reminders: list}); toast('Hatırlatma eklendi'); } catch(e){ toast(saveErr(e)); }
+}
+async function delReminder(id){
+  try { await db.doc('settings/main').update({reminders: reminders().filter(r => r.id !== id)}); toast('Hatırlatma silindi'); } catch(e){ toast(saveErr(e)); }
+}
+
+/* ---------- grup hesabı ---------- */
+function groupAccounts(){ return Object.values(S.members || {}).filter(m => m.group && m.active !== false); }
+function memberMsg(m){
+  const site = (S.settings && S.settings.siteName) || 'Ustatahir Konutları';
+  const scope = m.group ? `${(m.units||[]).length} dairenizin (${(m.units||[]).join(', ')})` : 'dairenizin';
+  return `Merhaba${m.label ? ' ' + m.label : ''},\n\n${site} aidat takip sistemine giriş bilgileriniz:\n\nAdres: ${siteUrl()}\nKullanıcı adı: ${m.username}\nŞifre: ${m.initialPassword || '(şifrenizi değiştirdiniz)'}\n\nGiriş yaptığınızda ${scope} aidat durumunu, ödemelerini ve site giderlerini görebilirsiniz. İlk girişte şifrenizi değiştirmenizi öneririz. Bu bilgileri kimseyle paylaşmayın.\n\nSite Yönetimi`;
+}
+function groupSheet(){
+  const maliks = {}; unitList().forEach(u => { if (u.malik) (maliks[u.malik] = maliks[u.malik] || []).push(u.kod); });
+  const multi = Object.entries(maliks).filter(([, l]) => l.length > 1);
+  groupSheet.sel = groupSheet.sel || new Set();
+  openSheet(`<h2>Grup hesabı aç</h2>
+    <p class="hint" style="margin:0">Birden fazla daireyi tek hesapla gösterir (ör. RSU'nun 10 dairesi). Bu hesap yalnızca seçtiğin daireleri görür.</p>
+    ${multi.length ? `<div class="field"><label>Malik adına göre hızlı seç</label><div class="chips">${multi.map(([m, l]) => `<button type="button" class="chip" data-act="grpMalik" data-v="${esc(m)}">${esc(m)} (${l.length})</button>`).join('')}</div></div>` : ''}
+    <div class="row2"><div class="field"><label for="gUser">Kullanıcı adı</label><input id="gUser" placeholder="ör. RSU" value="${esc(groupSheet.user || '')}"></div>
+      <div class="field"><label for="gLabel">Görünen ad</label><input id="gLabel" placeholder="ör. RSU Yetkilisi" value="${esc(groupSheet.label || '')}"></div></div>
+    <div class="field"><label>Daireler (${groupSheet.sel.size} seçili)</label><div class="chips">${unitList().map(u => `<button type="button" class="chip" data-act="grpUnit" data-v="${esc(u.kod)}" aria-pressed="${groupSheet.sel.has(u.kod)}">${esc(u.kod)}</button>`).join('')}</div></div>
+    <div id="gErr"></div>
+    <div class="actions" style="justify-content:flex-end"><button class="btn" data-act="close">Vazgeç</button><button class="btn primary" data-act="grpCreate">Hesabı aç</button></div>`);
+}
+async function createGroup(){
+  const user = $('#gUser').value.trim().toUpperCase().replace(/\s+/g, '-'), label = $('#gLabel').value.trim(), units = Array.from(groupSheet.sel).sort();
+  const err = m => { $('#gErr').innerHTML = '<div class="err">' + esc(m) + '</div>'; };
+  if (!/^[A-ZÇĞİÖŞÜ0-9][A-ZÇĞİÖŞÜ0-9._-]{1,30}$/.test(user)) return err('Kullanıcı adı en az 2 harf/rakam olmalı, boşluk içermemeli.');
+  if (units.length < 1) return err('En az bir daire seç.');
+  const ascii = user.replace(/Ç/g,'C').replace(/Ğ/g,'G').replace(/İ/g,'I').replace(/Ö/g,'O').replace(/Ş/g,'S').replace(/Ü/g,'U');
+  if (Object.values(S.members||{}).some(m => m.username === ascii)) return err('Bu kullanıcı adı kullanılıyor, başka bir ad seç.');
+  const pass = genPass();
+  try {
+    const id = await FB.createResident(emailFor(ascii), pass);
+    await db.doc('members/' + id).set({group: true, units, unit: '', username: ascii, label, initialPassword: pass, pwChanged: false, active: true, createdAt: Date.now()});
+    groupSheet.sel = null; groupSheet.user = ''; groupSheet.label = '';
+    closeSheet(); toast('Grup hesabı açıldı'); openMemberMsg(id);
+  } catch(e){ err(accErr(e)); }
+}
+function openMemberMsg(id){
+  const m = S.members[id] || null;
+  const show = mm => { msgSheet.state = {kod: ''}; openSheet(`<h2>${esc(mm.username)} · giriş bilgileri</h2><div class="field"><label for="rText">Mesaj</label><textarea id="rText" style="min-height:240px">${esc(memberMsg(mm))}</textarea></div><div class="actions" style="justify-content:flex-end"><button class="btn" data-act="close">Kapat</button><button class="btn primary" data-act="copyRemind">Kopyala</button></div>`); };
+  if (m) return show(m);
+  setTimeout(() => { if (S.members[id]) show(S.members[id]); }, 1200);
+}
+
+/* ---------- gelenler (yönetici) ---------- */
+function inboxCount(){ return (S.notices || []).filter(n => n.status === 'bekliyor').length + (S.requests || []).filter(r => r.status !== 'cozuldu').length; }
+const REQ_ST = {acik: ['Yeni', 'warn'], islemde: ['İşlemde', 'warn'], cozuldu: ['Çözüldü', 'good']};
+function vGelen(){
+  const pend = (S.notices || []).filter(n => n.status === 'bekliyor').sort((a,b) => a.createdAt - b.createdAt);
+  const done = (S.notices || []).filter(n => n.status !== 'bekliyor').sort((a,b) => (b.decidedAt||0) - (a.decidedAt||0)).slice(0, 6);
+  const reqs = (S.requests || []).slice().sort((a,b) => (a.status === 'cozuldu') - (b.status === 'cozuldu') || b.createdAt - a.createdAt);
+  const polls = (S.polls || []).slice().sort((a,b) => b.createdAt - a.createdAt);
+  const pl = kod => S.units[kod] ? `<span class="plate">${plateTxt(S.units[kod])}</span>` : `<span class="plate">${esc(kod)}</span>`;
+  return `
+  <section class="card" style="display:flex;flex-direction:column;gap:10px">
+    <div class="sec-h"><h2>Banka dökümünden ödeme al</h2><span class="sub">Excel / CSV</span></div>
+    <p style="margin:0">Bankanın internet şubesinden hesap hareketlerini Excel olarak indir ve burada seç. Açıklamasında daire kodu (A1-05, A1 D5, A1 DAİRE 5…) veya sakin adı geçen gelen havaleler ilgili daireye eşleşir; kontrol edip onaylarsın.</p>
+    <div class="actions"><label class="btn primary" for="bankFile" style="cursor:pointer">Dosya seç</label><input id="bankFile" type="file" accept=".xlsx,.xls,.csv" hidden></div>
+    <div id="bankBox"></div>
+  </section>
+  <section class="card">
+    <div class="sec-h"><h2>Ödeme bildirimleri</h2><span class="sub">${pend.length} bekliyor</span></div>
+    <div class="list wrapinfo">${pend.map(n => `<div class="row" style="flex-wrap:wrap">${pl(n.unit)}
+      <div class="grow"><div class="t">${TL(n.amount)} · ${esc(n.method)}</div><div class="s">${fmtDate(n.date)}${n.note ? ' · ' + esc(n.note) : ''} · bildirim ${fmtDate(new Date(n.createdAt).toISOString().slice(0,10))}</div></div>
+      <button class="btn small primary" data-act="ntOk" data-id="${esc(n.id)}">Onayla</button><button class="iconbtn" data-act="ntNo" data-id="${esc(n.id)}">Reddet</button></div>`).join('') || '<div class="sub" style="padding:6px 0">Bekleyen bildirim yok.</div>'}
+      ${done.length ? `<div class="sub" style="margin-top:10px">Son kararlar</div>` + done.map(n => `<div class="row">${pl(n.unit)}<div class="grow"><div class="s">${TL(n.amount)} · ${esc(n.method)} · ${fmtDate(n.date)}</div></div><span class="pill ${n.status === 'onaylandi' ? 'good' : 'bad'}">${n.status === 'onaylandi' ? 'Onaylandı' : 'Reddedildi'}</span></div>`).join('') : ''}</div>
+  </section>
+  <section class="card">
+    <div class="sec-h"><h2>Talepler ve arızalar</h2><span class="sub">${reqs.filter(r => r.status !== 'cozuldu').length} açık</span></div>
+    <div class="list wrapinfo">${reqs.map(r => `<div class="row" style="flex-wrap:wrap;align-items:flex-start">${pl(r.unit)}
+      <div class="grow"><div class="t">${esc(r.title)} <span class="pill ${REQ_ST[r.status][1]}">${REQ_ST[r.status][0]}</span></div><div class="s">${fmtDate(new Date(r.createdAt).toISOString().slice(0,10))}${r.text ? ' · ' + esc(r.text) : ''}</div>${r.reply ? `<div class="s" style="color:var(--accent)">Yanıtın: ${esc(r.reply)}</div>` : ''}
+        ${r.status !== 'cozuldu' ? `<div style="display:flex;gap:6px;margin-top:6px;flex-wrap:wrap"><input id="rep_${esc(r.id)}" class="search" style="flex:1;min-width:160px;padding:6px 10px" placeholder="Yanıt yaz (sakin görür)"><button class="btn small" data-act="reqSave" data-id="${esc(r.id)}" data-st="islemde">İşleme al</button><button class="btn small primary" data-act="reqSave" data-id="${esc(r.id)}" data-st="cozuldu">Çözüldü</button></div>` : ''}</div></div>`).join('') || '<div class="sub" style="padding:6px 0">Henüz talep yok.</div>'}</div>
+  </section>
+  <section class="card" style="display:flex;flex-direction:column;gap:10px">
+    <div class="sec-h"><h2>Anketler</h2><span class="sub">bilgi amaçlı, her daire bir oy</span></div>
+    <div class="field"><label for="pTitle">Soru</label><input id="pTitle" placeholder="ör. Bahçeye çocuk oyun alanı yapılsın mı?"></div>
+    <div class="field"><label for="pOpts">Seçenekler (her satıra bir tane)</label><textarea id="pOpts" style="min-height:70px">Evet\nHayır\nFikrim yok</textarea></div>
+    <div class="field"><label for="pNote">Açıklama (isteğe bağlı)</label><input id="pNote" placeholder="ör. Tahmini maliyet daire başı 500 TL"></div>
+    <div class="actions"><button class="btn" data-act="pollNew">Anketi başlat</button></div>
+    <div class="list wrapinfo">${polls.map(p => `<div class="row" style="flex-wrap:wrap"><div class="grow"><div class="t" style="white-space:normal">${esc(p.title)}</div><div class="s">${p.open ? 'Açık' : 'Kapalı'}${p.showResults ? ' · sonuçlar sakinlere açık' : ''}${p.total != null ? ' · ' + p.total + ' oy' : ''}</div>
+      ${p.results ? `<div style="margin-top:6px">${p.options.map((o, i) => { const v = p.results[i] || 0, pc = p.total ? Math.round(v / p.total * 100) : 0; return `<div class="cat"><span>${esc(o)}</span><span class="num sub">${v} oy · %${pc}</span><div class="cbar"><span style="width:${pc}%"></span></div></div>`; }).join('')}</div>` : ''}</div>
+      <div class="actions"><button class="btn small" data-act="pollCount" data-id="${esc(p.id)}">Oyları say</button><button class="btn small" data-act="pollToggle" data-id="${esc(p.id)}">${p.open ? 'Kapat' : 'Yeniden aç'}</button><button class="iconbtn" data-act="pollShow" data-id="${esc(p.id)}">${p.showResults ? 'Sonuçları gizle' : 'Sonuçları göster'}</button></div></div>`).join('') || '<div class="sub">Henüz anket yok.</div>'}</div>
+    <p class="hint" style="margin:0">Anket sonuçları bilgi amaçlıdır; bağlayıcı kararlar Kat Mülkiyeti Kanunu'na göre kat malikleri kurulunda alınır.</p>
+  </section>`;
+}
+async function approveNotice(id){
+  const n = (S.notices || []).find(x => x.id === id); if (!n) return;
+  const rec = {id: uid(), type: 'odeme', amount: n.amount, date: n.date || todayISO(), desc: suggestDesc(n.unit, n.amount, 'odeme'), method: n.method || 'Havale', note: 'Sakin bildirimi', at: Date.now(), receiptNo: fmtReceipt(maxReceipt() + 1)};
+  try { await writeLedger(n.unit, cur => cur.concat([rec])); await db.doc('notices/' + id).update({status: 'onaylandi', decidedAt: Date.now(), itemId: rec.id}); toast(n.unit + ' ödemesi kaydedildi'); }
+  catch(e){ toast(saveErr(e)); }
+}
+async function rejectNotice(id){ try { await db.doc('notices/' + id).update({status: 'reddedildi', decidedAt: Date.now()}); toast('Bildirim reddedildi'); } catch(e){ toast(saveErr(e)); } }
+async function saveRequest(id, st){
+  const inp = document.getElementById('rep_' + id), reply = inp ? inp.value.trim() : '';
+  const r = (S.requests || []).find(x => x.id === id); if (!r) return;
+  const data = {status: st, updatedAt: Date.now()}; if (reply) data.reply = reply;
+  try { await db.doc('requests/' + id).update(data); toast(st === 'cozuldu' ? 'Talep çözüldü olarak işaretlendi' : 'Talep işleme alındı'); } catch(e){ toast(saveErr(e)); }
+}
+async function newPoll(){
+  const title = $('#pTitle').value.trim(), options = $('#pOpts').value.split('\n').map(x => x.trim()).filter(Boolean).slice(0, 8), note = $('#pNote').value.trim();
+  if (!title || options.length < 2){ toast('Soru ve en az iki seçenek yaz.'); return; }
+  try { await db.collection('polls').doc(uid()).set({title, options, note, open: true, showResults: false, createdAt: Date.now()}); toast('Anket başlatıldı; sakinler hemen görür'); } catch(e){ toast(saveErr(e)); }
+}
+async function countPoll(id){
+  const p = (S.polls || []).find(x => x.id === id); if (!p) return;
+  try { const q = await db.collection('polls/' + id + '/votes').get(); const res = {}; q.docs.forEach(d => { const o = d.data().option; res[o] = (res[o] || 0) + 1; });
+    await db.doc('polls/' + id).update({results: res, total: q.size}); toast(q.size + ' oy sayıldı'); } catch(e){ toast(saveErr(e)); }
+}
+async function togglePoll(id, field){ const p = (S.polls || []).find(x => x.id === id); if (!p) return; try { await db.doc('polls/' + id).update({[field]: !p[field]}); if (field === 'showResults' && !p.showResults) countPoll(id); } catch(e){ toast(saveErr(e)); } }
+
+/* ---------- banka dökümü ---------- */
+let bankRows = [];
+function parseBankDate(v){
+  if (v == null || v === '') return '';
+  if (typeof v === 'number'){ const d = new Date(Math.round((v - 25569) * 86400000)); return d.getUTCFullYear() + '-' + pad(d.getUTCMonth() + 1) + '-' + pad(d.getUTCDate()); }
+  const s = String(v).trim(); let m = s.match(/^(\d{1,2})[./-](\d{1,2})[./-](\d{4})/); if (m) return m[3] + '-' + pad(m[2]) + '-' + pad(m[1]);
+  m = s.match(/^(\d{4})-(\d{2})-(\d{2})/); if (m) return m[1] + '-' + m[2] + '-' + m[3];
+  return '';
+}
+function parseBankAmount(v){
+  if (typeof v === 'number') return v;
+  let s = String(v || '').replace(/\s|TL|TRY|₺/gi, ''); const neg = /^-/.test(s) || /^\(.*\)$/.test(s); s = s.replace(/[-()+]/g, '');
+  const n = parseAmount(s); return isNaN(n) ? NaN : (neg ? -n : n);
+}
+function matchUnit(desc){
+  const d = up(desc).replace(/[İI]/g, 'I');
+  const m = d.match(/\b([ABC])\s*-?\s*([12])\s*(?:BLOK|BL\.?)?\s*[-/ ]?\s*(?:D(?:AIRE|\.)?\s*(?:NO)?\s*[:.]?\s*)?0?(\d{1,2})\b/);
+  if (m){ const kod = m[1] + m[2] + '-' + pad(Number(m[3])); if (S.units[kod]) return {kod, by: 'kod'}; }
+  for (const u of unitList()) for (const nm of [u.oturan, u.malik]){ if (nm && nm.length >= 5 && nm !== 'RSU' && d.includes(up(nm).replace(/[İI]/g, 'I').replace(/\s*(BEY|HANIM)$/, ''))) return {kod: u.kod, by: 'isim'}; }
+  return null;
+}
+function onBankFile(file){
+  if (!window.XLSX){ toast('Excel aracı yüklenemedi, sayfayı yenile.'); return; }
+  const r = new FileReader();
+  r.onload = () => {
+    try {
+      const wb = window.XLSX.read(new Uint8Array(r.result), {type: 'array'}); const ws = wb.Sheets[wb.SheetNames[0]];
+      const rows = window.XLSX.utils.sheet_to_json(ws, {header: 1, raw: true, defval: ''});
+      let h = -1, cD = -1, cT = -1, cA = -1, cAl = -1;
+      for (let i = 0; i < Math.min(rows.length, 40); i++){
+        const low = rows[i].map(x => String(x).toLocaleLowerCase('tr-TR'));
+        const d = low.findIndex(x => x.includes('tarih')), t = low.findIndex(x => x.includes('açıklama') || x.includes('aciklama')), t2 = low.findIndex(x => x.includes('işlem') || x.includes('islem'));
+        const a = low.findIndex(x => x.includes('tutar') || x.includes('miktar')), al = low.findIndex(x => x.includes('alacak'));
+        if (d >= 0 && (t >= 0 || t2 >= 0) && (a >= 0 || al >= 0)){ h = i; cD = d; cT = t >= 0 ? t : t2; cA = a; cAl = al; break; }
+      }
+      if (h < 0){ $('#bankBox').innerHTML = '<div class="err">Dosyada "Tarih", "Açıklama" ve "Tutar" (veya "Alacak") sütunlarını bulamadım. Bankanın Excel dökümünü seçtiğinden emin ol; olmuyorsa dosyayı bana gönder, uyarlayayım.</div>'; return; }
+      const out = [];
+      rows.slice(h + 1).forEach((row, i) => {
+        const amt = parseBankAmount(cAl >= 0 ? row[cAl] : row[cA]); const desc = String(row[cT] || '').trim();
+        if (!(amt > 0) || !desc) return;
+        const date = parseBankDate(row[cD]); const m = matchUnit(desc);
+        const dup = m && items(m.kod).some(it => it.type === 'odeme' && Math.abs(it.amount - amt) < .01 && it.date === date);
+        out.push({i, date, desc, amount: amt, kod: m ? m.kod : '', by: m ? m.by : '', dup, on: !!m && !dup});
+      });
+      bankRows = out; drawBank();
+    } catch(e){ $('#bankBox').innerHTML = '<div class="err">Dosya okunamadı. Excel (.xlsx/.xls) veya CSV olduğundan emin ol.</div>'; }
+  };
+  r.readAsArrayBuffer(file);
+}
+function drawBank(){
+  const box = $('#bankBox'); if (!box) return;
+  const sel = bankRows.filter(r => r.on && r.kod);
+  box.innerHTML = `<div class="notice">${bankRows.length} gelen havale bulundu · ${bankRows.filter(r => r.kod).length} tanesi bir daireyle eşleşti · ${bankRows.filter(r => r.dup).length} tanesi zaten kayıtlı görünüyor.</div>
+    <div class="scroll-x"><table class="btable"><thead><tr><th></th><th>Tarih</th><th>Açıklama</th><th>Tutar</th><th>Daire</th></tr></thead><tbody>
+    ${bankRows.map((r, k) => `<tr class="${r.dup ? 'dup' : ''}"><td><input type="checkbox" data-bank="on" data-k="${k}" ${r.on ? 'checked' : ''} aria-label="Seç"></td><td class="num">${fmtDate(r.date)}</td><td>${esc(r.desc.slice(0, 70))}${r.dup ? '<div class="sub">zaten kayıtlı olabilir</div>' : ''}</td><td class="num">${TL(r.amount)}</td>
+      <td><select data-bank="kod" data-k="${k}"><option value="">— seç —</option>${unitList().map(u => `<option value="${esc(u.kod)}"${u.kod === r.kod ? ' selected' : ''}>${esc(u.kod)}</option>`).join('')}</select>${r.by === 'isim' ? '<div class="sub">isimden</div>' : ''}</td></tr>`).join('')}
+    </tbody></table></div>
+    <div class="actions" style="margin-top:10px"><button class="btn primary" data-act="bankSave" ${sel.length ? '' : 'disabled'}>${sel.length} ödemeyi kaydet (${TL(sel.reduce((a, r) => a + r.amount, 0))})</button><button class="btn" data-act="bankClear">Vazgeç</button></div>`;
+}
+async function saveBank(){
+  const sel = bankRows.filter(r => r.on && r.kod); if (!sel.length) return;
+  let n = maxReceipt(), done = 0; const byUnit = {};
+  sel.sort((a, b) => (a.date || '').localeCompare(b.date || ''));
+  for (const r of sel){ (byUnit[r.kod] = byUnit[r.kod] || []).push(r); }
+  try {
+    for (const [kod, list] of Object.entries(byUnit)){
+      await writeLedger(kod, cur => { let paidSoFar = 0; return cur.concat(list.map(r => { const rec = {id: uid(), type: 'odeme', amount: r.amount, date: r.date, desc: suggestDesc(kod, r.amount, 'odeme'), method: 'Havale', note: 'Banka: ' + r.desc.slice(0, 60), at: Date.now() + (done++), receiptNo: fmtReceipt(++n)}; paidSoFar += r.amount; return rec; })); });
+    }
+    bankRows = []; $('#bankBox').innerHTML = ''; toast(sel.length + ' ödeme kaydedildi');
+  } catch(e){ toast(saveErr(e)); }
+}
+
+/* ---------- sakin ekranı eklentileri ---------- */
+function residentExtrasHtml(kod){
+  const nts = (R.notices || []).filter(n => n.unit === kod).sort((a, b) => b.createdAt - a.createdAt).slice(0, 5);
+  const reqs = (R.requests || []).filter(r => r.unit === kod).sort((a, b) => b.createdAt - a.createdAt);
+  const polls = (R.polls || []).filter(p => p.open || p.showResults).sort((a, b) => b.createdAt - a.createdAt);
+  const NST = {bekliyor: ['Yönetim onayı bekliyor', 'warn'], onaylandi: ['Onaylandı', 'good'], reddedildi: ['Onaylanmadı, yönetimle görüşün', 'bad']};
+  return `
+  ${polls.length ? `<section class="card"><div class="sec-h"><h2>Anketler</h2><span class="sub">her daire bir oy</span></div>
+    ${polls.map(p => { const v = R.votes && R.votes[p.id + '_' + kod]; return `<div class="poll"><b>${esc(p.title)}</b>${p.note ? `<div class="sub">${esc(p.note)}</div>` : ''}
+      ${p.open ? `<div class="chips" style="margin-top:8px">${p.options.map((o, i) => `<button class="chip" data-act="vote" data-id="${esc(p.id)}" data-i="${i}" aria-pressed="${v && v.option === i}">${esc(o)}</button>`).join('')}</div><div class="sub" style="margin-top:6px">${v ? 'Oyunuz kaydedildi. Anket açıkken değiştirebilirsiniz.' : 'Seçeneğe dokunarak oy verin.'}</div>` : '<div class="sub">Anket kapandı.</div>'}
+      ${p.showResults && p.results ? `<div style="margin-top:8px">${p.options.map((o, i) => { const c = p.results[i] || 0, pc = p.total ? Math.round(c / p.total * 100) : 0; return `<div class="cat"><span>${esc(o)}</span><span class="num sub">%${pc}</span><div class="cbar"><span style="width:${pc}%"></span></div></div>`; }).join('')}<div class="sub">${p.total} daire oy verdi</div></div>` : ''}</div>`; }).join('')}
+  </section>` : ''}
+  <section class="card">
+    <div class="sec-h"><h2>Talepleriniz</h2><button class="btn small" data-act="rReq">Arıza / talep bildir</button></div>
+    <div class="list wrapinfo">${reqs.map(r => `<div class="row"><div class="grow"><div class="t">${esc(r.title)}</div><div class="s">${fmtDate(new Date(r.createdAt).toISOString().slice(0,10))}${r.text ? ' · ' + esc(r.text) : ''}</div>${r.reply ? `<div class="s" style="color:var(--accent)">Yönetim: ${esc(r.reply)}</div>` : ''}</div><span class="pill ${REQ_ST[r.status][1]}">${REQ_ST[r.status][0]}</span></div>`).join('') || '<div class="sub" style="padding:4px 0">Arıza veya isteğinizi buradan yönetime iletebilir, durumunu takip edebilirsiniz.</div>'}</div>
+  </section>
+  ${nts.length ? `<section class="card"><div class="sec-h"><h2>Ödeme bildirimleriniz</h2></div><div class="list wrapinfo">${nts.map(n => `<div class="row"><div class="grow"><div class="t num">${TL(n.amount)} · ${esc(n.method)}</div><div class="s">${fmtDate(n.date)}</div></div><span class="pill ${NST[n.status][1]}">${NST[n.status][0]}</span></div>`).join('')}</div></section>` : ''}`;
+}
+function noticeSheet(msg){
+  const kod = R.cur, c = calc(kod);
+  openSheet(`<h2>Ödeme bildir</h2>
+    <p class="hint" style="margin:0">Havale veya nakit ödeme yaptıysanız buradan bildirin. Yönetim onayladığında borcunuzdan düşülür ve makbuzunuz oluşur.</p>
+    <div class="row2"><div class="field"><label for="nAmount">Tutar (TL)</label><input id="nAmount" inputmode="decimal" placeholder="${esc(String(c.overdue || c.aidat))}"></div>
+      <div class="field"><label for="nDate">Ödeme tarihi</label><input id="nDate" type="date" value="${todayISO()}"></div></div>
+    <div class="field"><label>Ödeme şekli</label><div class="chips" id="nMethods">${['Havale', 'Nakit'].map((m, i) => `<button type="button" class="chip" data-act="nMethod" data-v="${m}" aria-pressed="${i === 0}">${m}</button>`).join('')}</div></div>
+    <div class="field"><label for="nNote">Not (isteğe bağlı)</label><input id="nNote" placeholder="ör. Ekim ve Kasım aidatı, dekont WhatsApp'tan gönderildi"></div>
+    ${msg ? '<div class="err">' + esc(msg) + '</div>' : ''}
+    <div class="actions" style="justify-content:flex-end"><button class="btn" data-act="close">Vazgeç</button><button class="btn primary" data-act="nSave">Bildir</button></div>`);
+  noticeSheet.method = 'Havale';
+}
+async function saveNotice(){
+  const amt = parseAmount($('#nAmount').value), date = $('#nDate').value, note = $('#nNote').value.trim().slice(0, 300);
+  if (!(amt > 0) || amt >= 1000000) return noticeSheet('Ödediğiniz tutarı yazın (ör. 1500).');
+  if (!date) return noticeSheet('Ödeme tarihini seçin.');
+  try { await db.collection('notices').doc(uid()).set({unit: R.cur, uid: FB.auth.currentUser.uid, amount: amt, date, method: noticeSheet.method || 'Havale', note, status: 'bekliyor', createdAt: Date.now()}); closeSheet(); toast('Bildiriminiz yönetime iletildi'); }
+  catch(e){ noticeSheet('Bildirim gönderilemedi. Tekrar deneyin.'); }
+}
+function requestSheet(msg){
+  openSheet(`<h2>Arıza / talep bildir</h2>
+    <div class="field"><label for="qTitle">Konu</label><input id="qTitle" maxlength="120" placeholder="ör. B2 blok asansörü çalışmıyor"></div>
+    <div class="field"><label for="qText">Açıklama</label><textarea id="qText" maxlength="1500" placeholder="Ne zamandan beri, nerede, varsa ayrıntılar"></textarea></div>
+    ${msg ? '<div class="err">' + esc(msg) + '</div>' : ''}
+    <div class="actions" style="justify-content:flex-end"><button class="btn" data-act="close">Vazgeç</button><button class="btn primary" data-act="qSave">Gönder</button></div>`);
+}
+async function saveRequestNew(){
+  const title = $('#qTitle').value.trim().slice(0, 120), text = $('#qText').value.trim().slice(0, 1500);
+  if (title.length < 3) return requestSheet('Konuyu kısaca yazın.');
+  try { await db.collection('requests').doc(uid()).set({unit: R.cur, uid: FB.auth.currentUser.uid, title, text, status: 'acik', createdAt: Date.now()}); closeSheet(); toast('Talebiniz yönetime iletildi'); }
+  catch(e){ requestSheet('Gönderilemedi. Tekrar deneyin.'); }
+}
+async function castVote(pollId, i){
+  try { await db.doc('polls/' + pollId + '/votes/' + R.cur).set({option: i, uid: FB.auth.currentUser.uid, at: Date.now()}); toast('Oyunuz kaydedildi'); }
+  catch(e){ toast('Oy kaydedilemedi; anket kapanmış olabilir.'); }
+}
+
 /* ---------- events ---------- */
 function go(view, unit){ S.view = view; S.unit = unit || null; S.pendingDelete = null; render(); window.scrollTo(0,0); }
 document.addEventListener('click', async ev => {
@@ -1196,6 +1628,32 @@ document.addEventListener('click', async ev => {
     case 'bulkPdf': bulkPdf(t.dataset.scope); break;
     case 'report': reportPdf(); break;
     case 'addAnn': addAnnouncement(); break;
+    case 'rcpt': receiptPdf(t.dataset.kod, t.dataset.id); break;
+    case 'addRem': addReminder(); break;
+    case 'delRem': delReminder(t.dataset.id); break;
+    case 'grpNew': groupSheet.sel = new Set(); groupSheet(); break;
+    case 'grpUnit': { groupSheet.user = $('#gUser').value; groupSheet.label = $('#gLabel').value; const v = t.dataset.v; if (groupSheet.sel.has(v)) groupSheet.sel.delete(v); else groupSheet.sel.add(v); groupSheet(); break; }
+    case 'grpMalik': { groupSheet.user = $('#gUser').value || t.dataset.v.split(' ')[0]; groupSheet.label = $('#gLabel').value || t.dataset.v; unitList().forEach(u => { if (u.malik === t.dataset.v) groupSheet.sel.add(u.kod); }); groupSheet(); break; }
+    case 'grpCreate': createGroup(); break;
+    case 'grpMsg': { const m = S.members[t.dataset.id]; if (!m) break; try { await navigator.clipboard.writeText(memberMsg(m)); t.textContent = 'Kopyalandı ✓'; } catch(e){ openMemberMsg(t.dataset.id); } break; }
+    case 'grpOff': { if (t.dataset.confirm !== '1'){ t.dataset.confirm = '1'; t.textContent = 'Emin misin?'; t.classList.add('confirm'); break; } try { await db.doc('members/' + t.dataset.id).update({active: false, units: []}); toast('Grup hesabı kapatıldı'); accountsSheet(); } catch(e){ toast(saveErr(e)); } break; }
+    case 'ntOk': t.disabled = true; approveNotice(t.dataset.id); break;
+    case 'ntNo': if (t.dataset.confirm !== '1'){ t.dataset.confirm = '1'; t.textContent = 'Emin misin?'; t.classList.add('confirm'); break; } rejectNotice(t.dataset.id); break;
+    case 'reqSave': saveRequest(t.dataset.id, t.dataset.st); break;
+    case 'pollNew': newPoll(); break;
+    case 'pollCount': countPoll(t.dataset.id); break;
+    case 'pollToggle': togglePoll(t.dataset.id, 'open'); break;
+    case 'pollShow': togglePoll(t.dataset.id, 'showResults'); break;
+    case 'bankSave': t.disabled = true; saveBank(); break;
+    case 'bankClear': bankRows = []; $('#bankBox').innerHTML = ''; break;
+    case 'rUnit': R.cur = t.dataset.k; R.draw(); window.scrollTo(0, 0); break;
+    case 'rNotice': noticeSheet(); break;
+    case 'nMethod': noticeSheet.method = t.dataset.v; document.querySelectorAll('#nMethods .chip').forEach(b => b.setAttribute('aria-pressed', b.dataset.v === t.dataset.v)); break;
+    case 'nSave': saveNotice(); break;
+    case 'rReq': requestSheet(); break;
+    case 'qSave': saveRequestNew(); break;
+    case 'rPdf': pdfEkstre(R.cur); break;
+    case 'vote': castVote(t.dataset.id, Number(t.dataset.i)); break;
     case 'logout': cleanupSubs(); FB.signOut(); break;
     case 'createMissing': createMissing(); break;
     case 'accountsSheet': accountsSheet(); break;
@@ -1218,14 +1676,20 @@ document.addEventListener('click', async ev => {
   }
 });
 document.addEventListener('input', ev => {
+  if ((ev.target.id === 'fAmount' || ev.target.id === 'fDesc') && txForm.state){
+    const f = txForm.state.f, amtEl = $('#fAmount'), uEl = $('#fUnit'), unit = uEl ? uEl.value : f.unit;
+    const sug = suggestDesc(unit, parseAmount(amtEl ? amtEl.value : ''), f.type), d = $('#fDesc'), h = $('#sugHint');
+    if (d && sug) d.placeholder = sug; if (h) h.textContent = sug && d && !d.value ? 'Boş bırakırsan "' + sug + '" yazılır.' : '';
+  }
   if (['sDesc','sAmount'].includes(ev.target.id)) splitPreview();
   if (ev.target.id === 'q'){ S.q = ev.target.value; render._focusQ = true; render(); render._focusQ = false; }
 });
 document.addEventListener('change', ev => {
   if (ev.target.id === 'fUnit'){ readTxFields(); drawTx(); }
-  if (ev.target.id === 'fAmount' && txForm.state){ readTxFields(); drawTx(); }
   if ((ev.target.id === 'restoreFile' || ev.target.id === 'restoreFile0') && ev.target.files[0]) onRestoreFile(ev.target.files[0]);
   if (ev.target.id === 'yearSel') setYear(Number(ev.target.value));
+  if (ev.target.id === 'bankFile' && ev.target.files[0]) onBankFile(ev.target.files[0]);
+  if (ev.target.dataset && ev.target.dataset.bank){ const r = bankRows[Number(ev.target.dataset.k)]; if (r){ if (ev.target.dataset.bank === 'on') r.on = ev.target.checked; else { r.kod = ev.target.value; r.by = ''; if (r.kod) r.on = true; } drawBank(); } }
   if (ev.target.id === 'sRsu' || ev.target.id === 'sDate') splitPreview();
   if (ev.target.id === 'bInc' || ev.target.id === 'bRes'){ const v = parseAmount(ev.target.value); if (!isNaN(v)) { budgetCard.state[ev.target.id==='bInc'?'inc':'res'] = v; render(); } }
 });
@@ -1245,10 +1709,10 @@ function emailFor(username){ return username.trim().toLowerCase().replace(/\s+/g
 
 /* ---- giriş ekranı ---- */
 function showLogin(msg){
-  MODE = 'login'; document.body.classList.add('resident');
+  MODE = 'login'; document.body.classList.add('resident', 'loginbg');
   $('#view').innerHTML = `
   <section class="card login">
-    <div class="rbanner" style="border-radius:12px"><h1>Ustatahir Konutları</h1><p>Aidat ve site giderleri</p></div>
+    <div class="rbanner" style="border-radius:12px"><h1>Ustatahir Konutları</h1><p>Aidat ve site giderleri</p>${skylineSvg({tone: 'light'})}</div>
     <form id="loginForm" style="display:flex;flex-direction:column;gap:12px" novalidate>
       <div class="field"><label for="lgUser">Kullanıcı adı</label><input id="lgUser" autocomplete="username" autocapitalize="characters" placeholder="ör. A1-05" required></div>
       <div class="field"><label for="lgPass">Şifre</label><input id="lgPass" type="password" autocomplete="current-password" required></div>
@@ -1274,7 +1738,7 @@ async function doLogin(){
 
 /* ---- yönetici ---- */
 function startAdmin(){
-  MODE = 'admin'; document.body.classList.remove('resident');
+  MODE = 'admin'; document.body.classList.remove('resident', 'loginbg'); receiptsChecked = false;
   S.settings = null; S.units = {}; S.ledgers = {}; S.exps = {}; S.members = {}; S.year = null; S.view = 'ozet';
   S.got = {s:false, u:false, l:false, e:false};
   $('#view').innerHTML = '<div class="card empty">Veriler yükleniyor…</div>';
@@ -1290,8 +1754,12 @@ function startAdmin(){
   subs.push(db.collection('members').onSnapshot(snap => {
     const m = {}; snap.docs.forEach(d=>{ m[d.id] = Object.assign({uid:d.id}, d.data()); }); S.members = m; render();
   }, ()=>{}));
+  const keepScroll = fn => { const y = window.scrollY; fn(); if (S.view === 'gelen') window.scrollTo(0, y); };
+  subs.push(db.collection('notices').onSnapshot(q => { S.notices = q.docs.map(d => Object.assign({id: d.id}, d.data())); keepScroll(render); }, ()=>{}));
+  subs.push(db.collection('requests').onSnapshot(q => { S.requests = q.docs.map(d => Object.assign({id: d.id}, d.data())); keepScroll(render); }, ()=>{}));
+  subs.push(db.collection('polls').onSnapshot(q => { S.polls = q.docs.map(d => Object.assign({id: d.id}, d.data())); keepScroll(render); }, ()=>{}));
 }
-function activeAccount(kod){ return Object.values(S.members || {}).filter(m => m.unit === kod && m.active !== false).sort((a,b)=>(b.createdAt||0)-(a.createdAt||0))[0] || null; }
+function activeAccount(kod){ return Object.values(S.members || {}).filter(m => m.unit === kod && !m.group && m.active !== false).sort((a,b)=>(b.createdAt||0)-(a.createdAt||0))[0] || null; }
 let lastSummary = null, sumTimer = null;
 function scheduleSummary(){
   if (MODE !== 'admin' || !S.settings || S.year !== (S.settings.currentYear || S.year)) return;
@@ -1360,7 +1828,9 @@ function accountsSheet(){
       <div class="grow"><div class="t">${esc(unitName(u)) || '<span class="sub">İsim girilmemiş</span>'}</div>
       <div class="s num">${a ? 'Kullanıcı: <b>' + esc(a.username) + '</b> · ' + (a.initialPassword ? 'Şifre: <b>' + esc(a.initialPassword) + '</b>' : 'şifresini değiştirdi') : 'hesap yok'}</div></div>
       ${a ? `<button class="btn small" data-act="copyAcc" data-kod="${esc(u.kod)}">Mesajı kopyala</button><button class="iconbtn" data-act="resetAcc" data-kod="${esc(u.kod)}">Yeni şifre</button>` : `<button class="btn small" data-act="oneAcc" data-kod="${esc(u.kod)}">Hesap aç</button>`}</div>`; }).join('')}</div>
-    <div class="actions" style="justify-content:flex-end"><button class="btn" data-act="accXlsx">Listeyi Excel indir</button><button class="btn" data-act="close">Kapat</button></div>`);
+    <h3 style="font-size:16px;margin-top:4px">Grup hesapları</h3>
+    <div class="list wrapinfo">${groupAccounts().map(m => `<div class="row" style="flex-wrap:wrap"><span class="plate">${esc(m.username)}</span><div class="grow"><div class="t">${esc(m.label || m.username)}</div><div class="s num">${(m.units||[]).length} daire · ${m.initialPassword ? 'Şifre: <b>' + esc(m.initialPassword) + '</b>' : 'şifresini değiştirdi'}</div></div><button class="btn small" data-act="grpMsg" data-id="${esc(m.uid)}">Mesajı kopyala</button><button class="iconbtn" data-act="grpOff" data-id="${esc(m.uid)}">Kapat</button></div>`).join('') || '<div class="sub">Birden fazla daireyi tek hesapla göstermek için (ör. RSU) grup hesabı aç.</div>'}</div>
+    <div class="actions" style="justify-content:flex-end"><button class="btn" data-act="grpNew">Grup hesabı aç</button><button class="btn" data-act="accXlsx">Listeyi Excel indir</button><button class="btn" data-act="close">Kapat</button></div>`);
 }
 async function accXlsx(){
   if (!window.XLSX){ toast('Excel aracı yüklenemedi.'); return; }
@@ -1411,7 +1881,7 @@ function residentMineHtml(kod){
     <div class="months" style="margin-top:14px">${c.ms.map((x,i)=>`<div class="mcell ${x==='f'?'':x}"><b>${AYK[i]}</b>${x==='p'?'Ödendi':x==='k'?'Kısmi':x==='l'?'Gecikti':'—'}</div>`).join('')}</div>
     <h3 style="font-size:16px;margin:18px 0 4px">Hareketler</h3>
     <div class="list">${its.map(it=>`<div class="row"><div class="grow"><div class="t" style="white-space:normal">${esc(it.desc)||TYPE_LABEL[it.type]}</div><div class="s">${fmtDate(it.date)}${it.type==='odeme'&&it.method?' · '+esc(it.method):''}${it.type==='borc'?' · eklenen borç':it.type==='indirim'?' · indirim':''}</div></div>
-      <span class="amt num ${it.type==='borc'?'bad':it.type==='indirim'?'good':''}">${it.type==='borc'?'+ ':it.type==='indirim'?'− ':''}${TL(it.amount)}</span></div>`).join('') || '<div class="empty">Bu yıl kayıt yok.</div>'}</div>
+      <span class="amt num ${it.type==='borc'?'bad':it.type==='indirim'?'good':''}">${it.type==='borc'?'+ ':it.type==='indirim'?'− ':''}${TL(it.amount)}</span>${it.type==='odeme' && it.receiptNo ? `<button class="iconbtn" data-act="rcpt" data-kod="${esc(kod)}" data-id="${esc(it.id)}">Makbuz</button>` : ''}</div>`).join('') || '<div class="empty">Bu yıl kayıt yok.</div>'}</div>
     ${s.iban?`<p class="sub" style="margin:14px 0 6px">Havale yaparken açıklamaya <b>DAİRE ${esc(kod)} AİDAT</b> yazın.</p><div class="iban"><code>${esc(s.iban)}</code><button class="btn small" data-rcopy="${esc(s.iban.replace(/\s/g,''))}">IBAN kopyala</button></div>`:''}
   </section>`;
 }
@@ -1439,34 +1909,58 @@ function residentPubHtml(p){
     ${s.iban?`<div class="iban"><code>${esc(s.iban)}</code><button class="btn small" data-rcopy="${esc(s.iban.replace(/\s/g,''))}">IBAN kopyala</button></div>${s.ibanName?`<p class="sub" style="margin:8px 0 0">Alıcı: ${esc(s.ibanName)}</p>`:''}`:'<p class="sub" style="margin:0">Ödeme bilgileri için site yönetimiyle görüşebilirsiniz.</p>'}</section>`;
 }
 function residentPage(kod, preview){
-  const s = S.settings || {};
-  return `<header class="rbanner"><div style="display:flex;justify-content:space-between;gap:12px;align-items:flex-start;flex-wrap:wrap"><div><h1>${esc(s.siteName || 'Ustatahir Konutları')}</h1><p>${esc(S.units[kod].blok)} Blok, Daire ${esc(S.units[kod].no)}${preview ? ' · yönetici önizlemesi' : ''}</p></div>
-    ${preview ? '' : '<div class="actions"><button class="btn small" data-act="chpw">Şifre değiştir</button><button class="btn small" data-act="logout">Çıkış</button></div>'}</div></header>
+  const s = S.settings || {}, u = S.units[kod];
+  const multi = !preview && R.units && R.units.length > 1;
+  const ic = p => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">${p}</svg>`;
+  return `<header class="rbanner"><div style="display:flex;justify-content:space-between;gap:12px;align-items:flex-start;flex-wrap:wrap"><div><h1>${esc(s.siteName || 'Ustatahir Konutları')}</h1><p>${multi ? esc(R.member.label || R.member.username) + ' · ' + R.units.length + ' daire' : esc(u.blok) + ' Blok, Daire ' + esc(u.no)}${preview ? ' · yönetici önizlemesi' : ''}</p></div>
+    ${preview ? '' : '<div class="actions"><button class="btn small" data-act="chpw">Şifre değiştir</button><button class="btn small" data-act="logout">Çıkış</button></div>'}</div>
+    ${skylineSvg({tone: 'light', highlight: u.blok})}</header>
+    ${multi ? `<section class="card"><div class="sec-h"><h2>Daireleriniz</h2><span class="sub">toplam borç ${TL(R.units.reduce((a, k) => a + (S.units[k] ? calc(k).overdue : 0), 0))}</span></div><div class="unitswitch">${R.units.filter(k => S.units[k]).map(k => { const c = calc(k); return `<button data-act="rUnit" data-k="${esc(k)}" aria-pressed="${k === kod}"><span class="plate">${plateTxt(S.units[k])}</span><span class="num" style="color:var(--${c.overdue > 0 ? 'bad' : 'good'})">${c.overdue > 0 ? TL(c.overdue) : '✓'}</span></button>`; }).join('')}</div></section>` : ''}
     ${!preview && R.member && R.member.initialPassword ? '<div class="rnote">Yönetimin verdiği ilk şifreyle girdiniz. Güvenliğiniz için <b>"Şifre değiştir"</b>e basıp kendi şifrenizi belirleyin.</div>' : ''}
-    ${residentMineHtml(kod)}${residentPubHtml(preview ? null : R.summary)}
-    <p class="sub" style="text-align:center">Yalnızca kendi dairenizin bilgilerini görebilirsiniz. Sorularınız için site yönetimiyle iletişime geçin.</p>`;
+    ${preview ? '' : `<section class="ractions">
+      <button class="btn" data-act="rNotice">${ic('<path d="M3 7h18v10H3z"/><path d="M3 10h18"/><path d="M7 14h3"/>')}Ödeme bildir</button>
+      <button class="btn" data-act="rReq">${ic('<path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.5 2.5-2.4-.6-.6-2.4z"/>')}Arıza / talep</button>
+      <button class="btn" data-act="rPdf">${ic('<path d="M6 3h9l4 4v14H6z"/><path d="M14 3v5h5"/><path d="M9 13h6M9 17h6"/>')}Ekstre (PDF)</button>
+      <button class="btn" data-act="chpw">${ic('<rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/>')}Şifre değiştir</button></section>`}
+    ${residentMineHtml(kod)}${preview ? '' : residentExtrasHtml(kod)}${residentPubHtml(preview ? null : R.summary)}
+    <p class="sub" style="text-align:center">Yalnızca ${multi ? 'size bağlı dairelerin' : 'kendi dairenizin'} bilgilerini görebilirsiniz. Sorularınız için site yönetimiyle iletişime geçin.</p>`;
 }
 async function startResident(user){
-  MODE = 'resident'; document.body.classList.add('resident');
+  MODE = 'resident'; document.body.classList.add('resident'); document.body.classList.remove('loginbg');
   $('#view').innerHTML = '<div class="card empty">Bilgileriniz yükleniyor…</div>';
   let mem;
   try { mem = await db.doc('members/' + user.uid).get(); } catch(e){ mem = null; }
-  if (!mem || !mem.exists || !mem.data().unit || mem.data().active === false){
+  const md = mem && mem.exists ? mem.data() : null;
+  const units = md ? ((md.units && md.units.length) ? md.units : (md.unit ? [md.unit] : [])) : [];
+  if (!md || md.active === false || !units.length){
     $('#view').innerHTML = '<section class="card login"><div class="rnote err">Bu hesap artık kullanılmıyor ya da bir daireye bağlı değil. Güncel giriş bilgileriniz için site yönetimine başvurun.</div><button class="btn" data-act="logout">Çıkış</button></section>'; return; }
-  R = {kod: mem.data().unit, member: mem.data(), docs: [], summary: null};
-  const kod = R.kod; S.units = {}; S.ledgers = {}; S.settings = null;
-  const draw = () => {
-    if (!S.settings || !S.units[kod]) return;
+  R = {units, cur: units[0], member: md, docs: {}, summary: null, nmap: {}, qmap: {}, notices: [], requests: [], polls: [], votes: {}, voteSubs: new Set()};
+  S.units = {}; S.ledgers = {}; S.settings = null;
+  let t = null;
+  const draw = () => { clearTimeout(t); t = setTimeout(() => {
+    if (!S.settings || !S.units[R.cur]) return;
     S.year = S.settings.currentYear || new Date().getFullYear();
-    const l = R.docs.find(d => d.year === S.year); S.ledgers = l ? {[kod]: l} : {};
-    $('#view').innerHTML = residentPage(kod, false);
-  };
+    S.ledgers = {}; for (const k of R.units){ const l = (R.docs[k] || []).find(d => d.year === S.year); if (l) S.ledgers[k] = l; }
+    R.notices = [].concat(...Object.values(R.nmap)); R.requests = [].concat(...Object.values(R.qmap));
+    const y = window.scrollY; $('#view').innerHTML = residentPage(R.cur, false); window.scrollTo(0, y);
+  }, 30); };
+  R.draw = draw;
   const fail = () => { $('#view').innerHTML = '<section class="card login"><div class="rnote err">Bilgileriniz okunamadı. Sayfayı yenileyip tekrar deneyin.</div><button class="btn" data-act="logout">Çıkış</button></section>'; };
-  subs.push(db.doc('members/' + user.uid).onSnapshot(s => { R.member = s.exists ? s.data() : R.member; draw(); }, ()=>{}));
-  subs.push(db.doc('settings/main').onSnapshot(s => { S.settings = s.exists ? s.data() : {}; draw(); }, fail));
-  subs.push(db.doc('units/' + kod).onSnapshot(s => { if (s.exists) S.units = {[kod]: Object.assign({kod}, s.data())}; draw(); }, fail));
-  subs.push(db.collection('ledger').where('unit','==',kod).onSnapshot(q => { R.docs = q.docs.map(d => Object.assign({id:d.id}, d.data())); draw(); }, fail));
-  subs.push(db.doc('summary/current').onSnapshot(s => { R.summary = s.exists ? s.data() : null; draw(); }, ()=>{}));
+  subs.push(db.doc('members/' + user.uid).onSnapshot(x => { R.member = x.exists ? x.data() : R.member; draw(); }, ()=>{}));
+  subs.push(db.doc('settings/main').onSnapshot(x => { S.settings = x.exists ? x.data() : {}; draw(); }, fail));
+  subs.push(db.doc('summary/current').onSnapshot(x => { R.summary = x.exists ? x.data() : null; draw(); }, ()=>{}));
+  for (const k of units){
+    subs.push(db.doc('units/' + k).onSnapshot(x => { if (x.exists) S.units[k] = Object.assign({kod: k}, x.data()); draw(); }, fail));
+    subs.push(db.collection('ledger').where('unit','==',k).onSnapshot(q => { R.docs[k] = q.docs.map(d => Object.assign({id: d.id}, d.data())); draw(); }, fail));
+    subs.push(db.collection('notices').where('unit','==',k).onSnapshot(q => { R.nmap[k] = q.docs.map(d => Object.assign({id: d.id}, d.data())); draw(); }, ()=>{}));
+    subs.push(db.collection('requests').where('unit','==',k).onSnapshot(q => { R.qmap[k] = q.docs.map(d => Object.assign({id: d.id}, d.data())); draw(); }, ()=>{}));
+  }
+  subs.push(db.collection('polls').onSnapshot(q => {
+    R.polls = q.docs.map(d => Object.assign({id: d.id}, d.data()));
+    for (const p of R.polls) for (const k of units){ const key = p.id + '_' + k; if (R.voteSubs.has(key)) continue; R.voteSubs.add(key);
+      subs.push(db.doc('polls/' + p.id + '/votes/' + k).onSnapshot(x => { R.votes[key] = x.exists ? x.data() : null; draw(); }, ()=>{})); }
+    draw();
+  }, ()=>{}));
 }
 function chpwSheet(msg){
   openSheet(`<h2>Şifre değiştir</h2>

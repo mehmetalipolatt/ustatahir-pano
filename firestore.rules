@@ -7,9 +7,11 @@ service cloud.firestore {
       return signedIn() && request.auth.token.email == 'mehmetalipolat20.05@gmail.com';
     }
     function memberPath() { return /databases/$(database)/documents/members/$(request.auth.uid); }
-    function myUnit() {
-      return signedIn() && exists(memberPath()) && get(memberPath()).data.active != false
-        ? get(memberPath()).data.unit : '__yok__';
+    function mem() { return get(memberPath()).data; }
+    // Hesabın görebildiği daireler: tek daire hesabında [unit], grup hesabında units listesi
+    function myUnits() {
+      return signedIn() && exists(memberPath()) && mem().active != false
+        ? (('units' in mem()) && mem().units.size() > 0 ? mem().units : [mem().unit]) : [];
     }
 
     // Genel ayarlar (site adı, IBAN, duyurular, aidat tutarı): giriş yapan herkes okur, yalnızca yönetici yazar
@@ -26,13 +28,13 @@ service cloud.firestore {
 
     // Daire bilgileri: sakin yalnızca kendi dairesini okur
     match /units/{kod} {
-      allow read: if isAdmin() || kod == myUnit();
+      allow read: if isAdmin() || kod in myUnits();
       allow write: if isAdmin();
     }
 
     // Ödeme ve borç hareketleri: sakin yalnızca kendi dairesininkileri okur
     match /ledger/{id} {
-      allow read: if isAdmin() || (signedIn() && resource.data.unit == myUnit());
+      allow read: if isAdmin() || (signedIn() && resource.data.unit in myUnits());
       allow write: if isAdmin();
     }
 
@@ -49,6 +51,45 @@ service cloud.firestore {
         || (signedIn() && request.auth.uid == uid
             && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['pwChanged', 'initialPassword'])
             && request.resource.data.initialPassword == null);
+    }
+
+
+    // Sakinin ödeme bildirimi: kendi dairesi için oluşturur, yönetici onaylar
+    match /notices/{id} {
+      allow read: if isAdmin() || (signedIn() && resource.data.unit in myUnits());
+      allow create: if signedIn()
+        && request.resource.data.unit in myUnits()
+        && request.resource.data.uid == request.auth.uid
+        && request.resource.data.status == 'bekliyor'
+        && request.resource.data.amount is number
+        && request.resource.data.amount > 0 && request.resource.data.amount < 1000000;
+      allow update, delete: if isAdmin();
+    }
+
+    // Arıza / talep: sakin kendi dairesi için açar, yönetici yanıtlar
+    match /requests/{id} {
+      allow read: if isAdmin() || (signedIn() && resource.data.unit in myUnits());
+      allow create: if signedIn()
+        && request.resource.data.unit in myUnits()
+        && request.resource.data.uid == request.auth.uid
+        && request.resource.data.status == 'acik'
+        && request.resource.data.title is string && request.resource.data.title.size() <= 120
+        && request.resource.data.text is string && request.resource.data.text.size() <= 1500;
+      allow update, delete: if isAdmin();
+    }
+
+    // Anketler: herkes görür, yönetici yönetir; her daire tek oy (oy belgesinin adı daire kodu)
+    match /polls/{pollId} {
+      allow read: if signedIn();
+      allow write: if isAdmin();
+      match /votes/{kod} {
+        allow read: if isAdmin() || (signedIn() && kod in myUnits());
+        allow create, update: if signedIn() && kod in myUnits()
+          && get(/databases/$(database)/documents/polls/$(pollId)).data.open == true
+          && request.resource.data.uid == request.auth.uid
+          && request.resource.data.option is int && request.resource.data.option >= 0 && request.resource.data.option < 10;
+        allow delete: if isAdmin();
+      }
     }
 
     // Diğer her şey kapalı
