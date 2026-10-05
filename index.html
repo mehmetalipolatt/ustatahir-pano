@@ -422,17 +422,14 @@ body:not(.loginbg) .themetog{display:none}
   :root[data-theme="light"] body.loginbg::before{background:linear-gradient(180deg,rgba(235,242,243,.25),rgba(235,242,243,.45)),url(img/site-giris-bulanik.jpg) center/cover no-repeat}
   :root[data-theme="light"] body.loginbg::after{background:linear-gradient(180deg,rgba(235,242,243,.35) 0%,rgba(235,242,243,0) 35%,rgba(235,242,243,0) 70%,rgba(235,242,243,.35) 100%),url(img/site-giris-genis.jpg) center bottom/auto 100% no-repeat}
 }
-:root[data-theme="light"] body.loginbg .credit img{filter:invert(1) brightness(.25)}
-:root[data-theme="light"] body.loginbg .credit span{color:#1d2b30}
-:root[data-theme="light"] body.loginbg .credit{background:rgba(255,255,255,.72);border-radius:12px;padding:8px 14px;width:max-content;opacity:.9}
 /* giriş: geniş ekranlarda manzara fotoğrafı; giriş kutusu solda, denizin üstünde */
 @media (min-aspect-ratio: 5/4){
-  body.loginbg::before{display:block!important;background:linear-gradient(90deg,rgba(8,18,28,.55) 0%,rgba(8,18,28,.25) 38%,rgba(8,18,28,0) 60%),linear-gradient(180deg,rgba(8,18,28,.15) 0%,rgba(8,18,28,0) 40%,rgba(8,18,28,.35) 100%),url(img/giris-manzara.jpg) center 60%/cover no-repeat!important}
-  :root[data-theme="light"] body.loginbg::before{background:linear-gradient(90deg,rgba(235,242,246,.35) 0%,rgba(235,242,246,.1) 38%,rgba(235,242,246,0) 60%),url(img/giris-manzara.jpg) center 60%/cover no-repeat!important;filter:brightness(1.12) saturate(1.05)}
+  body.loginbg::before{display:block!important;background:linear-gradient(90deg,rgba(8,22,36,.55) 0%,rgba(8,22,36,.25) 38%,rgba(8,22,36,0) 62%),linear-gradient(180deg,rgba(8,22,36,.25) 0%,rgba(8,22,36,.1) 50%,rgba(8,22,36,.35) 100%),url(img/giris-manzara.jpg) center 55%/cover no-repeat!important}
+  :root[data-theme="light"] body.loginbg::before{background:linear-gradient(90deg,rgba(235,242,246,.25) 0%,rgba(235,242,246,0) 40%),url(img/giris-manzara.jpg) center 55%/cover no-repeat!important;filter:none}
   body.loginbg::after{display:none!important}
   body.loginbg .login{margin:9vh auto 0 max(6vw,32px)}
   body.loginbg .pwaslot{margin:14px auto 0 max(6vw,32px)}
-  body.loginbg .credit{position:fixed;left:auto;right:28px;bottom:22px;transform:none;margin:0}
+  body.loginbg .credit{position:fixed;left:28px;right:auto;bottom:22px;transform:none;margin:0}
   body.loginbg main{max-width:none}
   :root[data-theme="light"] body.loginbg .credit img.ld{display:none!important}
   :root[data-theme="light"] body.loginbg .credit img.lw{display:block!important}
