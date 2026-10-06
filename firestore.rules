@@ -4,7 +4,8 @@ service cloud.firestore {
 
     function signedIn() { return request.auth != null; }
     function isAdmin() {
-      return signedIn() && request.auth.token.email == 'mehmetalipolat20.05@gmail.com';
+      // yönetici yetkili hesaplar (index.html içindeki ADMIN_EMAILS ile aynı olmalı)
+      return signedIn() && request.auth.token.email in ['mehmetalipolat20.05@gmail.com', 'c1-07@sakin.ustatahir.app'];
     }
     function memberPath() { return /databases/$(database)/documents/members/$(request.auth.uid); }
     function mem() { return get(memberPath()).data; }
