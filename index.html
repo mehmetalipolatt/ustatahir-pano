@@ -481,6 +481,11 @@ body.loginbg .credit img.ld{display:none}
 .lg-foot{display:flex;align-items:center;justify-content:center;gap:7px;font-size:12px;color:var(--lg-muted);border-top:1px solid var(--lg-line);padding-top:14px;margin-top:-2px}
 .lg-foot svg{width:15px;height:15px}
 @media (max-width:480px){.login.lg2{padding:24px 20px 18px;border-radius:20px}}
+.cnt-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.cnt-box{background:var(--surface-2);border-radius:12px;padding:12px;display:flex;flex-direction:column;gap:2px;min-width:0}
+.cnt-box .l{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.cnt-box b{font-family:var(--f-display);font-size:clamp(18px,4.5vw,24px)}
+.cnt-box .s{font-size:12px;color:var(--muted)}
 </style>
 <style>body{margin:0}[hidden]{display:none!important}:root{padding-top:env(safe-area-inset-top,0px)}</style>
 </head>
@@ -644,8 +649,8 @@ function totals(){
   const gMahsup = ex.filter(e=>e.method==='Mahsup').reduce((a,e)=>a+e.amount,0);
   const geri = ex.filter(e=>e.category==='Borç Geri Ödemesi').reduce((a,e)=>a+e.amount,0);
   const y = yc(S.year);
-  t.kasa = Number(y.openCash||0) + t.nakit - gNakit;
-  t.banka = Number(y.openBank||0) + t.havale - gHavale;
+  t.kasa = balanceOf('kasa', ex); t.banka = balanceOf('banka', ex);
+  t.kasaHesap = Number(y.openCash||0) + t.nakit - gNakit; t.bankaHesap = Number(y.openBank||0) + t.havale - gHavale;
   t.sakinBorc = gMahsup - t.mahsup - geri;
   return t;
 }
@@ -754,6 +759,8 @@ function vOzet(){
       <div class="kv strong"><span>Giderler</span><span class="num">${TL(t.gider)}</span></div>
       <div class="kv strong"><span>Kasa (nakit) bakiyesi</span><span class="num" style="${t.kasa<0?'color:var(--bad)':''}">${TL(t.kasa)}</span></div>
       <div class="kv strong"><span>Banka bakiyesi</span><span class="num" style="${t.banka<0?'color:var(--bad)':''}">${TL(t.banka)}</span></div>
+      ${(()=>{ const lk = lastCount('kasa'), lb = lastCount('banka'); return `<div class="kv"><span>Son sayım</span><span class="num">${lk ? 'kasa ' + fmtDate(lk.date) : 'kasa —'} · ${lb ? 'banka ' + fmtDate(lb.date) : 'banka —'}</span></div>`; })()}
+      <div class="actions" style="margin-top:10px"><button class="btn small" data-act="goCount">Kasa / banka sayımı gir</button></div>
       ${Math.abs(t.sakinBorc)>0.01?`<div class="kv"><span>Sitenin masraf yapan sakinlere borcu</span><span class="num">${TL(t.sakinBorc)}</span></div>`:''}
       ${t.belirsiz>0?'<p class="hint" style="margin:8px 0 0">Ödeme şekli girilmemiş tahsilatlar kasa ve banka bakiyesine yansımaz. Daire ekranından ödemeyi açıp "Nakit" ya da "Havale" seçebilirsin.</p>':''}`;
   } else {
@@ -931,6 +938,7 @@ function vAyarlar(){
     <p style="margin:0">${S.year} yılının tahsilat, gelir-gider, kasa ve gecikmiş alacak dökümü. Genel kurulda dağıtmak için uygundur; daireler isimsiz listelenir.</p>
     <div class="actions"><button class="btn primary" data-act="report">Genel kurul raporu (PDF)</button><button class="btn" data-act="xlsx">${S.year} Excel olarak indir</button></div>
   </section>
+  ${countCard()}
   ${cmpCard()}
   ${themeCard()}
   ${residentCard()}
@@ -1891,7 +1899,7 @@ document.addEventListener('click', async ev => {
   if (t.dataset.go){ go(t.dataset.go); return; }
   if (t.dataset.unit && !t.dataset.act){ go('daire', t.dataset.unit); return; }
   const a = t.dataset.act;
-  if (a !== 'delTx' && a !== 'delExp' && S.pendingDelete){ S.pendingDelete = null; }
+  if (a !== 'delTx' && a !== 'delExp' && a !== 'delCount' && S.pendingDelete){ S.pendingDelete = null; }
   switch(a){
     case 'ozTab': S.ozTab = t.dataset.v; render(); break;
     case 'goDebtors': S.status='borclu'; S.blok='Tümü'; go('daireler'); break;
@@ -1939,6 +1947,9 @@ document.addEventListener('click', async ev => {
     case 'bulkPdf': bulkPdf(t.dataset.scope); break;
     case 'report': reportPdf(); break;
     case 'cmpLoad': cmpLoad(); break;
+    case 'saveCount': saveCount(); break;
+    case 'delCount': delCount(t.dataset.id); break;
+    case 'goCount': go('ayarlar'); setTimeout(() => { const el = $('#countCard'); if (el){ el.scrollIntoView({block:'start'}); const i = $('#cntCash'); if (i) i.focus({preventScroll:true}); } }, 50); break;
     case 'lgEye': { const i = $('#lgPass'); const show = i.type === 'password'; i.type = show ? 'text' : 'password'; t.setAttribute('aria-pressed', show); t.setAttribute('aria-label', show ? 'Şifreyi gizle' : 'Şifreyi göster'); t.classList.toggle('on', show); i.focus(); break; }
     case 'menuTheme': lsSet('ustatahir-menu', t.dataset.v); applyTheme(); render(); break;
     case 'loginTheme': lsSet('ustatahir-giris-tema', loginTheme() === 'dark' ? 'light' : 'dark'); applyTheme(); { const b = document.querySelector('[data-act="loginTheme"]'); if (b) b.innerHTML = loginThemeIcon(); } break;
@@ -2451,6 +2462,68 @@ function themeCard(){
     <p style="margin:0">Menünün rengini seç. Seçim bu cihazda saklanır. Giriş ekranının koyu ya da açık olmasını giriş ekranının sağ üstündeki düğmeyle değiştirebilirsin.</p>
     <div class="menupick">${MENU_THEMES.map(([k,l,c])=>`<button data-act="menuTheme" data-v="${k}" aria-pressed="${cur===k}"><i style="background:${c}"></i>${l}</button>`).join('')}</div>
   </section>`;
+}
+
+/* ---------- kasa / banka sayımı ----------
+   Sayım "o günün sonunda elimde şu kadar para vardı" demektir. Bakiye = son sayım + sayım tarihinden SONRAKİ hareketler.
+   Böylece geçmişe dönük girilen kayıtlar (sayım tarihinden önceki) güncel bakiyeyi bozmaz. */
+function counts(acc, y){ const c = (yc(y == null ? S.year : y).counts || []).filter(x => !acc || x.acc === acc); return c.slice().sort((a,b) => (a.date||'').localeCompare(b.date||'') || (a.at||0) - (b.at||0)); }
+function lastCount(acc){ const c = counts(acc); return c.length ? c[c.length - 1] : null; }
+function flowsOf(acc, ex){
+  const m = acc === 'kasa' ? 'Nakit' : 'Havale', out = [];
+  for (const u of unitList()) for (const it of items(u.kod)) if (it.type === 'odeme' && it.method === m) out.push({date: it.date || '', amt: it.amount});
+  for (const e of (ex || expItems())) if (e.method === m) out.push({date: e.date || '', amt: -e.amount});
+  return out;
+}
+function balanceOf(acc, ex, upTo){
+  const y = yc(S.year), lc = counts(acc).filter(c => !upTo || c.date <= upTo).pop();
+  const fl = flowsOf(acc, ex).filter(f => !upTo || (f.date && f.date <= upTo));
+  if (!lc) return Number((acc === 'kasa' ? y.openCash : y.openBank) || 0) + fl.reduce((a, f) => a + f.amt, 0);
+  return Number(lc.actual) + fl.filter(f => f.date && f.date > lc.date).reduce((a, f) => a + f.amt, 0);
+}
+function countCard(){
+  const t = totals(), all = counts().slice().reverse(), lk = lastCount('kasa'), lb = lastCount('banka');
+  const pend = S.pendingDelete && S.pendingDelete.type === 'count' ? S.pendingDelete.id : null;
+  const row = (lbl, v, lc) => `<div class="cnt-box"><span class="l">${lbl}</span><b class="num" style="${v < 0 ? 'color:var(--bad)' : ''}">${TL(v)}</b><span class="s">${lc ? 'son sayım ' + fmtDate(lc.date) : 'henüz sayım yok'}</span></div>`;
+  return `<section class="card" id="countCard" style="display:flex;flex-direction:column;gap:12px">
+    <h2>Kasa ve banka sayımı</h2>
+    <p style="margin:0">Elindeki gerçek parayı yaz; sistemin hesapladığı bakiye o tutara eşitlenir. Sayım tarihinden önceki kayıtları sonradan girsen de bakiye değişmez, sadece o tarihten sonraki ödeme ve giderler eklenip çıkar.</p>
+    <div class="cnt-grid">${row('Kasa (nakit)', t.kasa, lk)}${row('Banka', t.banka, lb)}</div>
+    <div class="row2">
+      <div class="field"><label for="cntCash">Elimdeki nakit (TL)</label><input id="cntCash" inputmode="decimal" placeholder="boş bırakılırsa değişmez"></div>
+      <div class="field"><label for="cntBank">Bankadaki para (TL)</label><input id="cntBank" inputmode="decimal" placeholder="boş bırakılırsa değişmez"></div>
+    </div>
+    <div class="row2">
+      <div class="field"><label for="cntDate">Sayım tarihi</label><input id="cntDate" type="date" value="${S.year === new Date().getFullYear() ? todayISO() : S.year + '-12-31'}" min="${S.year}-01-01" max="${S.year}-12-31"></div>
+      <div class="field"><label for="cntNote">Not (isteğe bağlı)</label><input id="cntNote" placeholder="ör. kasa sayıldı, banka ekstresine göre"></div>
+    </div>
+    <p class="hint" style="margin:0">Sayım günü dahil, o güne kadar tarihli bütün hareketler sayımın içinde kabul edilir. Banka tutarını banka uygulamasındaki bakiyeden yaz.</p>
+    <div class="actions"><button class="btn primary" data-act="saveCount">Sayımı kaydet</button></div>
+    ${all.length ? `<h3 style="font-size:15px;margin:4px 0 0">Sayım geçmişi</h3><div class="list">${all.map(c => { const d = Number(c.diff || 0); return `<div class="row"><span class="pill ${c.acc === 'kasa' ? 'mute' : 'good'}" style="min-width:58px;justify-content:center">${c.acc === 'kasa' ? 'Kasa' : 'Banka'}</span>
+      <div class="grow"><div class="t num">${TL(c.actual)}</div><div class="s">${fmtDate(c.date)} · fark ${d === 0 ? 'yok' : '<span style="color:var(--' + (d > 0 ? 'good' : 'bad') + ')">' + (d > 0 ? '+' : '') + TL(d) + '</span>'}${c.note ? ' · ' + esc(c.note) : ''}</div></div>
+      <button class="iconbtn rm ${pend === c.id ? 'confirm' : ''}" data-act="delCount" data-id="${esc(c.id)}">${pend === c.id ? 'Emin misin? Sil' : 'Sil'}</button></div>`; }).join('')}</div>` : ''}
+  </section>`;
+}
+async function saveCount(){
+  const date = $('#cntDate').value, note = $('#cntNote').value.trim();
+  const vc = $('#cntCash').value.trim(), vb = $('#cntBank').value.trim();
+  if (!vc && !vb){ toast('Nakit ya da banka tutarından en az birini yaz.'); return; }
+  if (!date || date.slice(0,4) !== String(S.year)){ toast(S.year + ' yılı içinde bir sayım tarihi seç.'); return; }
+  const ex = expItems(), add = [], msgs = [];
+  for (const [acc, v] of [['kasa', vc], ['banka', vb]]) { if (!v) continue;
+    const a = parseAmount(v); if (isNaN(a)) { toast((acc === 'kasa' ? 'Nakit' : 'Banka') + ' tutarı okunamadı.'); return; }
+    const before = Math.round(balanceOf(acc, ex, date) * 100) / 100, diff = Math.round((a - before) * 100) / 100;
+    add.push({id: uid(), acc, date, actual: a, before, diff, note, at: Date.now()});
+    msgs.push((acc === 'kasa' ? 'Kasa' : 'Banka') + (diff === 0 ? ' tutuyor' : ' farkı ' + (diff > 0 ? '+' : '') + TL(diff)));
+  }
+  const ys = Object.assign({}, S.settings.years); const cur = Object.assign({}, yc(S.year)); cur.counts = (cur.counts || []).concat(add); ys[S.year] = cur;
+  try { await db.doc('settings/main').update({years: ys}); toast('Sayım kaydedildi · ' + msgs.join(' · ')); } catch(e){ toast(saveErr(e)); }
+}
+async function delCount(id){
+  if (!(S.pendingDelete && S.pendingDelete.type === 'count' && S.pendingDelete.id === id)) { S.pendingDelete = {type: 'count', id}; render(); return; }
+  S.pendingDelete = null;
+  const ys = Object.assign({}, S.settings.years); const cur = Object.assign({}, yc(S.year)); cur.counts = (cur.counts || []).filter(c => c.id !== id); ys[S.year] = cur;
+  try { await db.doc('settings/main').update({years: ys}); toast('Sayım silindi'); } catch(e){ toast(saveErr(e)); }
 }
 /* ---------- data ---------- */
 function setYear(y){
