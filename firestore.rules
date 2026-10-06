@@ -39,6 +39,11 @@ service cloud.firestore {
       allow write: if isAdmin();
     }
 
+    // Sakinlerin kişisel bilgileri (telefon, adres, e-posta, kiracı bilgisi): yalnızca yönetici
+    match /people/{kod} {
+      allow read, write: if isAdmin();
+    }
+
     // Gider kayıtlarının ayrıntısı yalnızca yönetici içindir (sakinler özeti görür)
     match /exp/{id} {
       allow read, write: if isAdmin();

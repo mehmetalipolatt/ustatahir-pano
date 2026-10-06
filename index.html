@@ -201,7 +201,7 @@ a.btn{text-decoration:none;color:var(--ink)}
 .tab{position:relative}
 .badge{position:absolute;top:2px;left:calc(50% + 6px);background:var(--bad);color:#fff;border-radius:99px;font-size:10px;font-weight:700;padding:1px 6px;line-height:1.4}
 @media (min-width:900px){.badge{left:auto;right:12px;top:50%;transform:translateY(-50%)}}
-.tabs{grid-template-columns:repeat(6,1fr)!important}
+.tabs{grid-template-columns:repeat(7,1fr)!important}
 @media (min-width:900px){.tabs{grid-template-columns:1fr!important}}
 .tab{font-size:11px}
 @media (min-width:900px){.tab{font-size:15px}}
@@ -487,6 +487,48 @@ body.loginbg .credit img.ld{display:none}
 .cnt-box b{font-family:var(--f-display);font-size:clamp(18px,4.5vw,24px)}
 .cnt-box .s{font-size:12px;color:var(--muted)}
 .topbar .iconkey{padding:7px 9px}
+/* ---- Sakinler: bina görünümü ---- */
+.sk-head{display:flex;flex-direction:column;gap:12px}
+.sk-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.sk-stats>div{background:var(--surface-2);border-radius:12px;padding:10px;display:flex;flex-direction:column;gap:1px;min-width:0}
+.sk-stats b{font-family:var(--f-display);font-size:22px;line-height:1.1}
+.sk-stats span{font-size:11.5px;color:var(--muted)}
+.sk-stats .dot{width:10px;height:10px;border-radius:3px;display:inline-block}
+@media (max-width:520px){.sk-stats{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.dot.malik,.apt.malik{--c:#1f7a6f;--cb:#d9efe9} .dot.kiraci,.apt.kiraci{--c:#a8651a;--cb:#fbe9d2} .dot.bos,.apt.bos{--c:#6b7a80;--cb:#e8edee} .dot.miss{--c:#b8352a} .apt.eksik{--c:#7d8b90;--cb:#f4f6f6}
+.dot{background:var(--c)}
+.linkbtn{border:0;background:none;color:var(--accent);font-weight:600;cursor:pointer;padding:0;font:inherit}
+.site-map{display:grid;grid-template-columns:minmax(0,1fr);gap:14px;align-items:end;padding:18px 14px 0;border-radius:20px;background:linear-gradient(180deg,#cfe6f3 0%,#e8f2f4 55%,#dfe9df 100%);box-shadow:inset 0 0 0 1px var(--line)}
+@media (min-width:900px){.site-map{grid-template-columns:repeat(3,minmax(0,1fr));padding:26px 18px 0}}
+.bgroup{display:flex;flex-direction:column;align-items:stretch}
+.bgroup-h{align-self:center;font-family:var(--f-display);font-weight:700;font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:#30505a;background:rgba(255,255,255,.7);padding:3px 12px;border-radius:999px;margin-bottom:10px}
+.bgroup-row{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;align-items:end;padding:0 4px}
+.bgroup-ground{height:16px;margin:0 -6px;background:linear-gradient(180deg,#8fb07a,#7a9a68);border-radius:0 0 10px 10px}
+@media (max-width:899px){.bgroup-ground{margin-bottom:14px}}
+.bld{display:flex;flex-direction:column;filter:drop-shadow(0 6px 10px rgba(20,40,50,.18))}
+.bld-roof{height:26px;margin:0 -7px;background:#35434c;clip-path:polygon(9% 0,91% 0,100% 100%,0 100%);display:grid;place-items:center}
+.bld-roof span{font-family:var(--f-display);font-weight:700;font-size:13px;color:#fff;letter-spacing:.06em;margin-top:4px}
+.bld-body{background:linear-gradient(90deg,#eef1f3 0%,#f7f8f9 60%,#dfe4e7 100%);padding:8px 7px 0;display:flex;flex-direction:column;gap:7px;border-left:1px solid #cfd6da;border-right:1px solid #c4ccd1}
+.bld-floor{display:grid;grid-template-columns:minmax(0,1fr) 8px minmax(0,1fr);gap:5px;align-items:stretch}
+.bld-stair{display:block;background:#56636b;border-radius:2px}
+.apt{position:relative;border:1.5px solid color-mix(in srgb,var(--c) 45%,transparent);background:var(--cb);color:var(--c);border-radius:8px;padding:6px 3px 5px;display:flex;flex-direction:column;align-items:center;gap:1px;cursor:pointer;font:inherit;min-width:0;transition:transform .12s,box-shadow .12s}
+.apt b{font-family:var(--f-display);font-size:17px;line-height:1.05}
+.apt span{font-size:10px;font-weight:600;max-width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;opacity:.9}
+.apt:hover{transform:translateY(-2px);box-shadow:0 6px 12px -6px var(--c)} .apt:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.apt.miss{border-style:dashed}
+.apt.dim{opacity:.3} .apt.hit{box-shadow:0 0 0 3px #f5b400;transform:scale(1.05);z-index:1}
+.apt.ghost{visibility:hidden}
+.bld-door{height:14px;width:26%;margin:4px auto 0;background:#3c4a52;border-radius:4px 4px 0 0}
+@media (min-width:900px) and (max-width:1150px){.apt span{display:none}}
+.apt-head{display:flex;gap:12px;align-items:center}
+.apt-head .pill{margin-top:4px}
+.pill.malik{background:#d9efe9;color:#1f7a6f} .pill.kiraci{background:#fbe9d2;color:#a8651a} .pill.bos,.pill.eksik{background:#e8edee;color:#55666c}
+.pcard{border:1px solid var(--line);border-radius:14px;padding:12px 14px;display:flex;flex-direction:column;gap:2px}
+.pcard-h{display:flex;gap:10px;align-items:center;margin-bottom:4px}
+.pcard-h small{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-weight:600}
+.pcard-h b{font-size:16px}
+.pcard .actions{margin-top:8px}
+.psec{font-size:13px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin:6px 0 -2px}
 </style>
 <style>body{margin:0}[hidden]{display:none!important}:root{padding-top:env(safe-area-inset-top,0px)}</style>
 </head>
@@ -498,6 +540,7 @@ body.loginbg .credit img.ld{display:none}
     <div class="navhead" aria-hidden="true"><span class="navmark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="8" width="7" height="13" rx="1"/><rect x="14" y="4" width="7" height="17" rx="1"/><path d="M6 12h1M6 16h1M17 8h1M17 12h1M17 16h1"/></svg></span><span><b>Ustatahir</b><small>Yönetim paneli</small></span></div>
     <button class="tab" data-go="ozet" aria-current="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>Özet</button>
     <button class="tab" data-go="daireler"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="4" y="3" width="16" height="18" rx="1.5"/><path d="M8 7h2M14 7h2M8 11h2M14 11h2M8 15h2M14 15h2"/></svg>Daireler</button>
+    <button class="tab" data-go="sakinler"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="9" cy="8" r="3.2"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/><circle cx="17" cy="9" r="2.6"/><path d="M15.5 14.2A5 5 0 0 1 21 19"/></svg>Sakinler</button>
     <button class="tab" data-go="takip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 8v4l3 2"/><circle cx="12" cy="12" r="9"/></svg>Takip</button>
     <button class="tab" data-go="gelen"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 13h4l2 3h4l2-3h4"/><path d="M5 5h14l1 8v6H4v-6z"/></svg>Gelenler<span class="badge" id="gelenBadge" hidden></span></button>
     <button class="tab" data-go="giderler"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 6h16M4 12h10M4 18h7"/><path d="M18 14v6M15 17h6"/></svg>Giderler</button>
@@ -662,7 +705,7 @@ function expItems(){ const out = []; for (const d of Object.values(S.exps)) for 
 function setTabs(){
   const cur = S.view === 'daire' ? 'daireler' : S.view;
   document.querySelectorAll('.tab').forEach(b => b.setAttribute('aria-current', b.dataset.go === cur ? 'true':'false'));
-  $('#fab').hidden = !(S.got.u && S.got.s) || S.view === 'ayarlar' || S.view === 'daire' || S.view === 'gelen'; if ($('#fab').hidden) fabOpen(false);
+  $('#fab').hidden = !(S.got.u && S.got.s) || S.view === 'ayarlar' || S.view === 'daire' || S.view === 'gelen' || S.view === 'sakinler'; if ($('#fab').hidden) fabOpen(false);
   const bc = inboxCount(), bg = $('#gelenBadge'); if (bg){ bg.hidden = !bc; bg.textContent = bc; }
 }
 function header(){
@@ -687,6 +730,7 @@ function render(){
   else if (S.view === 'takip') v.innerHTML = vTakip();
   else if (S.view === 'gelen') { v.innerHTML = vGelen(); if (bankRows.length) drawBank(); }
   else if (S.view === 'ayarlar') v.innerHTML = vAyarlar();
+  else if (S.view === 'sakinler') v.innerHTML = vSakinler();
   scheduleSummary(); ensureReceipts();
 }
 
@@ -1190,7 +1234,7 @@ async function doBackup(){
   try {
     const out = {app:'ustatahir-aidat', version:1, created:new Date().toISOString(), docs:[]};
     const s = await db.doc('settings/main').get(); if (s.exists) out.docs.push({path:'settings/main', data:s.data()});
-    for (const col of ['units','ledger','exp','members','summary','notices','requests','polls']){ const q = await db.collection(col).get(); q.docs.forEach(d=>out.docs.push({path:col+'/'+d.id, data:d.data()})); }
+    for (const col of ['units','ledger','exp','members','summary','notices','requests','polls','people']){ const q = await db.collection(col).get(); q.docs.forEach(d=>out.docs.push({path:col+'/'+d.id, data:d.data()})); }
     await dl.save({filename:'Ustatahir_Yedek_'+todayISO()+'.json', data: JSON.stringify(out)});
     toast('Yedek kaydedildi');
     try { await db.doc('settings/main').update({lastBackup: Date.now()}); } catch(_){}
@@ -1950,6 +1994,11 @@ document.addEventListener('click', async ev => {
     case 'bulkPdf': bulkPdf(t.dataset.scope); break;
     case 'report': reportPdf(); break;
     case 'cmpLoad': cmpLoad(); break;
+    case 'aptOpen': aptSheet(t.dataset.kod, false); break;
+    case 'aptEdit': aptSheet(t.dataset.kod, true); break;
+    case 'aptSave': aptSave(t.dataset.kod); break;
+    case 'aptToUnit': closeSheet(); go('daire', t.dataset.unit); break;
+    case 'pDurum': { aptSheet.state.durum = t.dataset.v; document.querySelectorAll('#pDurum button').forEach(b => b.setAttribute('aria-pressed', b.dataset.v === t.dataset.v)); const k = $('#pKiraciW'), a = $('#pMalikAdresW'); if (k) k.hidden = t.dataset.v !== 'kiraci'; if (a) a.hidden = t.dataset.v === 'malik'; break; }
     case 'saveCount': saveCount(); break;
     case 'delCount': delCount(t.dataset.id); break;
     case 'goCount': go('ayarlar'); setTimeout(() => { const el = $('#countCard'); if (el){ el.scrollIntoView({block:'start'}); const i = $('#cntCash'); if (i) i.focus({preventScroll:true}); } }, 50); break;
@@ -2014,6 +2063,7 @@ document.addEventListener('input', ev => {
   }
   if (['sDesc','sAmount'].includes(ev.target.id)) splitPreview();
   if (ev.target.id === 'q'){ S.q = ev.target.value; render._focusQ = true; render(); render._focusQ = false; }
+  if (ev.target.id === 'pq'){ S.pq = ev.target.value; render(); const i = $('#pq'); if (i){ i.focus(); i.setSelectionRange(i.value.length, i.value.length); } }
 });
 document.addEventListener('change', ev => {
   if (ev.target.id === 'fUnit'){ readTxFields(); drawTx(); }
@@ -2103,6 +2153,7 @@ function startAdmin(){
   subs.push(db.collection('units').onSnapshot(snap => {
     const m = {}; snap.docs.forEach(d=>{ m[d.id] = Object.assign({kod:d.id}, d.data()); }); S.units = m; S.got.u = true; render();
   }, onErr));
+  subs.push(db.collection('people').onSnapshot(snap => { const m = {}; snap.docs.forEach(d => { m[d.id] = d.data(); }); S.people = m; if (S.view === 'sakinler') render(); }, () => {}));
   subs.push(db.collection('members').onSnapshot(snap => {
     const m = {}; snap.docs.forEach(d=>{ m[d.id] = Object.assign({uid:d.id}, d.data()); }); S.members = m; render();
   }, ()=>{}));
@@ -2528,6 +2579,104 @@ async function delCount(id){
   S.pendingDelete = null;
   const ys = Object.assign({}, S.settings.years); const cur = Object.assign({}, yc(S.year)); cur.counts = (cur.counts || []).filter(c => c.id !== id); ys[S.year] = cur;
   try { await db.doc('settings/main').update({years: ys}); toast('Sayım silindi'); } catch(e){ toast(saveErr(e)); }
+}
+
+/* ---------- Sakinler: bina görünümü ve kişi rehberi ----------
+   Kişisel bilgiler people/{daire} belgesinde, yalnızca yönetici okuyabilir.
+   units/{daire} üzerindeki kısa alanlar (malik, oturan, kiraci, tel) uygulamanın diğer yerleri için eşitlenir. */
+const SITE_GROUPS = [['A', ['A2', 'A1']], ['B', ['B2', 'B1']], ['C', ['C2', 'C1']]];
+function person(kod){
+  const p = (S.people || {})[kod], u = S.units[kod] || {};
+  if (p) return p;
+  // kayıt yoksa daire kartındaki eski bilgilerden başlat
+  return {durum: u.kiraci ? 'kiraci' : (u.malik || u.oturan ? 'malik' : ''), malikAd: u.malik || '', malikTel: u.kiraci ? '' : (u.tel || ''),
+    kiraciAd: u.kiraci ? (u.oturan || '') : '', kiraciTel: u.kiraci ? (u.tel || '') : '', _eski: true};
+}
+function personState(kod){ const p = person(kod); if (p.durum === 'bos') return 'bos'; if (p.durum === 'kiraci') return 'kiraci'; if (p.durum === 'malik') return 'malik'; return 'eksik'; }
+function personMissing(kod){ const p = person(kod), st = personState(kod); if (st === 'eksik') return true; if (st === 'bos') return !p.malikAd;
+  return !p.malikAd || !(st === 'kiraci' ? (p.kiraciAd && p.kiraciTel) : p.malikTel); }
+const PST = {malik: ['Ev sahibi oturuyor', 'malik'], kiraci: ['Kiracı oturuyor', 'kiraci'], bos: ['Boş', 'bos'], eksik: ['Bilgi yok', 'eksik']};
+function vSakinler(){
+  const all = unitList(), q = (S.pq || '').trim().toLocaleLowerCase('tr-TR');
+  const match = kod => { if (!q) return false; const p = person(kod); return [kod, p.malikAd, p.malikTel, p.kiraciAd, p.kiraciTel, p.plaka].join(' ').toLocaleLowerCase('tr-TR').includes(q); };
+  const cnt = {malik: 0, kiraci: 0, bos: 0, eksik: 0}; let miss = 0;
+  all.forEach(u => { cnt[personState(u.kod)]++; if (personMissing(u.kod)) miss++; });
+  const hits = q ? all.filter(u => match(u.kod)) : [];
+  const building = blk => {
+    const us = all.filter(u => u.blok === blk).sort((a, b) => Number(a.no) - Number(b.no));
+    if (!us.length) return '';
+    const floors = []; for (let i = 0; i < us.length; i += 2) floors.push(us.slice(i, i + 2));
+    return `<div class="bld"><div class="bld-roof"><span>${esc(blk)}</span></div><div class="bld-body">
+      ${floors.slice().reverse().map(f => `<div class="bld-floor">${f.map((u, i) => { const st = personState(u.kod), p = person(u.kod), nm = st === 'kiraci' ? p.kiraciAd : p.malikAd;
+        return `${i === 1 ? '<i class="bld-stair"></i>' : ''}<button class="apt ${st}${personMissing(u.kod) ? ' miss' : ''}${q && !match(u.kod) ? ' dim' : ''}${q && match(u.kod) ? ' hit' : ''}" data-act="aptOpen" data-kod="${esc(u.kod)}" title="${esc(u.kod)}${nm ? ' · ' + esc(nm) : ''}">
+          <b>${esc(u.no)}</b><span>${nm ? esc(shortName(nm)) : (st === 'bos' ? 'boş' : '—')}</span></button>`; }).join('')}${f.length === 1 ? '<i class="bld-stair"></i><span class="apt ghost"></span>' : ''}</div>`).join('')}
+      <div class="bld-door"></div></div></div>`;
+  };
+  return `
+  <section class="card sk-head">
+    <div class="sec-h" style="margin:0"><h2>Site sakinleri</h2><span class="sub">${all.length} daire</span></div>
+    <div class="sk-stats">
+      <div><i class="dot malik"></i><b class="num">${cnt.malik}</b><span>ev sahibi oturuyor</span></div>
+      <div><i class="dot kiraci"></i><b class="num">${cnt.kiraci}</b><span>kiracılı</span></div>
+      <div><i class="dot bos"></i><b class="num">${cnt.bos}</b><span>boş</span></div>
+      <div><i class="dot miss"></i><b class="num">${miss}</b><span>bilgisi eksik</span></div>
+    </div>
+    <div class="srch"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><input id="pq" class="search" type="search" placeholder="İsim, telefon, plaka veya daire ara" value="${esc(S.pq || '')}" aria-label="Sakin ara"></div>
+    ${q ? `<div class="sub">${hits.length ? hits.length + ' sonuç: ' + hits.map(u => `<button class="linkbtn" data-act="aptOpen" data-kod="${esc(u.kod)}">${esc(u.kod)}</button>`).join(', ') : 'Eşleşen sakin yok.'}</div>` : ''}
+  </section>
+  <section class="site-map">${SITE_GROUPS.map(([g, blks]) => `<div class="bgroup"><div class="bgroup-h">${g} Blok</div><div class="bgroup-row">${blks.map(building).join('')}</div><div class="bgroup-ground"></div></div>`).join('')}</section>
+  <p class="hint">Binalar drone fotoğrafındaki sırayla, soldan sağa A2–A1, B2–B1, C2–C1. Her katta iki daire var, numaralar zemin kattan yukarı doğru artıyor. Kesik çizgili daireler: bilgisi eksik. Bir daireye dokunarak bilgileri gör ve düzenle.</p>`;
+}
+function shortName(n){ const w = String(n).trim().split(/\s+/); return w.length > 1 ? w[0] + ' ' + w[w.length - 1][0] + '.' : w[0]; }
+function telLinks(t){ if (!t) return ''; const d = String(t).replace(/[^\d+]/g, ''); return `<a class="btn small" href="tel:${esc(d)}">Ara</a>${waNum(t) ? `<a class="btn small wa" href="${waLink(t, '')}" target="_blank" rel="noopener">${WA_ICON}WhatsApp</a>` : ''}`; }
+function aptSheet(kod, edit){
+  const u = S.units[kod]; if (!u) return; const p = person(kod), st = personState(kod);
+  aptSheet.state = {kod, durum: p.durum || ''};
+  if (!edit) {
+    const row = (l, v) => v ? `<div class="kv"><span>${l}</span><span>${v}</span></div>` : '';
+    openSheet(`<div class="apt-head"><span class="plate">${plateTxt(u)}</span><div><h2 style="margin:0">${esc(u.blok)} Blok · Daire ${esc(u.no)}</h2><span class="pill ${PST[st][1]}">${PST[st][0]}</span></div></div>
+      <div class="pcard"><div class="pcard-h"><span class="ib accent"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/></svg></span><div><small>Ev sahibi</small><b>${esc(p.malikAd) || '<span class="sub">girilmemiş</span>'}</b></div></div>
+        ${row('Telefon', esc(p.malikTel))}${row('E-posta', esc(p.malikEposta))}${row('Adres', esc(p.malikAdres))}
+        ${p.malikTel ? `<div class="actions">${telLinks(p.malikTel)}</div>` : ''}</div>
+      ${st === 'kiraci' ? `<div class="pcard"><div class="pcard-h"><span class="ib warn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c0-3.9 3.1-7 7-7s7 3.1 7 7"/></svg></span><div><small>Kiracı</small><b>${esc(p.kiraciAd) || '<span class="sub">girilmemiş</span>'}</b></div></div>
+        ${row('Telefon', esc(p.kiraciTel))}${row('E-posta', esc(p.kiraciEposta))}${row('Taşınma', p.kiraciGiris ? fmtDate(p.kiraciGiris) : '')}${row('Sözleşme bitişi', p.kiraciBitis ? fmtDate(p.kiraciBitis) : '')}
+        ${p.kiraciTel ? `<div class="actions">${telLinks(p.kiraciTel)}</div>` : ''}</div>` : ''}
+      ${(p.kisi || p.plaka || p.not) ? `<div class="pcard">${row('Hanede yaşayan', p.kisi ? esc(p.kisi) + ' kişi' : '')}${row('Araç plakası', esc(p.plaka))}${row('Not', esc(p.not))}</div>` : ''}
+      ${p._eski ? '<p class="hint" style="margin:0">Bu bilgiler aidat listesinden geldi. Düzenleyip kaydettiğinde ayrıntılı kayıt oluşur.</p>' : ''}
+      <div class="actions" style="justify-content:flex-end"><button class="btn" data-act="close">Kapat</button><button class="btn" data-unit="${esc(kod)}" data-act="aptToUnit">Aidat sayfası</button><button class="btn primary" data-act="aptEdit" data-kod="${esc(kod)}">Düzenle</button></div>`);
+    return;
+  }
+  const d = aptSheet.state.durum;
+  const f = (id, l, v, t = 'text', ph = '') => `<div class="field"><label for="${id}">${l}</label><input id="${id}" type="${t}" ${t === 'tel' ? 'inputmode="tel"' : ''} value="${esc(v || '')}" placeholder="${esc(ph)}"></div>`;
+  openSheet(`<h2>${esc(u.blok)} Blok · Daire ${esc(u.no)}</h2>
+    <div class="field"><label>Durum</label><div class="seg" id="pDurum">${[['malik','Ev sahibi oturuyor'],['kiraci','Kiracı oturuyor'],['bos','Boş']].map(([k, l]) => `<button type="button" data-act="pDurum" data-v="${k}" aria-pressed="${d === k}">${l}</button>`).join('')}</div></div>
+    <h3 class="psec">Ev sahibi</h3>
+    ${f('pMalikAd', 'Ad soyad', p.malikAd)}
+    <div class="row2">${f('pMalikTel', 'Telefon', p.malikTel, 'tel', '05xx xxx xx xx')}${f('pMalikEposta', 'E-posta', p.malikEposta, 'email')}</div>
+    <div id="pMalikAdresW" ${d === 'malik' ? 'hidden' : ''}>${f('pMalikAdres', 'Ev sahibinin adresi (sitede oturmuyorsa)', p.malikAdres)}</div>
+    <div id="pKiraciW" ${d === 'kiraci' ? '' : 'hidden'}>
+      <h3 class="psec">Kiracı</h3>
+      ${f('pKiraciAd', 'Ad soyad', p.kiraciAd)}
+      <div class="row2">${f('pKiraciTel', 'Telefon', p.kiraciTel, 'tel', '05xx xxx xx xx')}${f('pKiraciEposta', 'E-posta', p.kiraciEposta, 'email')}</div>
+      <div class="row2">${f('pKiraciGiris', 'Taşınma tarihi', p.kiraciGiris, 'date')}${f('pKiraciBitis', 'Sözleşme bitişi', p.kiraciBitis, 'date')}</div>
+    </div>
+    <h3 class="psec">Diğer</h3>
+    <div class="row2">${f('pKisi', 'Hanede yaşayan kişi sayısı', p.kisi, 'number')}${f('pPlaka', 'Araç plakası', p.plaka, 'text', 'ör. 07 ABC 123')}</div>
+    <div class="field"><label for="pNot">Not</label><textarea id="pNot" style="min-height:60px">${esc(p.not || '')}</textarea></div>
+    <p class="hint" style="margin:0">Bu bilgileri yalnızca yöneticiler görür. Sakin kendi ekranında sadece adını görür.</p>
+    <div class="actions" style="justify-content:flex-end"><button class="btn" data-act="aptOpen" data-kod="${esc(kod)}">Vazgeç</button><button class="btn primary" data-act="aptSave" data-kod="${esc(kod)}">Kaydet</button></div>`);
+}
+async function aptSave(kod){
+  const v = id => (document.getElementById(id) || {}).value ? document.getElementById(id).value.trim() : '';
+  const durum = aptSheet.state.durum || '';
+  const p = {durum, malikAd: up(v('pMalikAd')), malikTel: v('pMalikTel'), malikEposta: v('pMalikEposta'), malikAdres: durum === 'malik' ? '' : v('pMalikAdres'),
+    kiraciAd: durum === 'kiraci' ? up(v('pKiraciAd')) : '', kiraciTel: durum === 'kiraci' ? v('pKiraciTel') : '', kiraciEposta: durum === 'kiraci' ? v('pKiraciEposta') : '',
+    kiraciGiris: durum === 'kiraci' ? v('pKiraciGiris') : '', kiraciBitis: durum === 'kiraci' ? v('pKiraciBitis') : '',
+    kisi: v('pKisi'), plaka: up(v('pPlaka')), not: v('pNot'), updatedAt: Date.now()};
+  // aidat tarafında kullanılan kısa alanlar
+  const unit = {malik: p.malikAd, kiraci: durum === 'kiraci', oturan: durum === 'kiraci' ? p.kiraciAd : '', tel: durum === 'kiraci' ? (p.kiraciTel || p.malikTel) : p.malikTel};
+  try { await db.doc('people/' + kod).set(p); await db.doc('units/' + kod).update(unit); S.people = Object.assign({}, S.people, {[kod]: p}); toast(kod + ' bilgileri kaydedildi'); aptSheet(kod, false); render(); }
+  catch(e){ toast(saveErr(e)); }
 }
 /* ---------- data ---------- */
 function setYear(y){
