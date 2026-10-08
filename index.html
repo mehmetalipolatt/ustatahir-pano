@@ -985,6 +985,7 @@ function vAyarlar(){
     <p style="margin:0">${S.year} yılının tahsilat, gelir-gider, kasa ve gecikmiş alacak dökümü. Genel kurulda dağıtmak için uygundur; daireler isimsiz listelenir.</p>
     <div class="actions"><button class="btn primary" data-act="report">Genel kurul raporu (PDF)</button><button class="btn" data-act="xlsx">${S.year} Excel olarak indir</button></div>
   </section>
+  ${fixCard()}
   ${countCard()}
   ${cmpCard()}
   ${themeCard()}
@@ -1994,6 +1995,7 @@ document.addEventListener('click', async ev => {
     case 'bulkPdf': bulkPdf(t.dataset.scope); break;
     case 'report': reportPdf(); break;
     case 'cmpLoad': cmpLoad(); break;
+    case 'fixB1B2': fixB1B2(); break;
     case 'aptOpen': aptSheet(t.dataset.kod, false); break;
     case 'aptEdit': aptSheet(t.dataset.kod, true); break;
     case 'aptSave': aptSave(t.dataset.kod); break;
@@ -2677,6 +2679,68 @@ async function aptSave(kod){
   const unit = {malik: p.malikAd, kiraci: durum === 'kiraci', oturan: durum === 'kiraci' ? p.kiraciAd : '', tel: durum === 'kiraci' ? (p.kiraciTel || p.malikTel) : p.malikTel};
   try { await db.doc('people/' + kod).set(p); await db.doc('units/' + kod).update(unit); S.people = Object.assign({}, S.people, {[kod]: p}); toast(kod + ' bilgileri kaydedildi'); aptSheet(kod, false); render(); }
   catch(e){ toast(saveErr(e)); }
+}
+
+/* ---------- tek seferlik düzeltme: B1 ve B2 verileri yer değiştirir ----------
+   Aidat listesinde B1 ile B2 ters girilmişti. Ödeme kayıtları (bütün yıllar) yer değiştirir;
+   B2 tamamen RSU, B1'in ev sahibi RSU ve listede adı geçenler kiracı olur.
+   Sakinler ekranından ayrıntılı bilgi girilmiş dairelerin isim bilgilerine dokunulmaz. */
+const FIX_PAIRS = [1,2,3,4,5,6,7,8].map(n => ['B1-0' + n, 'B2-0' + n]);
+function fixDone(){ return !!((S.settings || {}).fixes || {}).b1b2; }
+function fixPlan(){
+  return FIX_PAIRS.map(([a, b]) => {
+    const ua = S.units[a] || {}, ub = S.units[b] || {};
+    const nameB = ub.oturan || (ub.malik && ub.malik !== 'RSU' ? ub.malik : '');
+    const sum = k => items(k).filter(i => i.type === 'odeme').reduce((x, i) => x + i.amount, 0);
+    return {a, b, paidA: sum(a), paidB: sum(b), newA: {malik: 'RSU', kiraci: true, oturan: nameB, tel: ub.tel || ''}, newB: {malik: 'RSU', kiraci: false, oturan: '', tel: ''},
+      keepA: !!(S.people || {})[a], keepB: !!(S.people || {})[b]};
+  });
+}
+function fixCard(){
+  if (fixDone() || !S.units['B1-01'] || !S.units['B2-01']) return '';
+  const plan = fixPlan();
+  return `<section class="card fixcard" style="display:flex;flex-direction:column;gap:12px">
+    <h2>B1 / B2 düzeltmesi</h2>
+    <p style="margin:0">Aidat listesinde B1 ile B2 ters girilmiş. Bu düzeltme bütün yılların ödeme kayıtlarını iki blok arasında yer değiştirir; <b>B2</b>'nin bütün daireleri RSU olur, <b>B1</b>'in ev sahibi RSU olur ve listede adı geçenler kiracı olarak yazılır. Tek seferlik bir işlemdir, öncesinde tam yedek otomatik indirilir.</p>
+    <div style="overflow-x:auto"><table class="cmptbl"><thead><tr><th>Daire</th><th class="num">Şu an ödenen</th><th class="num">Düzeltme sonrası</th><th>Ev sahibi / oturan</th></tr></thead><tbody>
+      ${plan.map(x => `<tr><td><b>${x.a}</b></td><td class="num">${TL(x.paidA)}</td><td class="num">${TL(x.paidB)}</td><td>${x.keepA ? '<span class="sub">Sakinler kaydı korunur</span>' : 'RSU · kiracı: ' + (esc(x.newA.oturan) || '<span class="sub">girilmemiş</span>')}</td></tr>`).join('')}
+      ${plan.map(x => `<tr><td><b>${x.b}</b></td><td class="num">${TL(x.paidB)}</td><td class="num">${TL(x.paidA)}</td><td>${x.keepB ? '<span class="sub">Sakinler kaydı korunur</span>' : 'RSU · oturan yok'}</td></tr>`).join('')}
+    </tbody></table></div>
+    <div class="actions"><button class="btn primary" data-act="fixB1B2">Yedek al ve düzelt</button></div>
+    <div id="fixMsg"></div>
+  </section>`;
+}
+async function fixB1B2(){
+  const btn = document.querySelector('[data-act="fixB1B2"]');
+  if (!fixB1B2.armed){ fixB1B2.armed = true; if (btn){ btn.textContent = 'Emin misin? Tekrar bas'; btn.classList.add('confirm'); } setTimeout(() => { fixB1B2.armed = false; }, 8000); return; }
+  fixB1B2.armed = false; if (btn){ btn.disabled = true; btn.textContent = 'Yedek alınıyor…'; }
+  try {
+    await doBackup();
+    if (btn) btn.textContent = 'Düzeltiliyor…';
+    const plan = fixPlan();
+    // 1) ödeme kayıtları: önce hepsini oku, sonra yaz
+    const read = {};
+    for (const [a, b] of FIX_PAIRS) for (const k of [a, b]) { const q = await db.collection('ledger').where('unit', '==', k).get(); read[k] = q.docs.map(d => d.data()); }
+    for (const [a, b] of FIX_PAIRS) {
+      const years = new Set(read[a].concat(read[b]).map(d => d.year));
+      for (const y of years) {
+        const da = read[a].find(d => d.year === y), dbb = read[b].find(d => d.year === y);
+        await db.doc('ledger/' + y + '_' + a).set({year: y, unit: a, items: (dbb && dbb.items) || []});
+        await db.doc('ledger/' + y + '_' + b).set({year: y, unit: b, items: (da && da.items) || []});
+      }
+    }
+    // 2) daire bilgileri
+    for (const x of plan) {
+      if (!x.keepA) await db.doc('units/' + x.a).update(x.newA);
+      if (!x.keepB) await db.doc('units/' + x.b).update(x.newB);
+    }
+    // 3) RSU grup hesabı bütün B dairelerini kapsasın
+    for (const m of Object.values(S.members || {})) if (m.group && /rsu/i.test((m.label || '') + ' ' + (m.username || ''))) {
+      const set = new Set((m.units || []).concat(FIX_PAIRS.flat())); await db.doc('members/' + m.uid).update({units: Array.from(set).sort()});
+    }
+    await db.doc('settings/main').update({fixes: Object.assign({}, (S.settings || {}).fixes, {b1b2: Date.now()})});
+    toast('B1 ve B2 düzeltildi');
+  } catch(e){ console.warn(e); toast('Düzeltme tamamlanamadı: ' + saveErr(e) + ' İndirilen yedekle geri dönülebilir.'); if (btn){ btn.disabled = false; btn.textContent = 'Yedek al ve düzelt'; } }
 }
 /* ---------- data ---------- */
 function setYear(y){
