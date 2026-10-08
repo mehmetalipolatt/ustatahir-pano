@@ -2607,11 +2607,13 @@ function vSakinler(){
   const building = blk => {
     const us = all.filter(u => u.blok === blk).sort((a, b) => Number(a.no) - Number(b.no));
     if (!us.length) return '';
-    const floors = []; for (let i = 0; i < us.length; i += 2) floors.push(us.slice(i, i + 2));
+    // A1, B1, C1 binaları aynalı: her katta çift numara solda, tek numara sağda
+    const mirror = /1$/.test(blk);
+    const floors = []; for (let i = 0; i < us.length; i += 2) { const f = us.slice(i, i + 2); floors.push(mirror ? f.reverse() : f); }
     return `<div class="bld"><div class="bld-roof"><span>${esc(blk)}</span></div><div class="bld-body">
-      ${floors.slice().reverse().map(f => `<div class="bld-floor">${f.map((u, i) => { const st = personState(u.kod), p = person(u.kod), nm = st === 'kiraci' ? p.kiraciAd : p.malikAd;
+      ${floors.slice().reverse().map(f => `<div class="bld-floor">${f.length === 1 && mirror ? '<span class="apt ghost"></span><i class="bld-stair"></i>' : ''}${f.map((u, i) => { const st = personState(u.kod), p = person(u.kod), nm = st === 'kiraci' ? p.kiraciAd : p.malikAd;
         return `${i === 1 ? '<i class="bld-stair"></i>' : ''}<button class="apt ${st}${personMissing(u.kod) ? ' miss' : ''}${q && !match(u.kod) ? ' dim' : ''}${q && match(u.kod) ? ' hit' : ''}" data-act="aptOpen" data-kod="${esc(u.kod)}" title="${esc(u.kod)}${nm ? ' · ' + esc(nm) : ''}">
-          <b>${esc(u.no)}</b><span>${nm ? esc(shortName(nm)) : (st === 'bos' ? 'boş' : '—')}</span></button>`; }).join('')}${f.length === 1 ? '<i class="bld-stair"></i><span class="apt ghost"></span>' : ''}</div>`).join('')}
+          <b>${esc(u.no)}</b><span>${nm ? esc(shortName(nm)) : (st === 'bos' ? 'boş' : '—')}</span></button>`; }).join('')}${f.length === 1 ? (mirror ? '' : '<i class="bld-stair"></i><span class="apt ghost"></span>') : ''}</div>`).join('')}
       <div class="bld-door"></div></div></div>`;
   };
   return `
@@ -2627,7 +2629,7 @@ function vSakinler(){
     ${q ? `<div class="sub">${hits.length ? hits.length + ' sonuç: ' + hits.map(u => `<button class="linkbtn" data-act="aptOpen" data-kod="${esc(u.kod)}">${esc(u.kod)}</button>`).join(', ') : 'Eşleşen sakin yok.'}</div>` : ''}
   </section>
   <section class="site-map">${SITE_GROUPS.map(([g, blks]) => `<div class="bgroup"><div class="bgroup-h">${g} Blok</div><div class="bgroup-row">${blks.map(building).join('')}</div><div class="bgroup-ground"></div></div>`).join('')}</section>
-  <p class="hint">Binalar drone fotoğrafındaki sırayla, soldan sağa A2–A1, B2–B1, C2–C1. Her katta iki daire var, numaralar zemin kattan yukarı doğru artıyor. Kesik çizgili daireler: bilgisi eksik. Bir daireye dokunarak bilgileri gör ve düzenle.</p>`;
+  <p class="hint">Binalar drone fotoğrafındaki sırayla, soldan sağa A2–A1, B2–B1, C2–C1. Her katta iki daire var, numaralar zemin kattan yukarı doğru artıyor. A1, B1 ve C1 binalarında çift numaralı daire solda, tek numaralı sağda. Kesik çizgili daireler: bilgisi eksik. Bir daireye dokunarak bilgileri gör ve düzenle.</p>`;
 }
 function shortName(n){ const w = String(n).trim().split(/\s+/); return w.length > 1 ? w[0] + ' ' + w[w.length - 1][0] + '.' : w[0]; }
 function telLinks(t){ if (!t) return ''; const d = String(t).replace(/[^\d+]/g, ''); return `<a class="btn small" href="tel:${esc(d)}">Ara</a>${waNum(t) ? `<a class="btn small wa" href="${waLink(t, '')}" target="_blank" rel="noopener">${WA_ICON}WhatsApp</a>` : ''}`; }
