@@ -562,6 +562,7 @@ body.loginbg .credit img.ld{display:none}
 <div class="fabmenu" id="fabMenu" hidden>
   <button data-fab="odeme"><span>Ödeme al</span><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="6" width="20" height="13" rx="2"/><circle cx="12" cy="12.5" r="2.5"/></svg></i></button>
   <button data-fab="gider"><span>Gider ekle</span><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M4 12h10M4 17h7"/><path d="M18 14v6M15 17h6"/></svg></i></button>
+  <button data-fab="toplu"><span>Toplu ödeme dağıt</span><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="6" width="20" height="13" rx="2"/><path d="M6 10h4M6 14h2M14 10l4 4M18 10l-4 4"/></svg></i></button>
   <button data-fab="duyuru"><span>Duyuru yaz</span><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11v2l13 5V6z"/><path d="M16 9a3 3 0 0 1 0 6"/></svg></i></button>
 </div>
 <div id="overlay" class="overlay" hidden></div>
@@ -1995,6 +1996,10 @@ document.addEventListener('click', async ev => {
     case 'bulkPdf': bulkPdf(t.dataset.scope); break;
     case 'report': reportPdf(); break;
     case 'cmpLoad': cmpLoad(); break;
+    case 'bpMethod': bulkRead(); bulkPaySheet.state.method = t.dataset.v; bulkPaySheet(); break;
+    case 'bpMode': bulkRead(); bulkPaySheet.state.mode = t.dataset.v; bulkPaySheet(); break;
+    case 'bpUnit': { bulkRead(); const o = bulkPaySheet.state.off; o.has(t.dataset.v) ? o.delete(t.dataset.v) : o.add(t.dataset.v); bulkPaySheet(); break; }
+    case 'bpSave': bulkSave(); break;
     case 'fixB1B2': fixB1B2(); break;
     case 'aptOpen': aptSheet(t.dataset.kod, false); break;
     case 'aptEdit': aptSheet(t.dataset.kod, true); break;
@@ -2065,9 +2070,11 @@ document.addEventListener('input', ev => {
   }
   if (['sDesc','sAmount'].includes(ev.target.id)) splitPreview();
   if (ev.target.id === 'q'){ S.q = ev.target.value; render._focusQ = true; render(); render._focusQ = false; }
+  if (ev.target.id === 'bpAmount' || ev.target.id === 'bpDate') bulkPreview();
   if (ev.target.id === 'pq'){ S.pq = ev.target.value; render(); const i = $('#pq'); if (i){ i.focus(); i.setSelectionRange(i.value.length, i.value.length); } }
 });
 document.addEventListener('change', ev => {
+  if (ev.target.id === 'bpOwner'){ bulkRead(); bulkPaySheet(); return; }
   if (ev.target.id === 'fUnit'){ readTxFields(); drawTx(); }
   if ((ev.target.id === 'restoreFile' || ev.target.id === 'restoreFile0') && ev.target.files[0]) onRestoreFile(ev.target.files[0]);
   if (ev.target.id === 'yearSel') setYear(Number(ev.target.value));
@@ -2084,6 +2091,7 @@ $('#fabMenu').addEventListener('click', ev => { ev.stopPropagation(); const b = 
   const k = b.dataset.fab;
   if (k === 'odeme') txForm({type:'odeme', unit: S.view==='daire'?S.unit:''});
   else if (k === 'gider') expForm(null);
+  else if (k === 'toplu') { bulkPaySheet.state = null; bulkPaySheet(); }
   else { go('ayarlar'); setTimeout(() => { const el = $('#annTitle'); if (el){ el.scrollIntoView({block:'center'}); el.focus(); } }, 50); } });
 document.addEventListener('click', () => { const m = $('#fabMenu'); if (m && !m.hidden) fabOpen(false); });
 
@@ -2743,6 +2751,78 @@ async function fixB1B2(){
     await db.doc('settings/main').update({fixes: Object.assign({}, (S.settings || {}).fixes, {b1b2: Date.now()})});
     toast('B1 ve B2 düzeltildi');
   } catch(e){ console.warn(e); toast('Düzeltme tamamlanamadı: ' + saveErr(e) + ' İndirilen yedekle geri dönülebilir.'); if (btn){ btn.disabled = false; btn.textContent = 'Yedek al ve düzelt'; } }
+}
+
+/* ---------- toplu ödeme: bir malikin (ör. RSU) tek seferde yaptığı ödemeyi dairelerine dağıtır ----------
+   "En eski borçtan": ay ay ilerler; her ay için o ayı ödenmemiş bütün dairelere sırayla aidat yazar, para bitince durur.
+   "Eşit böl": tutarı seçili dairelere eşit paylaştırır. */
+function ownersWithUnits(){ const m = {}; unitList().forEach(u => { const o = (u.malik || '').trim(); if (o) (m[o] = m[o] || []).push(u.kod); }); return Object.entries(m).filter(([, l]) => l.length > 1).sort((a, b) => b[1].length - a[1].length); }
+function bulkPaySheet(){
+  const owners = ownersWithUnits();
+  const st = bulkPaySheet.state || (bulkPaySheet.state = {owner: owners.some(o => o[0] === 'RSU') ? 'RSU' : (owners[0] || [''])[0], amount: '', date: todayISO(), method: 'Havale', mode: 'eski', off: new Set()});
+  const units = (owners.find(o => o[0] === st.owner) || ['', []])[1].slice().sort();
+  openSheet(`<h2>Toplu ödeme dağıt</h2>
+    <p class="hint" style="margin:0">Bir ev sahibinin birden çok dairesi için tek seferde yaptığı ödemeyi dairelere böler. Her daireye ayrı ödeme ve makbuz yazılır.</p>
+    <div class="row2">
+      <div class="field"><label for="bpOwner">Kimden?</label><select id="bpOwner">${owners.map(([o, l]) => `<option value="${esc(o)}" ${o === st.owner ? 'selected' : ''}>${esc(o)} (${l.length} daire)</option>`).join('')}</select></div>
+      <div class="field"><label for="bpAmount">Alınan tutar (TL)</label><input id="bpAmount" inputmode="decimal" value="${esc(st.amount)}" placeholder="ör. 25.000"></div>
+    </div>
+    <div class="row2">
+      <div class="field"><label for="bpDate">Tarih</label><input id="bpDate" type="date" value="${esc(st.date)}"></div>
+      <div class="field"><label>Ödeme şekli</label><div class="seg" style="grid-template-columns:repeat(2,1fr)">${['Havale', 'Nakit'].map(m => `<button type="button" data-act="bpMethod" data-v="${m}" aria-pressed="${st.method === m}">${m}</button>`).join('')}</div></div>
+    </div>
+    <div class="field"><label>Nasıl dağıtılsın?</label><div class="seg" style="grid-template-columns:repeat(2,1fr)">
+      <button type="button" data-act="bpMode" data-v="eski" aria-pressed="${st.mode === 'eski'}">En eski borçtan başla</button>
+      <button type="button" data-act="bpMode" data-v="esit" aria-pressed="${st.mode === 'esit'}">Eşit böl</button></div></div>
+    <div class="field"><label>Daireler <span class="sub">(dokunarak çıkar / ekle)</span></label><div class="chips">${units.map(k => `<button type="button" class="chip" data-act="bpUnit" data-v="${esc(k)}" aria-pressed="${!st.off.has(k)}">${esc(k)}</button>`).join('')}</div></div>
+    <div id="bpPrev"></div><div id="bpErr"></div>
+    <div class="actions" style="justify-content:flex-end"><button class="btn" data-act="close">Vazgeç</button><button class="btn primary" data-act="bpSave">Ödemeleri kaydet</button></div>`);
+  bulkPreview();
+}
+function bulkRead(){ const st = bulkPaySheet.state, g = id => document.getElementById(id); if (g('bpOwner')) { if (st.owner !== g('bpOwner').value) { st.owner = g('bpOwner').value; st.off = new Set(); } st.amount = g('bpAmount').value; st.date = g('bpDate').value; } }
+function bulkPlan(){
+  const st = bulkPaySheet.state, total = Math.round((parseAmount(st.amount) || 0) * 100) / 100;
+  const units = ((ownersWithUnits().find(o => o[0] === st.owner) || ['', []])[1]).filter(k => !st.off.has(k)).sort();
+  const give = {}; units.forEach(k => give[k] = 0);
+  if (!(total > 0) || !units.length) return {total, units, give, left: total};
+  let left = total;
+  if (st.mode === 'esit') {
+    const per = Math.floor(total / units.length * 100) / 100; units.forEach(k => give[k] = per);
+    left = Math.round((total - per * units.length) * 100) / 100; if (left > 0) { give[units[0]] = Math.round((give[units[0]] + left) * 100) / 100; left = 0; }
+  } else {
+    // her dairenin şu ana kadar kapattığı tutar (ek borçlar önce kapanır), sonra ay ay ilerle
+    const info = units.map(k => { const c = calc(k); return {k, aidat: c.aidat, net: c.paid - c.extra}; });
+    const extraFirst = info.filter(x => x.net < 0); extraFirst.forEach(x => { const g = Math.min(left, -x.net); give[x.k] += g; x.net += g; left -= g; });
+    for (let m = 0; m < 12 && left > 0.001; m++) for (const x of info) { if (left <= 0.001 || x.aidat <= 0) break;
+      const need = (m + 1) * x.aidat - x.net; if (need <= 0.001) continue; const g = Math.min(need, x.aidat, left); give[x.k] += g; x.net += g; left -= g; }
+    left = Math.round(left * 100) / 100;
+  }
+  return {total, units, give, left};
+}
+function bulkPreview(){
+  bulkRead(); const el = document.getElementById('bpPrev'); if (!el) return; const p = bulkPlan();
+  if (!(p.total > 0)) { el.innerHTML = '<div class="notice">Tutarı yazınca hangi daireye ne kadar yazılacağı burada görünür.</div>'; return; }
+  const monthTxt = k => { const c = calc(k), net = c.paid - c.extra, after = net + p.give[k]; if (!(c.aidat > 0)) return ''; const a = Math.floor(net / c.aidat + 1e-9), b = Math.floor(after / c.aidat + 1e-9);
+    const part = after - b * c.aidat > 0.5 && b < 12 ? AYK[b] + ' kısmen' : '';
+    return b > a ? AYK[Math.min(a, 11)] + (b - 1 > a ? '–' + AYK[Math.min(b - 1, 11)] : '') + ' kapanır' + (part ? ', ' + part : '') : (after > net ? part : ''); };
+  el.innerHTML = `<div style="overflow-x:auto"><table class="cmptbl"><thead><tr><th>Daire</th><th class="num">Şu an borç</th><th class="num">Yazılacak</th><th>Etkisi</th></tr></thead><tbody>
+    ${p.units.map(k => `<tr><td><b>${esc(k)}</b></td><td class="num">${TL(calc(k).overdue)}</td><td class="num">${p.give[k] > 0 ? TL(Math.round(p.give[k] * 100) / 100) : '—'}</td><td class="sub">${monthTxt(k)}</td></tr>`).join('')}
+    </tbody></table></div>
+    <div class="notice num">Toplam ${TL(p.total)} · ${p.units.filter(k => p.give[k] > 0).length} daireye yazılacak${p.left > 0 ? ` · <b style="color:var(--warn)">${TL(p.left)} artıyor</b> (bu dairelerin ${S.year} aidatlarının tamamı kapanıyor)` : ''}</div>`;
+}
+async function bulkSave(){
+  bulkRead(); const st = bulkPaySheet.state, p = bulkPlan(), err = m => { document.getElementById('bpErr').innerHTML = '<div class="err">' + esc(m) + '</div>'; };
+  if (!(p.total > 0)) return err('Alınan tutarı yaz.');
+  if (!p.units.length) return err('En az bir daire seç.');
+  if (p.left > 0) return err(TL(p.left) + ' dağıtılamadı. Daire ekle ya da "Eşit böl"ü seç.');
+  if (!st.date || st.date.slice(0, 4) !== String(S.year)) return err(S.year + ' yılı içinde bir tarih seç.');
+  const grp = 'tp' + uid(), desc = up(st.owner) + ' TOPLU ÖDEMESİ', note = 'Toplam ' + TL(p.total) + ' ödemenin payı (' + fmtDate(st.date) + ')';
+  const btn = document.querySelector('[data-act="bpSave"]'); if (btn) btn.disabled = true; let n = 0;
+  try {
+    for (const k of p.units) { const amt = Math.round(p.give[k] * 100) / 100; if (!(amt > 0)) continue;
+      await writeLedger(k, cur => cur.concat([{id: uid(), type: 'odeme', amount: amt, date: st.date, desc, method: st.method, note, bulk: grp, at: Date.now()}])); n++; }
+    bulkPaySheet.state = null; closeSheet(); toast(n + ' daireye toplam ' + TL(p.total) + ' ödeme yazıldı');
+  } catch(e){ if (btn) btn.disabled = false; err(n + ' daireden sonra durdu: ' + saveErr(e) + ' Yazılanları daire sayfasından kontrol et.'); }
 }
 /* ---------- data ---------- */
 function setYear(y){
